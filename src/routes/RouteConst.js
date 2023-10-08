@@ -1,0 +1,13 @@
+export const SPLASH_PAGE = 'Splash';
+export const LOGIN = 'Login';
+export const HOME = 'Home';
+export const BOTTOM_TABS = "BottomTabs";
+export const MAIN_ROUTE = "MainRoute";
+export const CATEGORIES = "Categories"
+export const SHOPPING = "Shopping"
+export const LIKES = "Likes"
+export const PROFILE = "Profile";
+export const LIST_PAGE = "ListPage"
+export const DETAILS_PAGE = 'DetailsPage'
+export const SIGNIN = 'SignIn'
+export const OTP_SCREEN = 'OtpScreen'

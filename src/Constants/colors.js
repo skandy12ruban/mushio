@@ -1,0 +1,25 @@
+export const COLORS = {
+    gray: '#77869E',
+    text: '#071B32',
+    darkBlue: '#012B72',
+    blue: '#478DF7',
+    lightGray: '#E3E5E9',
+    mainBG: '#F8F8FA',
+    white: '#FFFFFF',
+    nonActiveButton: '#7EAFF9',
+    activeButton: '#337AE5',
+    green: '#2AD95A',
+    black: '#000000',
+    skyBlue: '#EFF5FF',
+    lightGreen: '#BCEECA',
+    purple: '#C3BCEE',
+    themeColor1: '#9a1042',
+    themeColor2: '#7d032f',
+    red: '#b61e4c',
+    tableHeader: '#eb64a3',
+    tableBorderColor: '#fefefe',
+    lightRed: '#faf5f7',
+    disableRed: '#b61e4c1c',
+    labelColor: '#9f2e20'
+  };
+  
