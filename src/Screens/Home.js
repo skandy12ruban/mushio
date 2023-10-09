@@ -7,9 +7,21 @@ import Metrics from '../Constants/Metrics';
 import { useNavigation } from '@react-navigation/native';
 import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
+import { Calendar } from 'react-native-calendars';
 
+function CustomCalendar(props) {
+  return (
+    <Calendar
+      initialDate={new Date()}
+      minDate={new Date()}
+      // maxDate="2023-01-30"
+      disableAllTouchEventsForDisabledDays={true}
+      {...props}
+    />
+  );
+}
 
-const Home = () => {
+const Home = (props) => {
   const navigation = useNavigation();
 
   const[loading,setLoading]=useState(false)
@@ -35,6 +47,12 @@ const Home = () => {
       </View>
      <Text style={{fontSize:25,fontWeight:'bold',marginLeft:Metrics.rfv(30),color:'black'}}>Hello, <Text style={{color:'#00B0FF'}}>Satish</Text></Text>
      <Text style={{marginLeft:Metrics.rfv(30),color:'black'}}>Mushio greets you good morning</Text>
+      <View>
+      {/* <CustomCalendar onDayPress={(day) => console.log(`Date pressed: ${day.dateString}`)} /> */}
+      </View>
+    
+
+
     </SafeAreaView>
   )
 }

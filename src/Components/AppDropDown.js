@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         paddingRight: RFValue(10, STANDARD_SCREEN_HEIGHT),
     },
     viewStyle: {
-        height: RFValue(44, STANDARD_SCREEN_HEIGHT),
+        height: RFValue(50, STANDARD_SCREEN_HEIGHT),
         // width: '100%',
         borderRadius: RFValue(22, STANDARD_SCREEN_HEIGHT),
         backgroundColor: WHITE_COLOR,

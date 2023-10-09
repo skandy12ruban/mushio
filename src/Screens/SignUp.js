@@ -8,19 +8,19 @@ import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
 export const SignUpFormInitialValues = props => ({
-    signUpemail: '',
-    signUppassword: '',
-    signUpconfpassword: '',
+    name: '',
+    password: '',
+    confirmpassword: '',
 });
 export const SignUpFormValidator = props => {
     return yup.object().shape({
-        signUpemail: yup
+        name: yup
             .string()
             .required('email or mobile Number is Required'),
-        signUppassword: yup
+            password: yup
             .string()
             .required('Password is required'),
-        signUpconfpassword: yup
+            confirmpassword: yup
             .string()
             .required('Password is required'),
     });
@@ -29,13 +29,14 @@ const SignUp = (props) => {
 const navigation=useNavigation()
 
   return (
-    <SafeAreaView>
-
+    <SafeAreaView style={{ backgroundColor: 'lightblue',flex:1}}>
+ 
       <View
         style={{
           alignSelf: 'center',
-          width: '90%',
+          width: '90%',marginTop:Metrics.rfv(100)
         }}>
+            <Text style={{color:'red',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Sign Up </Text>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
         //   validationSchema={SignUpFormValidator(props)}
@@ -54,35 +55,35 @@ const navigation=useNavigation()
             handleSubmit,
           }) => (
             <>
-             <View style={{alignSelf:'center',width:'90%'}}>
+             <View style={{alignSelf:'center',width:'100%',}}>
         <TextInput
-         value={'title'}
-         placeholder={'Title'}
-         style={{padding:15,backgroundColor:'white',borderRadius:5,margin:10,}}
+         value={values.name}
+         placeholder={'Nickname'}
+         placeholderTextColor={'grey'}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
          onChangeText={text => {
-            setTitle( text);
-          }}
-        />
-        <TextInput
-         value={'description'}
-         placeholder={'Description'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,}}
-       
-         onChangeText={text => {
-            setDescription( text);
+            setFieldValue('name' ,text);
           }}
         />
                  <AppTextFieldPassword
-                    placeHolder={'......'}
+                    placeHolder={'password'}
                     value={values.password}
                     changeText={text => {
                       setFieldValue('password', text);
                     }}
                     secureTextEntry={true}
                   />
-        <TouchableOpacity style={{backgroundColor:'black',width:'60%',padding:10,
+                   <AppTextFieldPassword
+                    value={values.confirmpassword}
+                    placeHolder={'confirm password'}
+                    changeText={text => {
+                      setFieldValue('confirmpassword', text);
+                    }}
+                    secureTextEntry={true}
+                  />
+        <TouchableOpacity style={{backgroundColor:'#00B0FF',width:'60%',padding:15,
           alignSelf:'center',marginTop:20,borderRadius:5}}
-           onPress={()=>{}}>
+           onPress={()=>{handleSubmit()}}>
       <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
      </TouchableOpacity>
        </View>

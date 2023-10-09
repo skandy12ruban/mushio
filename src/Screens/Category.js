@@ -3,7 +3,7 @@ import React,{useState} from 'react'
 import { Card } from 'react-native-paper'
 import Metrics from '../Constants/Metrics'
 import Entypo from 'react-native-vector-icons/Entypo';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const Category = () => {
     const route =useRoute()
     const {item}=route.params;
+    const navigation=useNavigation()
     const[title,setTitle]=useState('')
     const[description,setDescription]=useState('')
 
@@ -89,7 +90,7 @@ const Category = () => {
         </View>
         <TouchableOpacity style={{backgroundColor:'black',width:'60%',padding:10,
           alignSelf:'center',marginTop:20,borderRadius:5}}
-           onPress={()=>{}}>
+           onPress={()=>{navigation.navigate('Home')}}>
       <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
      </TouchableOpacity>
        </View>

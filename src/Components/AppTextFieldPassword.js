@@ -28,7 +28,7 @@ const AppTextFieldPassword = props => {
         <View style={[{ ...styles.viewStyle }]}>
           <Input
             {...props}
-            containerStyle={styles.textFiledStyle}
+            // containerStyle={styles.textFiledStyle}
             contextMenuHidden={true}
             inputContainerStyle={{
               justifyContent: 'center',
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
     paddingRight: Metrics.rfv(20),
   },
   viewStyle: {
-    height: Metrics.rfv(43),
+    height: Metrics.rfv(50),
     width: '100%',
-    borderRadius: Metrics.rfv(2),
+    borderRadius: Metrics.rfv(5),
     backgroundColor: COLORS.white,
     shadowColor: COLORS.white,
-    borderColor: '#dadee3',
-    borderWidth: 1,
+    // borderColor: '#dadee3',
+    // borderWidth: 1,
     shadowOffset: {
       width: 0,
       height: 2,

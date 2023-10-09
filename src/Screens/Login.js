@@ -102,20 +102,17 @@ const Login = withGlobalize(
             }) => (
               <>
             
-                <View style={styles.SectionStyle}>
-                  <TextInput
-                    placeholder="example@gmail.com"
-                    style={styles.inputStyle}
-                    onChangeText={text => {
-                      // if(text != '' && text != 'example@gmail.com'){
-                      setFieldValue('email', text);
-                      // }
-                    }}
-                    value={values.email}
-                    placeholderTextColor="gray"
-                    keyboardType="email-address"
-                  />
-                </View>
+               
+                <TextInput
+                   value={values.email}
+                   placeholder={'email'}
+                   placeholderTextColor={'grey'}
+                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+                   onChangeText={text => {
+                   setFieldValue('email' ,text);
+                   }}
+                 />
+               
                 {errors.email && touched.email && (
                   <Text style={{fontSize: 10, color: 'red', marginLeft: 20}}>
                     {' '}
@@ -125,7 +122,7 @@ const Login = withGlobalize(
                 
                 <View >
                   <AppTextFieldPassword
-                    placeHolder={'......'}
+                    placeHolder={'password'}
                     value={values.password}
                     changeText={text => {
                       setFieldValue('password', text);
