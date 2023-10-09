@@ -39,25 +39,9 @@ export const SignInFormValidator = props => {
     });
 };
 
-export const SignUpFormInitialValues = props => ({
-    signUpemail: '',
-    signUppassword: '',
-    signUpconfpassword: '',
-});
 
-export const SignUpFormValidator = props => {
-    return yup.object().shape({
-        signUpemail: yup
-            .string()
-            .required('email or mobile Number is Required'),
-        signUppassword: yup
-            .string()
-            .required('Password is required'),
-        signUpconfpassword: yup
-            .string()
-            .required('Password is required'),
-    });
-};
+
+
 const Login = withGlobalize(memo(props => {
 
     const intl = IntlProvider(props);
@@ -67,73 +51,7 @@ const Login = withGlobalize(memo(props => {
     const [loading, setLoading] = useState(false);
     const [viewPassword, setViewPassword] = useState(true);
 
-    const LoginFunction = async (values) => {
-        setLoading(true)
-        const raw = JSON.stringify({
-            "name": `${values.email}`,
-            "pass": `${values.password}`
-        });
-
-        let requestOptions = {
-            method: 'GET',
-            redirect: 'follow',
-        };
-        console.log("payload", raw)
-        fetch(`${API_BASE_URL}/session/token`, (requestOptions))
-            .then(response => response.text())
-            .then(result => {
-                console.log('response', result);
-                const myHeaders = new Headers();
-                myHeaders.append("X-CSRF-Token", `${result}`);
-                myHeaders.append("Content-Type", "application/json");
-
-                const payload = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
-
-                fetch(`${API_BASE_URL}/user/login?_format=json`, payload)
-                    .then(response => response.json())
-                    .then(result => {
-                        // console.log("result", result)
-                        fetch(`${API_BASE_URL}/user/login_status?_format=json`, requestOptions)
-                            .then(response => response.text())
-                            .then(result1 => {
-                                console.log('status response', result1)
-                                if (result1 == '1') {
-                                    const userInfo = result;
-                                    console.log("userInfo", userInfo)
-                                    saveUserProfileInfo(userInfo);
-                                    dispatch(setuser(userInfo))
-                                    navigation.reset({
-                                        index: 0,
-                                        routes: [{ name: MAIN_ROUTE }],
-                                    })
-                                    setLoading(false)
-                                }else{
-                                    alert('username and password does not match')
-                                }
-                                setLoading(false)
-                            })
-                            .catch(error => {
-                                console.log('error', error)
-                                setLoading(false)
-                            });
-                    }).catch(error => {
-                        console.log('error', error)
-                        setLoading(false)
-                    });
-            }).catch(error => {
-                console.log('error1', error)
-                setLoading(false)
-            });
-    }
-
-    const SignUpFunction = async (values) => {
-
-    }
+    
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => false)
@@ -146,136 +64,14 @@ const Login = withGlobalize(memo(props => {
         }}>
             <Loader loading={loading}></Loader>
 
-            <View style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flex: 1,
-            }}>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    marginTop: RFValue(80, STANDARD_SCREEN_HEIGHT),
-                }}>
-                    <Text style={{
-                        color: 'green',
-                        paddingVertical: 10,
-                        fontSize: 35,
-                        fontWeight: 'bold'
-                    }}>
-                        Buy
-                    </Text>
-                    <Text style={{
-                        color: 'orange',
-                        paddingVertical: 10,
-                        fontSize: 35,
-                        fontWeight: 'bold'
-                    }}>
-                        Exp
-                    </Text>
-                </View>
-
-                <View style={{
-                    marginTop: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    <Text style={{
-                        color: '#41bab0',
-                        fontSize: 24,
-                        fontWeight: 'bold'
-                    }}>
-                        Hello there.
-                    </Text>
-                    <Text style={{
-                        color: '#41bab0',
-                        fontSize: 24,
-                        fontWeight: 'bold'
-                    }}>
-                        Welcome back
-                    </Text>
-                </View>
-
-                <View style={{
-                    width: widthPercentageToDP('80%'),
-                    height: RFValue(45, STANDARD_SCREEN_HEIGHT),
-                    flexDirection: 'row',
-                    marginTop: RFValue(50, STANDARD_SCREEN_HEIGHT),
-                    marginBottom: RFValue(20, STANDARD_SCREEN_HEIGHT),
-                    backgroundColor: '#EFF1F3',
-                    borderTopLeftRadius: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                    borderBottomLeftRadius: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                    borderBottomRightRadius: RFValue(23, STANDARD_SCREEN_HEIGHT),
-                    borderTopRightRadius: RFValue(23, STANDARD_SCREEN_HEIGHT),
-                }}
-                >
-                    <TouchableOpacity
-                        style={{
-                            width: widthPercentageToDP('40%'),
-                            backgroundColor: logins ? '#41bab0' : '#EFF1F3',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            paddingHorizontal: RFValue(10, STANDARD_SCREEN_HEIGHT),
-                            borderTopLeftRadius: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                            borderBottomLeftRadius: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                            borderTopRightRadius: logins
-                                ? RFValue(25, STANDARD_SCREEN_HEIGHT)
-                                : 0,
-                            borderBottomRightRadius: logins
-                                ? RFValue(25, STANDARD_SCREEN_HEIGHT)
-                                : 0,
-                        }}
-                        onPress={() => {
-                            setLogins(true)
-                        }}>
-                        <Text style={{
-                            fontSize: RFValue(SMALL_FONT_SIZE, STANDARD_SCREEN_HEIGHT),
-                            color: logins ? WHITE_COLOR : BLACK_COLOR,
-                            fontFamily: FONT_BOLD,
-                            fontWeight: '900',
-
-                        }}>Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            //flex:1,
-                            width: widthPercentageToDP('40%'),
-                            backgroundColor: !logins ? '#41bab0' : '#EFF1F3',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            paddingHorizontal: RFValue(10, STANDARD_SCREEN_HEIGHT),
-                            borderTopLeftRadius: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                            borderBottomLeftRadius: RFValue(25, STANDARD_SCREEN_HEIGHT),
-                            borderTopRightRadius: logins
-                                ? RFValue(25, STANDARD_SCREEN_HEIGHT)
-                                : RFValue(25, STANDARD_SCREEN_HEIGHT),
-                            borderBottomRightRadius: logins
-                                ? RFValue(25, STANDARD_SCREEN_HEIGHT)
-                                : RFValue(25, STANDARD_SCREEN_HEIGHT),
-                        }}
-                        onPress={() => {
-                            setLogins(false)
-                        }}>
-                        <Text
-                            style={{
-                                fontSize: RFValue(SMALL_FONT_SIZE, STANDARD_SCREEN_HEIGHT),
-                                color: !logins ? WHITE_COLOR : BLACK_COLOR,
-                                fontFamily: FONT_BOLD,
-                                fontWeight: '900',
-
-                            }}>SignUp</Text>
-                    </TouchableOpacity>
-                </View>
-                {
-                    logins == true ? (
                         <View style={{
                             alignSelf: 'center',
                             width: '90%',
                         }}>
                             <Formik
                                 initialValues={SignInFormInitialValues(props)}
-                                validationSchema={SignInFormValidator(props)}
+                                // validationSchema={SignInFormValidator(props)}
                                 onSubmit={(values, { resetForm }) => {
-                                    LoginFunction(values, resetForm);
                                     // SignUpFunction()
                                 }}>
                                 {({
@@ -340,8 +136,33 @@ const Login = withGlobalize(memo(props => {
                                         {(errors.password && touched.password) &&
                                             <Text style={{ fontSize: 10, color: 'red', marginLeft: 20 }}> * {errors.password}</Text>
                                         }
+                                       
+                                        <TouchableOpacity
+                                            style={{
+                                                backgroundColor: '#41bab0',
+                                                color: '#FFFFFF',
+                                                borderColor: '#7DE24E',
+                                                height: 42,
+                                                width: width * 0.35,
+                                                alignSelf: 'center',
+                                                borderRadius: 30,
+                                                marginTop: 20,
+                                                marginBottom: 20,
+                                            }}
+                                            activeOpacity={0.5}
+                                            onPress={() => {
+                                                const userIfo={"userId":101}
+                                                saveUserProfileInfo(userIfo)
+                                                navigation.reset({
+                                                    index: 0,
+                                                    routes: [{name: MAIN_ROUTE}],
+                                                  });
+                                                handleSubmit()
+                                            }}>
+                                            <Text style={styles.buttonTextStyle}>Login</Text>
+                                        </TouchableOpacity>
                                         <View>
-                                            <TouchableOpacity>
+                                            <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>
                                                 <Text style={{
                                                     color: '#3d4b69',
                                                     fontSize: 14,
@@ -349,147 +170,14 @@ const Login = withGlobalize(memo(props => {
                                                     marginTop: 5,
                                                     alignSelf: 'center',
                                                     marginLeft: Metrics.rfv(180),
-                                                }}>Forgot Password ?</Text>
+                                                }}>SignUp ?</Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: '#41bab0',
-                                                color: '#FFFFFF',
-                                                borderColor: '#7DE24E',
-                                                height: 42,
-                                                width: width * 0.35,
-                                                alignSelf: 'center',
-                                                borderRadius: 30,
-                                                marginTop: 20,
-                                                marginBottom: 20,
-                                            }}
-                                            activeOpacity={0.5}
-                                            onPress={() => {
-                                                // navigation.navigate('MainRoute')
-                                                handleSubmit()
-                                            }}>
-                                            <Text style={styles.buttonTextStyle}>Login</Text>
-                                        </TouchableOpacity>
+                                      
                                     </>
                                 )}
                             </Formik>
                         </View>
-                    ) : (
-                        <View
-                            style={{
-                                alignSelf: 'center',
-                                width: '90%',
-                            }}>
-                            <Formik
-                                initialValues={SignUpFormInitialValues(props)}
-                                validationSchema={SignUpFormValidator(props)}
-                                onSubmit={(values, { resetForm }) => {
-                                    SignUpFunction(values, resetForm);
-                                }}>
-                                {({
-                                    values,
-                                    handleChange,
-                                    setFieldValue,
-                                    errors,
-                                    touched,
-                                    setFieldTouched,
-                                    isValid,
-                                    handleSubmit,
-                                }) => (
-                                    <>
-                                        <View style={{
-                                            marginLeft: Metrics.rfv(25),
-                                            marginTop: 5,
-                                        }}>
-                                            <Text style={{
-                                                color: '#3d4b69',
-                                                fontSize: 14,
-                                                fontWeight: 'bold'
-                                            }}>Phone Number or Email</Text>
-                                        </View>
-                                        <View style={styles.SectionStyle}>
-                                            <TextInput
-                                                placeholder="example@gmail.com"
-                                                style={styles.inputStyle}
-                                                onChangeText={(text) => {
-                                                    setFieldValue('signUpemail', text)
-                                                }}
-                                                value={values.signUpemail}
-                                                placeholderTextColor="gray"
-                                                keyboardType="email-address"
-                                                touched={touched.signUpemail}
-                                                error={errors.signUpemail}
-                                            />
-                                        </View>
-                                        <View style={{
-                                            marginLeft: Metrics.rfv(25),
-                                            marginTop: 5,
-                                        }}>
-                                            <Text style={{
-                                                color: '#3d4b69',
-                                                fontSize: 14,
-                                                fontWeight: 'bold'
-                                            }}>Password</Text>
-                                        </View>
-                                        <View>
-                                            <AppTextFieldPassword
-                                                placeHolder={'......'}
-                                                value={values.signUppassword}
-                                                changeText={(text) => {
-                                                    setFieldValue('signUppassword', text)
-                                                }}
-                                                secureTextEntry={true}
-                                                touched={touched.signUppassword}
-                                                error={errors.signUppassword}
-                                            />
-                                        </View>
-                                        <View style={{
-                                            marginLeft: Metrics.rfv(25),
-                                            marginTop: 5,
-                                        }}>
-                                            <Text style={{
-                                                color: '#3d4b69',
-                                                fontSize: 14,
-                                                fontWeight: 'bold'
-                                            }}>Confirm Password</Text>
-                                        </View>
-                                        <View>
-                                            <AppTextFieldPassword
-                                                placeHolder={'........'}
-                                                value={values.signUpconfpassword}
-                                                changeText={(text) => {
-                                                    setFieldValue('signUpconfpassword', text)
-                                                }}
-                                                secureTextEntry={true}
-                                                touched={touched.signUpconfpassword}
-                                                error={errors.signUpconfpassword}
-                                            />
-                                        </View>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: '#41bab0',
-                                                color: '#FFFFFF',
-                                                borderColor: '#7DE24E',
-                                                height: 42,
-                                                width: width * 0.35,
-                                                alignSelf: 'center',
-                                                borderRadius: 30,
-                                                marginTop: 20,
-                                                marginBottom: 20,
-                                            }}
-                                            activeOpacity={0.5}
-                                            onPress={() => {
-                                                handleSubmit();
-                                            }}>
-                                            <Text style={styles.buttonTextStyle}>Sign Up</Text>
-                                        </TouchableOpacity>
-                                    </>)}
-                            </Formik>
-                        </View>
-                    )
-                }
-            </View>
         </ScrollView >
     );
 }));

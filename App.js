@@ -100,7 +100,7 @@ const App = () => {
     <>
       <SafeAreaView style={styles.topSafeArea} />
       <SafeAreaView style={[{ flex: 1 }, { ...styles.bottomSafeArea }]}>
-        <AppStatusBar backgroundColor={"#41bab0"} barStyle="light-content" />
+        <AppStatusBar backgroundColor={"#00B0FF"} barStyle="light-content" />
         <FormattedProvider
           locale={locale}
           currency={metadata.currency()}

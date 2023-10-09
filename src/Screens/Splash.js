@@ -7,6 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { isObject } from 'util';
 import { isNullOrUndefined } from 'util';
+import { BackgroundImage } from 'react-native-elements/dist/config';
 
 
 const { width, height } = Dimensions.get('window');
@@ -23,8 +24,8 @@ const SplashPage = () => {
                 }
             else {
                 // console.log('splash page ')
-                // navigation.navigate(LOGIN)
-                navigation.navigate(SIGNIN)
+                navigation.navigate(LOGIN)
+                // navigation.navigate(SIGNIN)
             }
         }, 3000);
 
@@ -35,32 +36,18 @@ const SplashPage = () => {
     }, [])
 
     return (
-        <View style={{
-            margin:10
-        }}>
-            <View style={{
-                    flexDirection: 'row', 
-                    alignSelf: 'center',
-                    marginTop: RFValue(250, STANDARD_SCREEN_HEIGHT),
-                }}>
-                    <Text style={{
-                        color: 'green',
-                        paddingVertical: 10,
-                        fontSize: 50,
-                        fontWeight: 'bold'
-                    }}>
-                        ᗰᑌᔕᕼIO
-                    </Text>
-                    
-                </View>
-            {/* <Image
+        <View style={{ }}>
+          
+             <BackgroundImage
                 style={{
-                    borderRadius: 120,
-                    alignSelf: 'center'
+                    width:"100%",height:"100%",
                 }}
-                source={SplashImg}
+                source={require('../assets/images/splashImg.jpg')}
             >
-            </Image> */}
+            </BackgroundImage>
+                    
+              
+        
         </View>
     )
 }

@@ -8,8 +8,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Metrics from '../Constants/Metrics';
-import { Categories, Home, Likes, Profile, Shopping } from '../Screens';
-import { HOME, SHOPPING } from './RouteConst';
+import { Categories, Home,  Profile, Graphs } from '../Screens';
+import { HOME, GRAPHS } from './RouteConst';
 
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -80,7 +80,7 @@ const BottomTabs = (props) => {
             },
           }}
         />
-        {/* <Tab.Screen
+        <Tab.Screen
           name="Categories"
           component={Categories}
           options={{
@@ -123,8 +123,8 @@ const BottomTabs = (props) => {
           }}
         />
         <Tab.Screen
-          name="Shopping"
-          component={Shopping}
+          name="Graphs"
+          component={Graphs}
           options={{
             tabBarIcon: ({ focused }) => {
               return (
@@ -163,49 +163,8 @@ const BottomTabs = (props) => {
               );
             },
           }}
-        /> */}
-        <Tab.Screen
-          name="Offers"
-          component={Likes}
-          options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={{
-                  backgroundColor: '#FFFFFF',
-                  height: 50,
-                  width: 50,
-                  borderRadius: 50,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  bottom: focused ? 10 : 0,
-                  shadowColor: 'red',
-                  elevation: focused ? 6 : 0,
-                  shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
-                }}>
-                  <View
-                    style={{
-                      bottom: focused ? 0 : 0,
-                      height: 44,
-                      width: 44,
-                      borderRadius: 44,
-                      backgroundColor: focused ? 'orange' : 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <MaterialIcons
-                      name="local-offer"
-                      style={[
-                        { fontSize: Metrics.rfv(20), color: 'gray' },
-                        focused && { fontSize: Metrics.rfv(30), color: 'white' },
-                      ]}
-                    />
-                  </View>
-                </View>
-              );
-            },
-          }}
         />
+      
         <Tab.Screen
           name="Profile"
           component={Profile}

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS, DETAILS_PAGE, HOME, LIST_PAGE, LOGIN, LOGIN_COMPONENT, PROFILE, SIGNIN, SIGN_UP, VIEW_CONTENT, VIEW_COURSE, VIEW_PDF } from './RouteConst';
+import { APP_DRAWER, BOTTOM_TABS,  HOME,LOGIN,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
-import { DetailsPage, ListPage, Login, LoginComponent, Profile, SignIn, SignUpScreen, ViewContent, ViewCourse, ViewPdf } from '../Screens';
+import { DetailsPage, ListPage, Login,  Profile, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
@@ -37,19 +37,16 @@ const MainRoute = () => {
             {login_status ? (
                 <>
                      <MainStack.Screen name={BOTTOM_TABS} component={BottomTabs} />
-                     <MainStack.Screen name={LIST_PAGE} component={ListPage} />
-                     <MainStack.Screen name={DETAILS_PAGE} component={DetailsPage} />
+                  
             
                 </>
             ) : (
                 <>
                     <MainStack.Screen name={LOGIN} component={Login} />
-                    <MainStack.Screen name={SIGNIN} component={SignIn} />
+                    <MainStack.Screen name={SIGNUP} component={SignUp} />
                 </>
             )}
-            {/* <MainStack.Screen name={BOTTOM_TABS} component={BottomTabs} />
-            <MainStack.Screen name={LIST_PAGE} component={ListPage} />
-            <MainStack.Screen name={DETAILS_PAGE} component={DetailsPage} /> */}
+          
         </MainStack.Navigator>
     );
 }
