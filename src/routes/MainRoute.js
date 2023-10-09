@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS,  HOME,LOGIN,  SIGNIN, SIGNUP,  } from './RouteConst';
+import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
-import { DetailsPage, ListPage, Login,  Profile, SignIn, SignUp,   } from '../Screens';
+import { Category, DetailsPage, ListPage, Login,  Profile, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
@@ -37,7 +37,7 @@ const MainRoute = () => {
             {login_status ? (
                 <>
                      <MainStack.Screen name={BOTTOM_TABS} component={BottomTabs} />
-                  
+                     <MainStack.Screen name={CATEGORY} component={Category} />
             
                 </>
             ) : (

@@ -6,7 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Octicons from 'react-native-vector-icons/Octicons';
 import Metrics from '../Constants/Metrics';
 import { Categories, Home,  Profile, Graphs } from '../Screens';
 import { HOME, GRAPHS } from './RouteConst';
@@ -29,7 +29,7 @@ const BottomTabs = (props) => {
           tabBarStyle: {
             backgroundColor: 'white',
             borderRadius: 5,
-            // margin:5,
+            margin:10,
             height: 54,
           },
           tabBarActiveTintColor: '#000000',
@@ -53,7 +53,7 @@ const BottomTabs = (props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   bottom: focused ? 10 : 0,
-                  shadowColor: 'red',
+                  shadowColor: '#00B0FF',
                   elevation: focused ? 6 : 0,
                   shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
                 }}>
@@ -63,14 +63,14 @@ const BottomTabs = (props) => {
                       height: 44,
                       width: 44,
                       borderRadius: 44,
-                      backgroundColor: focused ? 'orange' : 'white',
+                      backgroundColor: focused ? '#00B0FF' : 'white',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
                     <Ionicons
                       name="home"
                       style={[
-                        { fontSize: Metrics.rfv(20), color: 'gray', },
+                        { fontSize: Metrics.rfv(25), color: 'gray', },
                         focused && { fontSize: Metrics.rfv(30), color: 'white', },
                       ]}
                     />
@@ -95,7 +95,7 @@ const BottomTabs = (props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   bottom: focused ? 10 : 0,
-                  shadowColor: 'red',
+                  shadowColor: '#00B0FF',
                   elevation: focused ? 6 : 0,
                   shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
                 }}>
@@ -105,14 +105,14 @@ const BottomTabs = (props) => {
                       height: 44,
                       width: 44,
                       borderRadius: 44,
-                      backgroundColor: focused ? 'orange' : 'white',
+                      backgroundColor: focused ? '#00B0FF' : 'white',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <Entypo
-                      name="grid"
+                    <AntDesign
+                      name="pluscircleo"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray' },
+                        { fontSize: Metrics.rfv(30), color: 'gray' },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />
@@ -137,7 +137,7 @@ const BottomTabs = (props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   bottom: focused ? 10 : 0,
-                  shadowColor: 'red',
+                  shadowColor: '#00B0FF',
                   elevation: focused ? 6 : 0,
                   shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
                 }}>
@@ -147,14 +147,14 @@ const BottomTabs = (props) => {
                       height: 44,
                       width: 44,
                       borderRadius: 44,
-                      backgroundColor: focused ? 'orange' : 'white',
+                      backgroundColor: focused ? '#00B0FF' : 'white',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <FontAwesome
-                      name="shopping-cart"
+                    <Octicons
+                      name="graph"
                       style={[
-                        { fontSize: Metrics.rfv(20), color: 'gray', },
+                        { fontSize: Metrics.rfv(25), color: 'gray', },
                         focused && { fontSize: Metrics.rfv(25), color: 'white' },
                       ]}
                     />
@@ -180,7 +180,7 @@ const BottomTabs = (props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   bottom: focused ? 10 : 0,
-                  shadowColor: 'red',
+                  shadowColor: '#00B0FF',
                   elevation: focused ? 6 : 0,
                   shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
                 }}>
@@ -190,7 +190,7 @@ const BottomTabs = (props) => {
                       height: 44,
                       width: 44,
                       borderRadius: 44,
-                      backgroundColor: focused ? 'orange' : 'white',
+                      backgroundColor: focused ? '#00B0FF' : 'white',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
@@ -198,7 +198,7 @@ const BottomTabs = (props) => {
                       user-circle
                       name="user-circle"
                       style={[
-                        { fontSize: Metrics.rfv(20), color: 'gray' },
+                        { fontSize: Metrics.rfv(25), color: 'gray' },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />

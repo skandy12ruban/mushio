@@ -29,7 +29,7 @@ const Profile = () => {
            { text: "Ok", onPress: () => onLogoutPress() }
          ])
        }}
-       style={{padding:10,backgroundColor:'#41bab0',width:100,borderRadius:5,margin:10}}>
+       style={{padding:10,backgroundColor:'#FF7F7F',width:100,borderRadius:5,margin:10}}>
            <Text style={{color:'white'}}>Logout</Text>
        </TouchableOpacity>
       <Text>Profile</Text>

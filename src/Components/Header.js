@@ -51,7 +51,7 @@ const Header = withGlobalize(memo(props => {
   
   return (
     <View style={{
-      backgroundColor: 'white',
+      backgroundColor: '#00B0FF',
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 15,
@@ -80,9 +80,9 @@ const Header = withGlobalize(memo(props => {
         <View style={{ paddingLeft: 10, marginRight: 20 }}>
           <Text
             style={{
-              color: 'black',
+              color: 'white',
               fontFamily: 'Poppins-Medium',
-              fontSize: 15,
+              fontSize: 20,
               fontWeight: 'bold'
             }}>
             {props.name}
@@ -91,7 +91,7 @@ const Header = withGlobalize(memo(props => {
 
       )}
      
-        <View style={{padding:5,width:50,backgroundColor:'#EFF1F3',flexDirection:'row',borderRadius:10,marginLeft:130 }}>
+        {/* <View style={{padding:5,width:50,backgroundColor:'#EFF1F3',flexDirection:'row',borderRadius:10,marginLeft:130 }}>
         <Text>{ '' || item}</Text>
             <Popover
             popoverStyle={{
@@ -126,17 +126,17 @@ const Header = withGlobalize(memo(props => {
             setShowPopover(true);
           }}/>
       </TouchableOpacity>
-        </View>
+        </View> */}
       
       {/* )} */}
       {bellIcon && (
-        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#EFF1F3', borderRadius: 20, height: 30, width: 30, paddingLeft: 5 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center',  height: 30, width: 30, }}>
             <TouchableOpacity
               onPress={() => {
                
               }}>
             <FontAwesome
-              name="bell" size={20} color={'#41bab0'} style={{ alignItems: 'center', alignSelf: 'center', }}
+              name="bell" size={25} color={'white'} style={{ alignItems: 'center', alignSelf: 'center', }}
             />
           </TouchableOpacity>
           </View>

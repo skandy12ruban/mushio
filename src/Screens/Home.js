@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image,ScrollView,StyleSheet ,TouchableOpacity} from 'react-native'
+import { View, Text, FlatList, Image,ScrollView,StyleSheet ,TouchableOpacity,SafeAreaView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 
@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
 
+
 const Home = () => {
   const navigation = useNavigation();
 
@@ -16,18 +17,31 @@ const Home = () => {
  
   
   return (
-    <View style={styles.container}>
+    <SafeAreaView>
         <Loader loading={loading}></Loader>
       <Header name={'Home '} Language={''} bellIcon={true} />
-     <Text>Home</Text>
-    </View>
+      <View>
+      <TouchableOpacity style={{backgroundColor:'white', width:60,height:60,borderRadius:10,}}
+        onPress={()=>{
+          setselectedItem(item)
+          }} >
+      <Image
+          style={{
+             width:40,height:40,margin:10,borderRadius:10,
+            }}
+           source={require('../assets/images/image3.jpg')}
+         />
+         </TouchableOpacity>
+      </View>
+     <Text style={{fontSize:25,fontWeight:'bold',marginLeft:Metrics.rfv(30),color:'black'}}>Hello, <Text style={{color:'#00B0FF'}}>Satish</Text></Text>
+     <Text style={{marginLeft:Metrics.rfv(30),color:'black'}}>Mushio greets you good morning</Text>
+    </SafeAreaView>
   )
 }
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-
   }
 })
 

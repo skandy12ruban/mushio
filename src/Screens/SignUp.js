@@ -3,6 +3,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import Metrics from '../Constants/Metrics';
 import AppTextFieldPassword from '../Components/AppTextFieldPassword';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,9 +26,11 @@ export const SignUpFormValidator = props => {
     });
 };
 const SignUp = (props) => {
+const navigation=useNavigation()
+
   return (
     <SafeAreaView>
-      <Text>SignUp</Text>
+
       <View
         style={{
           alignSelf: 'center',
@@ -38,6 +41,7 @@ const SignUp = (props) => {
         //   validationSchema={SignUpFormValidator(props)}
           onSubmit={(values, {resetForm}) => {
             // SignUpFunction(values, resetForm);
+            navigation.navigate('VerificationScreen')
           }}>
           {({
             values,
@@ -50,104 +54,38 @@ const SignUp = (props) => {
             handleSubmit,
           }) => (
             <>
-              <View
-                style={{
-                  marginLeft: Metrics.rfv(25),
-                  marginTop: 5,
-                }}>
-                <Text
-                  style={{
-                    color: '#3d4b69',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                  }}>
-                  Phone Number or Email
-                </Text>
-              </View>
-              <View style={styles.SectionStyle}>
-                <TextInput
-                  placeholder="example@gmail.com"
-                  style={styles.inputStyle}
-                  onChangeText={text => {
-                    setFieldValue('signUpemail', text);
-                  }}
-                  value={values.signUpemail}
-                  placeholderTextColor="gray"
-                  keyboardType="email-address"
-                  touched={touched.signUpemail}
-                  error={errors.signUpemail}
-                />
-              </View>
-              <View
-                style={{
-                  marginLeft: Metrics.rfv(25),
-                  marginTop: 5,
-                }}>
-                <Text
-                  style={{
-                    color: '#3d4b69',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                  }}>
-                  Password
-                </Text>
-              </View>
-              <View>
-                <AppTextFieldPassword
-                  placeHolder={'......'}
-                  value={values.signUppassword}
-                  changeText={text => {
-                    setFieldValue('signUppassword', text);
-                  }}
-                  secureTextEntry={true}
-                  touched={touched.signUppassword}
-                  error={errors.signUppassword}
-                />
-              </View>
-              <View
-                style={{
-                  marginLeft: Metrics.rfv(25),
-                  marginTop: 5,
-                }}>
-                <Text
-                  style={{
-                    color: '#3d4b69',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                  }}>
-                  Confirm Password
-                </Text>
-              </View>
-              <View>
-                <AppTextFieldPassword
-                  placeHolder={'........'}
-                  value={values.signUpconfpassword}
-                  changeText={text => {
-                    setFieldValue('signUpconfpassword', text);
-                  }}
-                  secureTextEntry={true}
-                  touched={touched.signUpconfpassword}
-                  error={errors.signUpconfpassword}
-                />
-              </View>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#41bab0',
-                  color: '#FFFFFF',
-                  borderColor: '#7DE24E',
-                  height: 42,
-                  width: width * 0.35,
-                  alignSelf: 'center',
-                  borderRadius: 30,
-                  marginTop: 20,
-                  marginBottom: 20,
-                }}
-                activeOpacity={0.5}
-                onPress={() => {
-                  handleSubmit();
-                }}>
-                <Text style={styles.buttonTextStyle}>Sign Up</Text>
-              </TouchableOpacity>
+             <View style={{alignSelf:'center',width:'90%'}}>
+        <TextInput
+         value={'title'}
+         placeholder={'Title'}
+         style={{padding:15,backgroundColor:'white',borderRadius:5,margin:10,}}
+         onChangeText={text => {
+            setTitle( text);
+          }}
+        />
+        <TextInput
+         value={'description'}
+         placeholder={'Description'}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,}}
+       
+         onChangeText={text => {
+            setDescription( text);
+          }}
+        />
+                 <AppTextFieldPassword
+                    placeHolder={'......'}
+                    value={values.password}
+                    changeText={text => {
+                      setFieldValue('password', text);
+                    }}
+                    secureTextEntry={true}
+                  />
+        <TouchableOpacity style={{backgroundColor:'black',width:'60%',padding:10,
+          alignSelf:'center',marginTop:20,borderRadius:5}}
+           onPress={()=>{}}>
+      <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
+     </TouchableOpacity>
+       </View>
             </>
           )}
         </Formik>
