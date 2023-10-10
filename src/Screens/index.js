@@ -8,6 +8,7 @@ import _VerificationScreen from './VerificationScreen'
 import _OtpScreen from './OtpScreen'
 import _SignUp from './SignUp'
 import _Category from './Category'
+import _ProfileDetails from './ProfileDetails'
 
 export const Splash = _Splash;
 export const Login = _Login;
@@ -19,3 +20,4 @@ export const SignUp = _SignUp
 export const VerificationScreen = _VerificationScreen
 export const OtpScreen = _OtpScreen
 export const Category = _Category
+export const ProfileDetails = _ProfileDetails

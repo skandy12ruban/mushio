@@ -10,3 +10,4 @@ export const PROFILE = "Profile";
 export const VERIFICATION_SCREEN = 'VerificationScreen';
 export const OTP_SCREEN = 'OtpScreen'
 export const CATEGORY = "Category"
+export const PROFILE_DETAILS = 'ProfileDetails'

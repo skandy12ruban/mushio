@@ -49,6 +49,8 @@ const Item=({item})=>{
   )
 }
 const Item1=({item})=>{
+
+  
   return(
     <View style={{flex:1,marginTop:10}}>
      <TouchableOpacity style={{backgroundColor:'white', borderRadius:30,padding:5,alignSelf:'center'}} >
