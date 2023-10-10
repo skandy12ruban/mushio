@@ -21,7 +21,7 @@ const [phoneNumber,setPhoneNumber]=useState('')
           width: '90%',marginTop:Metrics.rfv(100)
         }}>
 
-             <Text style={{color:'green',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Verification </Text> 
+             <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Verification </Text> 
              <Text style={{marginLeft:Metrics.rfv(30),color:'black',marginTop:20,fontWeight:'bold'}}>Country</Text> 
             <AppDropDown
                   label={''}

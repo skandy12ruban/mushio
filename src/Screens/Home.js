@@ -10,17 +10,6 @@ import Loader from '../Components/Loader';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
 
-function CustomCalendar(props) {
-  return (
-    <Calendar
-      initialDate={new Date()}
-      minDate={new Date()}
-      // maxDate="2023-01-30"
-      disableAllTouchEventsForDisabledDays={true}
-      {...props}
-    />
-  );
-}
 
 const Home = (props) => {
   const navigation = useNavigation();
@@ -30,7 +19,8 @@ const Home = (props) => {
     date: new Date(),
     formatFromDate: DateHelper.formatToDate(new Date())
 });
- 
+const [selectedDateString, setSelectedDateString] = useState(moment(new Date()));
+
 const data=[
   {id:1,title:'Felt happy',
   description:'The CalendarStrip source files are copied from the project root directory into',
@@ -45,7 +35,8 @@ const data=[
   likes:[{id:2,name:'#work'},{id:4,name:'#communication'},],
   image:{id:3,color:'#65a765',image:require('../assets/images/image3.jpg'),name:'Excellent'},}
 ]
-  
+
+
   return (
     <SafeAreaView style={{flex:1}}>
         <Loader loading={loading}></Loader>
@@ -74,7 +65,12 @@ const data=[
       dateNumberStyle={{color: 'black'}}
       dateNameStyle={{color: 'black'}}
       iconContainer={{flex: 0.1}}
-    
+      selectedDate={selectedDateString}
+      highlightDateNumberStyle={{backgroundColor:'#00B0FF',borderRadius:50,color:'white',padding:2}}
+      onDateSelected={(date) => {
+        console.log(date)
+        setSelectedDateString(date)
+      }}
     />
       </View>
       <ScrollView>

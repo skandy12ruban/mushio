@@ -72,7 +72,7 @@ const Profile = () => {
             </View>
        </Card>
        <View style={{marginTop:10,alignSelf:'center'}}>
-       <TouchableOpacity  onPress={()=>{
+       {/* <TouchableOpacity  onPress={()=>{
          Alert.alert("Logout", "Are you want Logout ?",
          [
            { text: "Cancel", onPress: () => { } },
@@ -81,7 +81,7 @@ const Profile = () => {
        }}
        style={{padding:10,backgroundColor:'#FF7F7F',width:100,borderRadius:5,margin:10}}>
            <Text style={{color:'white',alignSelf:'center'}}>Logout</Text>
-       </TouchableOpacity>
+       </TouchableOpacity> */}
        </View>
           
     </SafeAreaView>

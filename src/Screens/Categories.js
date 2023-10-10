@@ -14,25 +14,27 @@ const [selectedItem,setselectedItem]=useState('')
 const[value,setvalues]=useState(false)
 const data=[
   {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Outstanding'},
-  {id:2,color:'#00B0FF',image:require('../assets/images/image2.jpg'),name:'Great'},
-  {id:3,color:'#65a765',image:require('../assets/images/image3.jpg'),name:'Excellent'},
-  {id:4,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Don't cry"},
-  {id:5,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'calm down'},
+  {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Great'},
+  {id:3,color:'#65a765',image:require('../assets/images/image2.jpg'),name:'Excellent'},
+  {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'calm down'},
+  {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Don't cry"},
   // {id:6,color:'lightgrey',image:require('../assets/images/image2.jpg'),name:''},
 ]
 const data1=[
-  {id:1,name:'#home'},
-  {id:2,name:'#work'},
-  {id:3,name:'#boss'},
-  {id:4,name:'#communication'},
-  {id:5,name:'#relationships'},
-  {id:6,name:'#tastyfood'},
-  {id:7,name:'#drive'},
+  {id:1,name:'#Type'},
+  {id:2,name:'#home'},
+  {id:3,name:'#work'},
+  {id:4,name:'#boss'},
+  {id:5,name:'#communication'},
+  {id:6,name:'#relationships'},
+  {id:7,name:'#tastyfood'},
+  {id:8,name:'#drive'},
 ]
 const Item=({item})=>{
   return(
-    <View style={{flex:1,margin:10,marginTop:10}}>
-     <TouchableOpacity style={{backgroundColor:(value == true && selectedItem.id == item.id) ? 'grey' :item.color, width:60,height:60,borderRadius:10,}}
+    <View style={{flex:1,margin:10,marginTop:10,}}>
+     <TouchableOpacity style={{backgroundColor:(value == true && selectedItem.id == item.id) ? 'grey' :item.color,
+      width:60,height:60,borderRadius:10,alignSelf:'center',}}
         onPress={()=>{
           setvalues(!value)
           setselectedItem(item)
@@ -68,6 +70,7 @@ const Item1=({item})=>{
       <View style={{ alignSelf: 'flex-end',}}>
          <Entypo
            name="cross"
+           color={'black'}
            size={30}
             />
       </View>

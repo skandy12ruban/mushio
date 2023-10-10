@@ -18,9 +18,12 @@ import {
 
 const screenWidth = Dimensions.get("window").width;
 
+function* ylabel() {
+  yield* ['none', 'low', 'med', 'high'];
+}
 
 const Graphs = () => {
-
+  const ylabeliterator = ylabel();
   const navigation = useNavigation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
@@ -36,12 +39,13 @@ const Graphs = () => {
     setIsDropdownOpen2(!isDropdownOpen2);
   };
 
+
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun","July",'Aug','Sep','Oct',"Nov",'Dec'],
     datasets: [
       {
         data: [20, 45, 28, 80, 99, 43, 20, 45, 28, 80, 99, 43],
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // optional
         strokeWidth: 2 // optional
       }
     ],
@@ -52,7 +56,7 @@ const Graphs = () => {
     datasets: [
       {
         data: [20, 45, 28, 80, 99, 43, 20, 45, 28, 80, 99, 43],
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // optional
         strokeWidth: 2 // optional
       }
     ],
@@ -63,13 +67,14 @@ const Graphs = () => {
     datasets: [
       {
         data: [20, 45, 28, 80, 99, 43, 20, 45, 28, 80, 99, 43],
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // optional
         strokeWidth: 2 // optional
       }
     ],
     // legend: ["Rainy Days"] // optional
   };
   const chartConfig = {
+    
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: "white",
@@ -109,7 +114,6 @@ useEffect(()=>{
       {isDropdownOpen && (
         <View>
              <LineChart
-          
           data={data1}
           width={screenWidth}
           height={220}

@@ -81,9 +81,9 @@ const Login = withGlobalize(
         <View
           style={{
             alignSelf: 'center',
-            width: '90%',marginTop:Metrics.rfv(100)
+            width: '90%',marginTop:Metrics.rfv(150)
           }}>
-          <Text style={{color:'red',alignSelf:'center',fontWeight:'bold',fontSize:30}}> ᗰᑌᔕᕼIO </Text>
+          <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> ᗰuᔕ<Text style={{color:'black'}}>hi</Text>o </Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
             // validationSchema={SignInFormValidator(props)}
@@ -164,12 +164,12 @@ const Login = withGlobalize(
             )}
           </Formik>
         </View>
-        <View style={{marginTop:50}}>
+        <View style={{marginTop:150}}>
               <Text
                 style={{marginTop: 5, alignSelf: 'center',}}>
                 You don't have account ? {' '} 
                 {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
-                <Text style={{color: 'blue',fontSize:20,}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
+                <Text style={{color: 'black',fontSize:20,}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
                 {/* </TouchableOpacity> */}
                
               </Text>

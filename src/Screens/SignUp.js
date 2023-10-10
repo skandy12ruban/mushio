@@ -36,7 +36,7 @@ const navigation=useNavigation()
           alignSelf: 'center',
           width: '90%',marginTop:Metrics.rfv(100)
         }}>
-            <Text style={{color:'red',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Sign Up </Text>
+            <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Sign Up </Text>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
         //   validationSchema={SignUpFormValidator(props)}
