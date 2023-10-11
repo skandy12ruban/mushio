@@ -15,7 +15,7 @@ const[value,setvalues]=useState(false)
 const data=[
   {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Outstanding'},
   {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Great'},
-  {id:3,color:'#65a765',image:require('../assets/images/image2.jpg'),name:'Excellent'},
+  {id:3,color:'#C7F6B6',image:require('../assets/images/image2.jpg'),name:'Excellent'},
   {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'calm down'},
   {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Don't cry"},
   // {id:6,color:'lightgrey',image:require('../assets/images/image2.jpg'),name:''},

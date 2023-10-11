@@ -7,6 +7,7 @@ const LOGIN_DATA = "loginData";
 const TRAINER_LOGIN = "trainerLogin";
 const JWT_TOKEN = 'jwtToken';
 const MOBILE_NUMBER = 'mobile_number'
+const USER_TYPE = 'userType'
 
 export const saveLanguagePref = async (language) => {
     await AsyncStorage.setItem(LANGUAGE_PREF, language);
@@ -30,11 +31,11 @@ export const getUserProfileInfo = async () => {
     return JSON.parse(userProfileInfo);
 }
 
-export const saveTrainerInfo= async (result) => {
-    await AsyncStorage.setItem(TRAINER_LOGIN,JSON.stringify(result));
+export const saveUserType= async (result) => {
+    await AsyncStorage.setItem(USER_TYPE, JSON.stringify(result));
 }
-export const getTrainerInfo = async () => {
-    const trainerInfo = await AsyncStorage.getItem(TRAINER_LOGIN);
+export const getUserType = async () => {
+    const trainerInfo = await AsyncStorage.getItem(USER_TYPE);
     return JSON.parse(trainerInfo);
 }
 

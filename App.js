@@ -15,9 +15,10 @@ import AuthRoute from './src/routes/AuthRoute';
 import { FormattedProvider, GlobalizeProvider } from 'react-native-globalize';
 // import VersionCheck from 'react-native-version-check';
 import metadata from './src/locales';
-import { getUserProfileInfo } from './src/utils/AsyncStorageHelper';
+import { getUserProfileInfo, getUserType } from './src/utils/AsyncStorageHelper';
 import { setuser } from './src/Redux/reducer/User';
 import { useDispatch } from 'react-redux';
+import { setusertype } from './src/Redux/reducer/userType';
 
 const AppStatusBar = ({ backgroundColor, ...props }) => {
   if (Platform.OS == "ios") {
@@ -43,11 +44,13 @@ const App = () => {
   }
   const checkUser = async () => {
     let account = await getUserProfileInfo()
+    let user = await getUserType()
     //  console.log(account);
     if (account) {
       console.log("account", account);
       // console.log("account");
       dispatch(setuser(account))
+      dispatch(setusertype(user))
     } else {
       // console.log("no no");
     }

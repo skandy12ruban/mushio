@@ -4,11 +4,14 @@ import Header from '../Components/Header'
 import { useDispatch } from 'react-redux'
 import { logout } from '../Redux/reducer/User'
 import { useNavigation } from '@react-navigation/native'
-import { getUserProfileInfo, saveUserProfileInfo } from '../utils/AsyncStorageHelper'
+import { getUserProfileInfo, saveUserProfileInfo, saveUserType } from '../utils/AsyncStorageHelper'
 import { API_BASE_URL } from '../api/ApiClient'
 import {  Switch } from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Card } from 'react-native-paper'
+import { PUBLIC_MAIN_ROUTE } from '../routes/PublicRouteConts'
+import { setusertype } from '../Redux/reducer/userType'
+
 
 const Profile = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
@@ -17,18 +20,18 @@ const Profile = () => {
 
     const onToggleSwitch = () => {
       setIsSwitchOn(!isSwitchOn);
+
+      if(!isSwitchOn){
+        const UserType= {"userType":'Public'}
+        saveUserType(UserType)
+        dispatch(setusertype(UserType))
+        navigation.reset({
+          index: 0,
+          routes: [{name: PUBLIC_MAIN_ROUTE}],
+        });
+      }
    }
  
-
-  const onLogoutPress = async () => {
-    const res= await getUserProfileInfo()
- 
-   await saveUserProfileInfo({})
-    dispatch(logout());
-    navigation.navigate('Login')
-  };
-
-
 
   return (
     <SafeAreaView>
@@ -38,7 +41,7 @@ const Profile = () => {
               style={{
                 marginRight: 10,
               }}
-              color='green'
+              color='#00B0FF'
               value={isSwitchOn}
               onValueChange={onToggleSwitch}
             />

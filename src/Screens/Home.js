@@ -33,7 +33,7 @@ const data=[
   {id:3,title:'Felt super happy',
   description:'The CalendarStrip source files are copied from the project root directory into',
   likes:[{id:2,name:'#work'},{id:4,name:'#communication'},],
-  image:{id:3,color:'#65a765',image:require('../assets/images/image3.jpg'),name:'Excellent'},}
+  image:{id:3,color:'#C7F6B6',image:require('../assets/images/image3.jpg'),name:'Excellent'},}
 ]
 
 

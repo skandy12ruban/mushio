@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
+import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  MAIN_ROUTE,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
 import { Category, DetailsPage, ListPage, Login,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,14 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { setuser } from '../Redux/reducer/User';
 import { NavigationContainer } from '@react-navigation/native';
-import Home from '../Screens/Home';
-import BottomTabs from './BottomTabs';
-import { PUBLIC_MAIN_ROUTE } from './PublicRouteConts';
-import PublicMainRoute from './PublicMainRoute';
+
+
+import { PUBLIC_BOTTOM_TABS } from './PublicRouteConts';
+import PublicBottomTabs from './PublicBottomTabs';
+import MainRoute from './MainRoute';
 
 const MainStack = createStackNavigator();
 
-const MainRoute = () => {
+const PublicMainRoute = () => {
 
     const login_status = useSelector(state => state.User.login_status);
     console.log("loginStatus",login_status)
@@ -38,10 +39,8 @@ const MainRoute = () => {
         >
             {login_status ? (
                 <>
-                     <MainStack.Screen name={BOTTOM_TABS} component={BottomTabs} />
-                     <MainStack.Screen name={CATEGORY} component={Category} />
-                     <MainStack.Screen name={PROFILE_DETAILS} component={ProfileDetails} />
-                     <MainStack.Screen name={PUBLIC_MAIN_ROUTE} component={PublicMainRoute} />
+                     <MainStack.Screen name={PUBLIC_BOTTOM_TABS} component={PublicBottomTabs} />
+                     <MainStack.Screen name={MAIN_ROUTE} component={MainRoute} />
                 </>
             ) : (
                 <>
@@ -54,4 +53,4 @@ const MainRoute = () => {
     );
 }
 
-export default MainRoute;
+export default PublicMainRoute;
