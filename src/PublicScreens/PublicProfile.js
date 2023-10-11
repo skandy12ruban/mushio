@@ -31,7 +31,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
      }
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%'}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1}}>
          <Loader loading={loading}></Loader>
          
          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -61,7 +61,8 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                   name="menu"
                    size={40}
                    style={{color:'black'}}
-                 onPress={()=>{ navigation.navigate('AppDrawer')}} 
+                //  onPress={()=>{ navigation.navigate('AppDrawer')}} 
+                  onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
                  /> 
       </View>
       </View>
@@ -94,8 +95,10 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
             <Text style={{color:'black',fontWeight:'bold'}}>Cards</Text>
         </View>
       </View>
+    <View style={{marginTop:10,flex:1}}>
+    <TopTabs/>
+    </View>
     
-     <TopTabs/>
 
     </SafeAreaView>
   )

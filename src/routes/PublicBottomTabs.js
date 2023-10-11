@@ -16,6 +16,7 @@ import PublicHome from '../PublicScreens/PublicHome';
 import PublicEntertainment from '../PublicScreens/PublicEntertainment';
 import PublicProfile from '../PublicScreens/PublicProfile';
 import { PUBLIC_HOME, PUBLIC_PROFILE } from './PublicRouteConts';
+import EditProfile from '../PublicScreens/EditProfile';
 
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -223,6 +224,8 @@ const PublicBottomTabs = (props) => {
         <Tab.Screen
           name="PublicProfile"
           component={PublicProfile}
+          // name="EditProfile"
+          // component={EditProfile}
           options={{
             tabBarIcon: ({ focused }) => {
               return (

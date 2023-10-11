@@ -10,10 +10,11 @@ import { setuser } from '../Redux/reducer/User';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-import { APP_DRAWER, PEOPLE, PUBLIC_BOTTOM_TABS } from './PublicRouteConts';
+import { APP_DRAWER, PEOPLE, PUBLIC_BOTTOM_TABS, TOP_TABS } from './PublicRouteConts';
 import PublicBottomTabs from './PublicBottomTabs';
 import MainRoute from './MainRoute';
 import People from '../PublicScreens/People';
+import TopTabs from './TopTabs';
 
 const MainStack = createStackNavigator();
 
@@ -41,6 +42,7 @@ const PublicMainRoute = () => {
             {login_status ? (
                 <>
                      <MainStack.Screen name={PUBLIC_BOTTOM_TABS} component={PublicBottomTabs} />
+                     <MainStack.Screen name={TOP_TABS} component={TopTabs} />
                      <MainStack.Screen name={APP_DRAWER} component={AppDrawer} />
                      <MainStack.Screen name={MAIN_ROUTE} component={MainRoute} />
                      <MainStack.Screen name={PEOPLE} component={People} />

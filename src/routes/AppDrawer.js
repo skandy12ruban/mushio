@@ -7,6 +7,7 @@ import { DashBoard } from '../Screens';
 import DrawerContent from './DrawerContent';
 import EditProfile from '../PublicScreens/EditProfile';
 import { EDIT_PROFILE } from './PublicRouteConts';
+import PublicProfile from '../PublicScreens/PublicProfile';
 // import BottomTabs from './BottomTabs';
 const Drawer = createDrawerNavigator();
 
@@ -23,11 +24,13 @@ export const AppDrawer = (props) => {
             screenOptions={{
                 headerShown: false,drawerPosition:"right",  drawerStyle:{  width: '60%',}
             }}
-            initialRouteName={EDIT_PROFILE}
+            // initialRouteName={EDIT_PROFILE}
             
             drawerContent={() => <DrawerContent {...props} />}>
             <Drawer.Screen name={"EditProfile"}
                 component={EditProfile} />
+                {/* <Drawer.Screen name={"PublicProfile"}
+                component={PublicProfile} /> */}
         </Drawer.Navigator>
     )
 }

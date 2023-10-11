@@ -13,21 +13,21 @@ const TopTabs = () => {
       <Tab.Navigator
         screenOptions={{
             // tabBarLabelStyle: {fontSize: 12, fontWeight: '500'}
-            tabBarActiveTintColor: 'black',
-            tabBarLabelStyle: { fontSize: 15 },
-            tabBarInactiveTintColor: 'black',
-            tabBarIndicatorStyle: {
-              borderBottomColor: '#804EEB',
-              borderBottomWidth: 2,
-              width: 150,
-              alignSelf: 'center',
-              marginLeft: 30
-            }
+            // tabBarActiveTintColor: 'black',
+            // tabBarLabelStyle: { fontSize: 15 },
+            // tabBarInactiveTintColor: 'black',
+            // tabBarIndicatorStyle: {
+            //   borderBottomColor: '#804EEB',
+            //   borderBottomWidth: 2,
+            //   width: 150,
+            //   alignSelf: 'center',
+            //   marginLeft: 30
+            // }
         }}
         >
-        {/* <Tab.Screen name="Moments" component={Moments} /> */}
+        <Tab.Screen name="Moments" component={Moments} />
         <Tab.Screen name={PEOPLE} component={People} />
-        {/* <Tab.Screen name="Places" component={Places} /> */}
+        <Tab.Screen name="Places" component={Places} />
       </Tab.Navigator>
     </View>
   )

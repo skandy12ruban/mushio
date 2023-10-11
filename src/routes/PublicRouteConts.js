@@ -9,3 +9,4 @@ export const  EDIT_PROFILE  = "EditProfile"
 export const PEOPLE = 'People'
 export const MOMENTS = 'Moments'
 export const APP_DRAWER = 'AppDrawer'
+export const TOP_TABS = 'TopTabs'
