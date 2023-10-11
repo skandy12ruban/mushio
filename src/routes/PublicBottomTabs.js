@@ -15,7 +15,7 @@ import PublicCategories from '../PublicScreens/PublicCategories';
 import PublicHome from '../PublicScreens/PublicHome';
 import PublicEntertainment from '../PublicScreens/PublicEntertainment';
 import PublicProfile from '../PublicScreens/PublicProfile';
-import { PUBLIC_PROFILE } from './PublicRouteConts';
+import { PUBLIC_HOME, PUBLIC_PROFILE } from './PublicRouteConts';
 
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -25,7 +25,7 @@ const PublicBottomTabs = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Tab.Navigator
-        initialRouteName={PUBLIC_PROFILE}
+        // initialRouteName={PUBLIC_HOME}
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,

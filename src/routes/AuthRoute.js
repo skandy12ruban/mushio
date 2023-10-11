@@ -4,8 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HOME, LOGIN, MAIN_ROUTE, OTP_SCREEN,  SIGNUP, SPLASH_PAGE, VERIFICATION_SCREEN } from './RouteConst';
 import { Home, Login, OtpScreen,  SignUp, Splash, VerificationScreen } from '../Screens';
 import MainRoute from './MainRoute';
-import { PUBLIC_MAIN_ROUTE } from './PublicRouteConts';
+import { APP_DRAWER, PUBLIC_MAIN_ROUTE } from './PublicRouteConts';
 import PublicMainRoute from './PublicMainRoute';
+import AppDrawer from './AppDrawer';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ const AuthRoute = () => {
         <Stack.Screen name={SIGNUP} component={SignUp} />
         <Stack.Screen name={VERIFICATION_SCREEN} component={VerificationScreen} />
         <Stack.Screen name={OTP_SCREEN} component={OtpScreen} />
+        <Stack.Screen name={APP_DRAWER} component={AppDrawer} />
 
       </Stack.Navigator>
     </NavigationContainer>

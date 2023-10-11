@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  MAIN_ROUTE,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
+import {  BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  MAIN_ROUTE,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
 import { Category, DetailsPage, ListPage, Login,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -10,9 +10,10 @@ import { setuser } from '../Redux/reducer/User';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-import { PUBLIC_BOTTOM_TABS } from './PublicRouteConts';
+import { APP_DRAWER, PEOPLE, PUBLIC_BOTTOM_TABS } from './PublicRouteConts';
 import PublicBottomTabs from './PublicBottomTabs';
 import MainRoute from './MainRoute';
+import People from '../PublicScreens/People';
 
 const MainStack = createStackNavigator();
 
@@ -40,7 +41,10 @@ const PublicMainRoute = () => {
             {login_status ? (
                 <>
                      <MainStack.Screen name={PUBLIC_BOTTOM_TABS} component={PublicBottomTabs} />
+                     <MainStack.Screen name={APP_DRAWER} component={AppDrawer} />
                      <MainStack.Screen name={MAIN_ROUTE} component={MainRoute} />
+                     <MainStack.Screen name={PEOPLE} component={People} />
+                     
                 </>
             ) : (
                 <>

@@ -44,7 +44,7 @@ const data=[
       <View>
       <TouchableOpacity style={{backgroundColor:'white', width:60,height:60,borderRadius:10,}}
         onPress={()=>{
-          setselectedItem(item)
+          // setselectedItem(item)
           }} >
       <Image
           style={{

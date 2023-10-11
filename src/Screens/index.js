@@ -9,6 +9,7 @@ import _OtpScreen from './OtpScreen'
 import _SignUp from './SignUp'
 import _Category from './Category'
 import _ProfileDetails from './ProfileDetails'
+import _Moments from '../PublicScreens/Moments'
 
 export const Splash = _Splash;
 export const Login = _Login;
@@ -21,3 +22,4 @@ export const VerificationScreen = _VerificationScreen
 export const OtpScreen = _OtpScreen
 export const Category = _Category
 export const ProfileDetails = _ProfileDetails
+export const Moments = _Moments
