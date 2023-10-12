@@ -9,7 +9,7 @@ import {
   CommonActions,
 } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import {Badge} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
 // import LottieView from 'lottie-react-native';
@@ -61,7 +61,7 @@ const Header = withGlobalize(memo(props => {
     }}>
       {backIcon && (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Entypo
+          <Ionicons
             onPress={() => {
               props.back == false
                 ? navigation.dispatch(DrawerActions.openDrawer())
@@ -70,10 +70,19 @@ const Header = withGlobalize(memo(props => {
             style={{
               paddingRight: 5
             }}
-            name={props.back == false ? 'menu' : 'chevron-left'}
+            name={props.back == false ? 'menu' : 'arrow-back'}
             size={30}
-            color={'black'}
+            color={'white'}
           />
+           <Text
+            style={{
+              color: 'white',
+              fontFamily: 'Poppins-Medium',
+              fontSize: 20,
+              fontWeight: 'bold',marginLeft:10
+            }}>
+            {props.name1}
+          </Text>
         </View>
       )}
       {name && (

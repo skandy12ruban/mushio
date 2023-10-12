@@ -8,6 +8,8 @@ import DrawerContent from './DrawerContent';
 import EditProfile from '../PublicScreens/EditProfile';
 import { EDIT_PROFILE } from './PublicRouteConts';
 import PublicProfile from '../PublicScreens/PublicProfile';
+import Support from '../PublicScreens/Support';
+import About from '../PublicScreens/About';
 // import BottomTabs from './BottomTabs';
 const Drawer = createDrawerNavigator();
 
@@ -27,10 +29,9 @@ export const AppDrawer = (props) => {
             // initialRouteName={EDIT_PROFILE}
             
             drawerContent={() => <DrawerContent {...props} />}>
-            <Drawer.Screen name={"EditProfile"}
-                component={EditProfile} />
-                {/* <Drawer.Screen name={"PublicProfile"}
-                component={PublicProfile} /> */}
+            <Drawer.Screen name={"EditProfile"} component={EditProfile} />
+            <Drawer.Screen name={"Support"} component={Support} />
+            <Drawer.Screen name={"About"} component={About} />
         </Drawer.Navigator>
     )
 }

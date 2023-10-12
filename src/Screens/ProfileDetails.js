@@ -1,6 +1,6 @@
 import { View, Text,SafeAreaView,TouchableOpacity,Alert,TextInput,ScrollView } from 'react-native'
 import React,{useState} from 'react'
-import { getUserProfileInfo, saveUserProfileInfo } from '../utils/AsyncStorageHelper';
+import { getUserProfileInfo, saveUserProfileInfo, saveUserType } from '../utils/AsyncStorageHelper';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { logout } from '../Redux/reducer/User';
@@ -18,6 +18,7 @@ const ProfileDetails = () => {
     const res= await getUserProfileInfo()
  
    await saveUserProfileInfo({})
+   await saveUserType({})
     dispatch(logout());
     navigation.navigate('Login')
   };

@@ -35,10 +35,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 import AppTextFieldPassword from '../Components/AppTextFieldPassword';
 import {useDispatch} from 'react-redux';
-import {saveUserProfileInfo} from '../utils/AsyncStorageHelper';
+import {getUserType, saveUserProfileInfo} from '../utils/AsyncStorageHelper';
 import {setuser} from '../Redux/reducer/User';
 import {MAIN_ROUTE} from '../routes/RouteConst';
 import {API_BASE_URL} from '../api/ApiClient';
+import { PUBLIC_MAIN_ROUTE } from '../routes/PublicRouteConts';
 
 const {width, height} = Dimensions.get('window');
 
@@ -148,14 +149,23 @@ const Login = withGlobalize(
                     marginBottom: 20,
                   }}
                   activeOpacity={0.5}
-                  onPress={() => {
+                  onPress={async() => {
+                    const usertype=await getUserType()
+                    console.log('vsfvfzv',usertype)
                     const userInfo = {userId: 101};
                     saveUserProfileInfo(userInfo);
                     dispatch(setuser(userInfo))
-                    navigation.reset({
-                      index: 0,
-                      routes: [{name: MAIN_ROUTE}],
-                    });
+                    if(usertype && usertype == 'Public'){
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: PUBLIC_MAIN_ROUTE}],
+                      });
+                    }else{
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: MAIN_ROUTE}],
+                      });
+                    }
                     handleSubmit();
                   }}>
                   <Text style={styles.buttonTextStyle}>Sign In</Text>

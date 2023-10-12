@@ -1,9 +1,9 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity,Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { logout } from '../Redux/reducer/User';
-import { saveUserProfileInfo } from '../utils/AsyncStorageHelper';
+import { saveUserProfileInfo, saveUserType } from '../utils/AsyncStorageHelper';
 // import LinearGradient from 'react-native-linear-gradient';
 import {
     DrawerContentScrollView,
@@ -19,6 +19,7 @@ const DrawerContent = (props) => {
     const dispatch = useDispatch()
 
     const onLogoutPress = async (props) => {
+       await saveUserType({})
         await saveUserProfileInfo({})
         dispatch(logout());
         navigation.navigate('Login')
@@ -27,8 +28,12 @@ const DrawerContent = (props) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white', }}>
                <DrawerContentScrollView {...props}>
+                <View>
+                <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',marginTop:20, fontSize: Metrics.rfv(25)}}>Settings</Text>
+                </View>
+              <View style={{marginTop:20}}>
                <DrawerItem
-                    labelStyle={{ color: 'black', fontSize: Metrics.rfv(20) }}
+                    labelStyle={{ color: 'black', fontSize: Metrics.rfv(20), }}
                     // icon={() => (
                     //     <FontAwesome
                     //         name="user"
@@ -39,7 +44,43 @@ const DrawerContent = (props) => {
                     onPress={() => { navigation.navigate('EditProfile'), navigation.dispatch(DrawerActions.closeDrawer()) }}
 
                 />
+                  <DrawerItem
+                    labelStyle={{ color: 'black', fontSize: Metrics.rfv(20) }}
+                    // icon={() => (
+                    //     <FontAwesome
+                    //         name="user"
+                    //         style={{ color: 'black', fontSize: Metrics.rfv(18) }}
+                    //     />
+                    // )}
+                    label="Support"
+                    onPress={() => { navigation.navigate('Support'), navigation.dispatch(DrawerActions.closeDrawer()) }}
 
+                />
+                  <DrawerItem
+                    labelStyle={{ color: 'black', fontSize: Metrics.rfv(20) }}
+                    // icon={() => (
+                    //     <FontAwesome
+                    //         name="user"
+                    //         style={{ color: 'black', fontSize: Metrics.rfv(18) }}
+                    //     />
+                    // )}
+                    label="About"
+                    onPress={() => { navigation.navigate('About'), navigation.dispatch(DrawerActions.closeDrawer()) }}
+
+                />
+         </View>
+                 <View style={{alignSelf:'center',flex:1,marginTop: Metrics.rfv(300)}}>
+                   <TouchableOpacity onPress={()=>{
+                      Alert.alert("Logout", "Are you want Logout ?",
+                      [
+                        { text: "Cancel", onPress: () => { } },
+                        { text: "Ok", onPress: () => onLogoutPress() }
+                      ])
+                   }}
+                    style={{backgroundColor:'black',padding:10,borderRadius:5,width:150,}}>
+                        <Text style={{alignSelf:'center',color:'white'}}>Logout</Text>
+                   </TouchableOpacity>
+                   </View>
             </DrawerContentScrollView>
         </View>
     )

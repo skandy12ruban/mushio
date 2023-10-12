@@ -21,7 +21,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
     const onToggleSwitch = () => {
         setIsSwitchOn(!isSwitchOn);
         if(!isSwitchOn){
-             saveUserType({})
+           
              dispatch(clearusertype());
           navigation.reset({
             index: 0,
@@ -61,8 +61,8 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                   name="menu"
                    size={40}
                    style={{color:'black'}}
-                //  onPress={()=>{ navigation.navigate('AppDrawer')}} 
-                  onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
+                 onPress={()=>{ navigation.navigate('AppDrawer')}} 
+                  // onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
                  /> 
       </View>
       </View>
@@ -83,16 +83,22 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
          <Text style={{color:'black'}}>@tagline</Text>
       </View>
         <View style={{marginTop:10}}>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Posts')}}>
             <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>70</Text>
             <Text style={{color:'black',fontWeight:'bold'}}>Posts</Text>
+           </TouchableOpacity>
         </View>
         <View style={{marginTop:10}}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('Friends')}}>
             <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>70</Text>
             <Text style={{color:'black',fontWeight:'bold'}}>Friends</Text>
+            </TouchableOpacity>
         </View>
         <View style={{marginRight:Metrics.rfv(20),marginTop:10}}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('Cards')}}>
             <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>70</Text>
             <Text style={{color:'black',fontWeight:'bold'}}>Cards</Text>
+            </TouchableOpacity>
         </View>
       </View>
     <View style={{marginTop:10,flex:1}}>

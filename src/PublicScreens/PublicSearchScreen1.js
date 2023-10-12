@@ -1,19 +1,20 @@
-import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList } from 'react-native'
+import { View, Text, SafeAreaView,TouchableOpacity,Image,FlatList,ScrollView } from 'react-native'
 import React,{useState} from 'react'
-import Loader from '../Components/Loader'
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import { useNavigation, useRoute } from '@react-navigation/native'
+
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { useNavigation } from '@react-navigation/native';
-import Metrics from '../Constants/Metrics';
-import { Card } from 'react-native-paper';
-import { Badge } from 'react-native-elements';
+import Loader from '../Components/Loader'
+import Metrics from '../Constants/Metrics'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const PublicHome = () => {
+const PublicSearchScreen1 = () => {
   const navigation=useNavigation()
+  const route=useRoute()
+  const {item}=route.params;
+  console.log(item)
   const[loading,setLoading]=useState(false)
-
   const data=[
     {id:1,image:require('../assets/images/place1.jpg')},
     {id:2,image:require('../assets/images/place2.jpg')},
@@ -63,57 +64,41 @@ const Item= ({item})=>{
 }
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,marginBottom:250,}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
     <Loader loading={loading}></Loader>
-      <View>
-      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          <View>
-        <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(60),height:Metrics.rfv(60),borderRadius:Metrics.rfv(10),}}
-        onPress={()=>{
-        //   setProfileImg()
-          }}>
-          <Image
-          style={{
-             width:Metrics.rfv(60),height:Metrics.rfv(60),margin:Metrics.rfv(0),borderRadius:Metrics.rfv(10),
+    <View style={{flexDirection:'row',}}>
+        
+        <Ionicons
+            onPress={() => {
+               navigation.goBack()
             }}
-           source={require('../assets/images/image3.jpg')}
-         />
-         </TouchableOpacity>
-      </View>
-          <View style={{marginTop:Metrics.rfv(-10)}}>
-          <Badge
-              value={ '1' }
-              containerStyle={{
-                top: Metrics.rfv(20),
-                left: Metrics.rfv(5),
-              }}></Badge>
-               <Fontisto
-                  name="hipchat"
-                   size={30}
-                   style={{color:'black',marginRight:20,margin:10}}
-                 onPress={()=>{ navigation.navigate('ChatScreen')}} 
-                 /> 
-                
-      </View>
-      </View>
-      <View style={{marginTop:5}}>
-      <View style={{borderWidth:0.5,marginTop:10}}/>
-      <View style={{flexDirection:'row',margin:10}}>
-         <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(35),height:Metrics.rfv(35),borderRadius:Metrics.rfv(30),}}
+            style={{
+              paddingRight: 5
+            }}
+            name={'arrow-back'}
+            size={30}
+            color={'black'}
+          />
+         <Text style={{paddingLeft:10,color:'black',fontWeight:'bold',marginTop:5,fontSize:20}}>{'Travel'}</Text>
+         </View>
+    <View style={{flexDirection:'row',}}>
+    <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:30,}}
         onPress={()=>{
         //   setProfileImg()
           }}>
           <Image
           style={{
-             width:Metrics.rfv(30),height:Metrics.rfv(30),margin:Metrics.rfv(3),borderRadius:Metrics.rfv(30),
+             width:Metrics.rfv(40),height:Metrics.rfv(40),margin:5,borderRadius:30,
             }}
            source={require('../assets/images/profileImg.png')}
          />
          </TouchableOpacity>
-         <Text style={{paddingLeft:10,color:'black',fontWeight:'bold',fontSize:20}}>{'Satish'}</Text>
+         <View style={{marginLeft:5}}>
+         <Text style={{color:'black',fontWeight:'bold',marginTop:5}}>{item.name}</Text>
+         <Text style={{color:'black'}}>{item.place}</Text>
          </View>
-       <View style={{borderWidth:0.5,}}/>
-           <ScrollView>
+    </View>
+    <ScrollView>
              <View style={{flex:2}}>
                  <FlatList
                  data={data}
@@ -122,11 +107,9 @@ const Item= ({item})=>{
                  />
              </View>
            </ScrollView>
-      </View>
-    
-    </View>
     </SafeAreaView>
+    
   )
 }
 
-export default PublicHome
+export default PublicSearchScreen1

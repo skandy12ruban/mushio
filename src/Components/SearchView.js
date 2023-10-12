@@ -44,10 +44,7 @@ const SearchView = props => {
             numberOfLines={1}
             onChangeText={text => setSearchText(text)}
           /> 
-          <Text> |  </Text>  
-          <TouchableOpacity style={{}}>
-          <Feather name='mic' size={20} color={'#41bab0'}/>
-          </TouchableOpacity>   
+        
         </View>
         <View style={ss.searchLabelsContainer}>
           <Text style={ss.textStyle}>Search By Category</Text>
@@ -78,10 +75,10 @@ const ss = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
-    backgroundColor: '#EFF1F3',
+    backgroundColor: 'lightgrey',
     borderRadius: 5,
     height: 48,
-    width: '90%',
+    width: '100%',
     alignSelf:'center'
   },
   textInputContainer: {
