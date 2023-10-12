@@ -23,7 +23,7 @@ const ProfileDetails = () => {
     navigation.navigate('Login')
   };
   const data=[
-    {id:1,label:'Phone No'},{id:2,label:'Email Id'}
+    {value:1,label:'Phone No'},{value:2,label:'Email Id'}
    ]
   const[name,setName]=useState('')
   const[dob,setDob]=useState('')

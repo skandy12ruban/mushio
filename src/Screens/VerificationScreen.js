@@ -10,7 +10,7 @@ const VerificationScreen = () => {
 const[country,setCountry]=useState('')
 const [phoneNumber,setPhoneNumber]=useState('')
  const data=[
-  {id:1,label:'India'}
+  {value:1,label:'India'}
  ]
 
   return (
