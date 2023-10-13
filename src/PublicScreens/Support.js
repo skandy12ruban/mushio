@@ -3,6 +3,7 @@ import React from 'react'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Metrics from '../Constants/Metrics';
 
 const Support = () => {
   const navigation=useNavigation()
@@ -34,8 +35,13 @@ const Support = () => {
         </View>
     </View>
 
-    <View>
-    <Text>Edit profile</Text>
+    <View style={{alignSelf:'center',marginTop:Metrics.rfv(50)}}>
+    <Text style={{fontWeight:'bold',color:'black',padding:10,fontSize:20}}>Customer Care</Text>
+    <Text style={{color:'black',padding:10}}>customercaremushio@gmail.com</Text>
+    <Text style={{fontWeight:'bold',color:'black',padding:10,fontSize:20}}>Complaints</Text>
+    <Text style={{color:'black',color:'black',padding:10}}>complaintsmushio@gmail.com</Text>
+    <Text style={{fontWeight:'bold',color:'black',padding:10,fontSize:20}}>Suggestions</Text>
+    <Text style={{color:'black',padding:10}}>suggestionsmushio@gmail.com</Text>
     </View>
     </SafeAreaView>
   )

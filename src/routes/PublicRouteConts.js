@@ -18,3 +18,5 @@ export const CHAT_SCREEN = 'ChatScreen'
 export const FRIENS_MESSAGE = 'FriendsMessage'
 export const ARTIST_MESSAGE = 'ArtistMessage'
 export const ENTERTAINMENT = 'Entertainment'
+export const  ADD_CARDS = "AddCards"
+export const NEW_POST = "NewPost"

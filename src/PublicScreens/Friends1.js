@@ -20,7 +20,7 @@ const Friends1 = () => {
     const Item= ({item})=>{
       return(
         <View style={{margin:10,}}>
-      <TouchableOpacity onPress={()=>{navigation.navigate('FriendsMessage')}} style={{flexDirection:'row',justifyContent:'space-between'}}>
+      <TouchableOpacity onPress={()=>{navigation.navigate('FriendsMessage',{item:item})}} style={{flexDirection:'row',justifyContent:'space-between'}}>
          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
          <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(35),height:Metrics.rfv(35),borderRadius:Metrics.rfv(30),}}
         onPress={()=>{

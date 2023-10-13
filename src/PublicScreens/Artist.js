@@ -20,7 +20,7 @@ const Artist = () => {
     const Item= ({item})=>{
       return(
         <View style={{margin:10,}}>
-      <TouchableOpacity onPress={()=>{navigation.navigate('ArtistMessage')}} style={{flexDirection:'row',justifyContent:'space-between'}}>
+      <TouchableOpacity onPress={()=>{navigation.navigate('ArtistMessage',{item:item})}} style={{flexDirection:'row',justifyContent:'space-between'}}>
          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
          <View>
          <Text style={{paddingLeft:10,color:'black',fontWeight:'bold',marginTop:5,}}>{item.name}</Text>
