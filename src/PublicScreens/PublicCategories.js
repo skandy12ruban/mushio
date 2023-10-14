@@ -9,22 +9,23 @@ import { AppOkAlert } from '../utils/AlertHelper';
 import Metrics from '../Constants/Metrics';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Video from 'react-native-video';
-import ImagePicker from 'react-native-image-crop-picker';
+
+
 
 const PublicCategories = () => {
   const navigation=useNavigation()
   const [fileUri, setFileUri] = useState(null);
    const[type,setType]=useState('')
-   const [imgRes,setImgRes]=useState()
-   const[imgArray,setImageArray]=useState([])
- console.log('uri', fileUri)
-console.log('type',type)
-console.log("img res",imgRes)
+  
+   const[imgArray,setImagArray]=useState([])
+
+console.log("imgArray res",imgArray)
 
   const launchNativeImageLibrary = () => {
     let options = {
       mediaType: 'any',
       // includeBase64: true,
+      selectionLimit:100,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -40,6 +41,7 @@ console.log("img res",imgRes)
       } else {
         const source = { uri: response.assets.uri };
         console.log('response', JSON.stringify(response));
+        setImagArray(response.assets)
         setType(response.assets[0].type)
         setFileUri(response.assets[0].uri)
       }
@@ -47,35 +49,7 @@ console.log("img res",imgRes)
 
   }
 
-  const  takePics = () => {
-    ImagePicker.openPicker({
-      mediaType: 'any',
-      width: 200,
-      height: 200, compressImageMaxHeight: 400,
-      compressImageMaxWidth: 400, cropping: true, multiple: true,  
-    })
-      .then(response => {
-        let tempArray = []
-        console.log("responseimage-------" + response)
-        setImgRes( response )
-        console.log("responseimagearray" + imgRes)
-        response.forEach((item) => {
-          let image = {
-            uri: item.path,
-            // width: item.width,
-            // height: item.height,
-          }
-          console.log("imagpath==========" + image)
-          tempArray.push(image)
-          setImageArray( tempArray )
-          // console.log('savedimageuri====='+item.path);
-
-          console.log("imagpath==========" + image)
-        })
-
-      })
-
-  }
+ 
   console.log('imgArray',imgArray)
   return (
     <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
@@ -97,8 +71,9 @@ console.log("img res",imgRes)
     <View style={{backgroundColor:'lightgrey',alignItems:'center',padding:10,}}>
     
        {/* {fileUri != null ?(*/}
+       
          <> 
-       {type == 'image/jpeg'  ? (
+       { type == 'image/jpeg'  ? (
              <Image
                 source={{uri:fileUri }}
                 style={{width:200,height:200}}
@@ -119,7 +94,7 @@ console.log("img res",imgRes)
                
              {/* ):(  */}
         <View style={{marginTop:Metrics.rfv(50),}}>
-    <TouchableOpacity onPress={()=>{takePics()}} style={{alignSelf:'center',}}>
+    <TouchableOpacity onPress={()=>{launchNativeImageLibrary()}} style={{alignSelf:'center',}}>
       <Text style={{fontSize:20,alignSelf:'center',}}>Add </Text>
       <Text style={{alignSelf:'center',color:'#00B0FF',}}>Image (or) Video</Text>
       </TouchableOpacity>  
