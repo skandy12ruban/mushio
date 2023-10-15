@@ -7,6 +7,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Category = () => {
     const route =useRoute()
@@ -14,7 +16,53 @@ const Category = () => {
     const navigation=useNavigation()
     const[title,setTitle]=useState('')
     const[description,setDescription]=useState('')
+    const [selectedDate, setSelectedDate] = useState(new Date());
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [visible,setVisible]=useState(false)
+  const [fileUri, setFileUri] = useState(null);
+   const[type,setType]=useState('')
 
+  const showDatePicker = () => {
+    setDatePickerVisible(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisible(false);
+  };
+
+  const handleConfirm = (date) => {
+    setSelectedDate(date);
+    setVisible(true)
+    hideDatePicker();
+  };
+
+  
+  const launchNativeImageLibrary = () => {
+    let options = {
+      mediaType: 'any',
+      // includeBase64: true,
+      selectionLimit:100,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = { uri: response.assets.uri };
+        console.log('response', JSON.stringify(response));
+        setType(response.assets[0].type)
+        setFileUri(response.assets[0].uri)
+      }
+    });
+
+  }
   return (
     <SafeAreaView style={{backgroundColor:item.color,flex:1}}>
         <ScrollView>
@@ -67,7 +115,7 @@ const Category = () => {
             </View>
           
            </TouchableOpacity>
-           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}}>
+           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}} onPress={()=>{launchNativeImageLibrary()}}>
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <Feather
            name="image"
@@ -77,7 +125,14 @@ const Category = () => {
               <Text  style={{alignSelf:'center',color:'black'}}> Add Images</Text>
             </View>
            </TouchableOpacity>
-           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}}>
+           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}} onPress={()=>{showDatePicker()}}>
+           <DateTimePickerModal
+          date={selectedDate}
+          isVisible={datePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <MaterialCommunityIcons
            name="calendar"
@@ -88,6 +143,11 @@ const Category = () => {
             </View>
            </TouchableOpacity>
         </View>
+        <View>
+        <Text> {fileUri != null ? fileUri : null}</Text>
+        <Text style={{color:'black'}}>  {selectedDate && visible ? selectedDate.toLocaleDateString() : null}</Text>
+        </View>
+       
         <TouchableOpacity style={{backgroundColor:'black',width:'60%',padding:10,
           alignSelf:'center',marginTop:20,borderRadius:5}}
            onPress={()=>{navigation.navigate('Home')}}>
