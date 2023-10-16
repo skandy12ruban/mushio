@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView, TouchableOpacity,Image } from 'react-native'
+import { View, Text,SafeAreaView, TouchableOpacity,Image,ScrollView } from 'react-native'
 import React,{useState} from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -69,28 +69,47 @@ console.log("imgArray res",imgArray)
       </View>
       <View style={{borderWidth:0.5,marginTop:10}}/>
     <View style={{backgroundColor:'lightgrey',alignItems:'center',padding:10,}}>
-    
+    <ScrollView   horizontal style={{flexDirection:'row'}}>
        {/* {fileUri != null ?(*/}
-       
-         <> 
-       { type == 'image/jpeg'  ? (
-             <Image
-                source={{uri:fileUri }}
+    {imgArray.map((e)=>{
+          console.log('ee',e)
+          return(
+            < View style={{}}>
+       { e.type == 'image/jpeg'  ? (
+        < View style={{margin:10,}}>
+           <Image
+                source={{uri:e.uri}}
                 style={{width:200,height:200}}
                />
-               ):(type == 'video/mp4') ? (
+         </View>
+               ):(
+        < View style={{margin:10,}}>
+              <Video  
+                source={{ uri: e.uri}}
+                style={{width:200,height:200}}
+                // paused={true}
+                />
+        </View>
+             )}
+             </View>
+             ) } )
+         }
+         </ScrollView>
+         {/* <>
+        { (type == 'video/mp4') ? (
                 <Video  
                 source={{ uri: fileUri}}
                 style={{width:200,height:200}}
                 // paused={true}
                 />
              ):(
-              <Image
+              <Video
               source={''}
               style={{width:200,height:200}}
              />
              )}
-         </>
+         
+         </> */}
                
              {/* ):(  */}
         <View style={{marginTop:Metrics.rfv(50),}}>
