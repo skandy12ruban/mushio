@@ -21,19 +21,24 @@ const data=[
   // {id:6,color:'lightgrey',image:require('../assets/images/image2.jpg'),name:''},
 ]
 const data1=[
-  {id:1,name:'#Type'},
-  {id:2,name:'#home'},
-  {id:3,name:'#work'},
-  {id:4,name:'#boss'},
-  {id:5,name:'#communication'},
-  {id:6,name:'#relationships'},
-  {id:7,name:'#tastyfood'},
-  {id:8,name:'#drive'},
+  {id:'#Type',name:'#Type',},
+  {id:'#home',name:'#home',},
+  {id:'#work',name:'#work',},
+  {id:'#boss',name:'#boss',},
+  {id:'#communication',name:'#communication',},
+  {id:'#relationships',name:'#relationships',},
+  {id:'#tastyfood',name:'#tastyfood',},
+  {id:'#drive',name:'#drive',},
 ]
+
+const [hastags,setHastags]=useState(data1)
+const [selectedHastags,setSelectedHastags]=useState([])
+console.log('hastags',selectedHastags)
+
 const Item=({item})=>{
   return(
     <View style={{flex:1,margin:10,marginTop:10,}}>
-     <TouchableOpacity style={{backgroundColor:(value == true && selectedItem.id == item.id) ? 'grey' :item.color,
+     <TouchableOpacity style={{backgroundColor:(value == true && selectedItem.id == item.id) ? 'lightgrey' :item.color,
       width:60,height:60,borderRadius:10,alignSelf:'center',}}
         onPress={()=>{
           setvalues(!value)
@@ -51,11 +56,20 @@ const Item=({item})=>{
   )
 }
 const Item1=({item})=>{
-
-  
+       const{id,name}=item
+  const isSelected = selectedHastags.filter((i) => i === id).length > 0;
   return(
     <View style={{flex:1,marginTop:10}}>
-     <TouchableOpacity style={{backgroundColor:'white', borderRadius:30,padding:5,alignSelf:'center'}} >
+     <TouchableOpacity style={{backgroundColor:(isSelected == true ) ? 'grey' :'white', borderRadius:30,padding:5,alignSelf:'center'}} 
+      onPress={()=>{
+        
+          if(isSelected){
+            setSelectedHastags((prev) => prev.filter((i) => i !== id ));
+          }else{
+            setSelectedHastags(prev => [...prev, id])
+          }
+         
+      }}>
      <Text style={{alignSelf:'center',color:'black'}}>{item.name}</Text>
      </TouchableOpacity>
           
@@ -89,7 +103,7 @@ const Item1=({item})=>{
       <View style={{marginTop:10,}}>
       <FlatList
         numColumns={2}
-        data={data1}
+        data={hastags}
         renderItem={Item1}
         keyExtractor={item =>item.id}
         />

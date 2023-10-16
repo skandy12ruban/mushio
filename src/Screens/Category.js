@@ -9,6 +9,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Category = () => {
     const route =useRoute()
@@ -20,6 +21,7 @@ const Category = () => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [visible,setVisible]=useState(false)
   const [fileUri, setFileUri] = useState(null);
+  const [fileUri1, setFileUri1] = useState(null);
    const[type,setType]=useState('')
 
   const showDatePicker = () => {
@@ -39,7 +41,33 @@ const Category = () => {
   
   const launchNativeImageLibrary = () => {
     let options = {
-      mediaType: 'any',
+      mediaType: 'photo',
+      // includeBase64: true,
+      selectionLimit:100,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = { uri: response.assets.uri };
+        console.log('response', JSON.stringify(response));
+        setType(response.assets[0].type)
+        setFileUri(response.assets[0].uri)
+      }
+    });
+
+  }
+  const launchNativeImageLibrary1 = () => {
+    let options = {
+      mediaType: 'video',
       // includeBase64: true,
       selectionLimit:100,
       storageOptions: {
@@ -125,7 +153,7 @@ const Category = () => {
               <Text  style={{alignSelf:'center',color:'black'}}> Add Images</Text>
             </View>
            </TouchableOpacity>
-           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}} onPress={()=>{showDatePicker()}}>
+           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}} onPress={()=>{launchNativeImageLibrary1()}}>
            <DateTimePickerModal
           date={selectedDate}
           isVisible={datePickerVisible}
@@ -134,17 +162,18 @@ const Category = () => {
           onCancel={hideDatePicker}
         />
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-           <MaterialCommunityIcons
-           name="calendar"
+           <Ionicons
+           name="videocam"
            size={20}
            color='black'
             />
-              <Text  style={{alignSelf:'center',color:'black'}}> Deadlines</Text>
+              <Text  style={{alignSelf:'center',color:'black'}}> Add Video</Text>
             </View>
            </TouchableOpacity>
         </View>
         <View>
         <Text> {fileUri != null ? fileUri : null}</Text>
+        <Text> {fileUri1 != null ? fileUri1 : null}</Text>
         <Text style={{color:'black'}}>  {selectedDate && visible ? selectedDate.toLocaleDateString() : null}</Text>
         </View>
        
