@@ -249,6 +249,13 @@ lintOptions {
 
         }
     }
+      packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libfbjni.so'
+    }
+    defaultConfig {
+        multiDexEnabled true
+    }
 }
 
 dependencies {
