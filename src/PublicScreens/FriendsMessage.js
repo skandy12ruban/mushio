@@ -1,18 +1,22 @@
 import React,{useState,useEffect,useCallback} from 'react';
-import { View, Text, SafeAreaView,Image,TouchableOpacity,ScrollView,StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView,Image,TouchableOpacity,ScrollView,StyleSheet,PermissionsAndroid,Platform,ActivityIndicator } from 'react-native';
 import Loader from '../Components/Loader';
 import Metrics from '../Constants/Metrics';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {Bubble, GiftedChat, Send, IMessage} from 'react-native-gifted-chat';
+import {Bubble, GiftedChat, Send, IMessage, InputToolbar} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as DocumentPicker from 'react-native-document-picker';
 import NavBar from '../Components/chat/navbar';
-import InChatFileTransfer from '../Components/chat/InChatFileTranfer';
+import InChatFileTransfer from '../Components/chat/InChatFileTransfer';
 import InChatViewFile from '../Components/chat/InChatViewFile';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import RNFetchBlob from 'rn-fetch-blob';
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
 interface File extends IMessage {
   url?: string;
@@ -25,7 +29,19 @@ const FriendsMessage = () => {
   const{item}=route.params;
 // console.log('item',item)
 
-  const [isAttachImage, setIsAttachImage] = useState(false);
+const [recordingActive, setRecordingActive] = useState(false);
+const [recordSecs, setRecordSecs] = useState(0);
+const [recordTime, setRecordTime] = useState(0);
+const [audioPath, setAudioPath] = useState('');
+const [paused, setPaused] = useState(false);
+const [currentPositionSec, setCurrentPositionSec] = useState(0);
+const [loadingAudio, setLoadingAudio] = useState(false);
+const [currentDurationSec, setCurrentDurationSec] = useState(recordTime);
+const [playTime, setPlayTime] = useState(0);
+const [duration, setDuration] = useState(recordTime);
+
+const [isAttachAudio, setIsAttachAudio] = useState(false);
+const [isAttachImage, setIsAttachImage] = useState(false);
 const [isAttachFile, setIsAttachFile] = useState(false);
 const [imagePath, setImagePath] = useState('');
 const [filePath, setFilePath] = useState('');
@@ -33,7 +49,7 @@ const [fileVisible, setFileVisible] = useState(false);
 const [messages, setMessages] = useState([
   {
     _id: 1,
-    text: 'Welcome !!',
+    text: item && `${item.message}`,
     createdAt: new Date(),
     user: {
       _id: 1,
@@ -46,6 +62,103 @@ const [messages, setMessages] = useState([
     }
   },
 ]);
+
+const checkPermissions = async ()=>{
+  if (Platform.OS === 'android') {
+    try {
+      const grants = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      ]);
+  
+      console.log('write external stroage', grants);
+  
+      if (
+        grants['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+        grants['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+        grants['android.permission.RECORD_AUDIO'] === PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log('Permissions granted');
+      } else {
+        console.log('All required permissions not granted');
+        return;
+      }
+    } catch (err) {
+      console.warn(err);
+      return;
+    }
+  }
+}
+
+useEffect(()=>{
+  checkPermissions();
+},[])
+const dirs = RNFetchBlob.fs.dirs;
+const path = Platform.select({
+  ios: 'hello.m4a',
+  android: `${dirs.CacheDir}/hello.mp3`,
+});
+
+const onStartRecord = async () => {
+  setRecordingActive(true);
+
+  await audioRecorderPlayer.startRecorder(path);
+  audioRecorderPlayer.addRecordBackListener(e => {
+    setRecordSecs(e.currentPosition);
+    setRecordTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
+
+    return;
+  });
+}
+const onStopRecord = async () => {
+  setRecordingActive(false);
+
+  const result = await audioRecorderPlayer.stopRecorder();
+  audioRecorderPlayer.removeRecordBackListener();
+  setRecordSecs(0);
+  setAudioPath(result)
+  setIsAttachAudio(true)
+   console.log('response',result)
+  
+};
+
+const onStartPlay = async () => {
+  setPaused(false);
+  setLoadingAudio(true);
+  await audioRecorderPlayer.startPlayer(audioPath);
+
+  setLoadingAudio(false);
+  audioRecorderPlayer.addPlayBackListener(e => {
+    if (e.currentPosition < 0) {
+      return;
+    }
+
+    setCurrentPositionSec(e.currentPosition);
+    setCurrentDurationSec(e.duration);
+    setPlayTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
+    setDuration(audioRecorderPlayer.mmssss(Math.floor(e.duration)));
+
+    if (e.currentPosition === e.duration) {
+      onStopPlay();
+    }
+    return;
+  });
+};
+
+const onPausePlay = async () => {
+  setPaused(true);
+  await audioRecorderPlayer.pausePlayer();
+};
+
+const onStopPlay = async () => {
+  setPaused(false);
+  setCurrentPositionSec(0);
+  setPlayTime(0);
+  audioRecorderPlayer.stopPlayer();
+  audioRecorderPlayer.removePlayBackListener();
+};
+
 
 const _pickDocument = async () => {
   try {
@@ -102,7 +215,26 @@ const _pickDocument = async () => {
       );
       setImagePath('');
       setIsAttachImage(false);
-    } else if (isAttachFile) {
+    }   if (isAttachAudio) {
+      const newMessage = {
+        _id: messages[0]._id + 1,
+        text: messageToSend.text,
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          avatar: '',
+        },
+        image: '',
+        file: {
+          url:audioPath
+        }
+      };
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, newMessage),
+      );
+      setAudioPath('');
+      setIsAttachAudio(false);
+    }else if (isAttachFile) {
       const newMessage = {
         _id: messages[0]._id + 1,
         text: messageToSend.text,
@@ -127,7 +259,7 @@ const _pickDocument = async () => {
       );
     }
   },
-  [filePath, imagePath, isAttachFile, isAttachImage],
+  [filePath, imagePath, isAttachFile, isAttachImage,audioPath, isAttachAudio],
   );
   
 
@@ -135,16 +267,31 @@ const _pickDocument = async () => {
     return (
     
         <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity onPress={()=>{recordingActive ? onStopRecord() :onStartRecord()}}>
+          {recordingActive ? ( <FontAwesome
+           name="microphone"
+           size={25}
+           color='red'
+           style={{ marginTop: 10,marginRight: 10,}}
+            />) :(
+              <FontAwesome
+           name="microphone"
+           size={25}
+           color="#00B0FF"
+           style={{ marginTop: 10,marginRight: 10,}}
+           />
+            )}
+          </TouchableOpacity>
         <TouchableOpacity onPress={_pickDocument}>
         <Icon
           name="paperclip"
           style={{
-            marginTop: 5,
-            marginRight: 5,
+            marginTop: 10,
+            marginRight: 10,
             transform: [{rotateY: '180deg'}],
           }}
           size={30}
-          color="#2e64e5"
+          color="#00B0FF"
           tvParallaxProperties={undefined}
         />
         </TouchableOpacity>
@@ -154,7 +301,7 @@ const _pickDocument = async () => {
             name="send-circle"
             style={{marginBottom: 5, marginRight: 5}}
             size={30}
-            color="#2e64e5"
+            color="#00B0FF"
           />
         </View>
       </Send>
@@ -164,12 +311,13 @@ const _pickDocument = async () => {
 
   const renderBubble = (props) => {
     const {currentMessage} = props;
+    // console.log("currentMessage",currentMessage)
     if (currentMessage.file && currentMessage.file.url) {
       return (
         <TouchableOpacity
         style={{
           ...styles.fileContainer,
-          backgroundColor: props.currentMessage.user._id === 2 ? '#2e64e5' : '#efefef',
+          backgroundColor: props.currentMessage.user._id === 2 ? '#00B0FF' : '#efefef',
           borderBottomLeftRadius: props.currentMessage.user._id === 2 ? 15 : 5,
           borderBottomRightRadius: props.currentMessage.user._id === 2 ? 5 : 15,
         }}
@@ -183,6 +331,13 @@ const _pickDocument = async () => {
               props={props}
               visible={fileVisible}
               onClose={() => setFileVisible(false)}
+              loadingAudio={loadingAudio}
+              currentPositionSec={currentPositionSec}
+              paused={paused}
+              onPausePlay={onPausePlay}
+              onStartPlay={onStartPlay}
+              playTime={playTime}
+              duration={duration}
             />
           <View style={{flexDirection: 'column'}}>
             <Text style={{
@@ -191,16 +346,18 @@ const _pickDocument = async () => {
                 }} >
               {currentMessage.text}
             </Text>
+           
           </View>
         </TouchableOpacity>
       );
     }
+
     return (
       <Bubble
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#2e64e5',
+            backgroundColor: '#00B0FF',
           },
         }}
         textStyle={{
@@ -218,7 +375,26 @@ const _pickDocument = async () => {
     );
   }
 
+ const renderInputToolbar = (props) =>{
+    //Add the extra styles via containerStyle
+   return <InputToolbar {...props} containerStyle={{borderRadius:100,marginBottom:5}} />
+ }
   const renderChatFooter = useCallback(() => {
+    if(audioPath){
+
+      return(
+      <View style={styles.chatFooter}>
+            <InChatFileTransfer
+            filePath={audioPath}
+          />
+        <TouchableOpacity
+            onPress={() => setAudioPath('')}
+            style={styles.buttonFooterChat}
+          >
+            <Text style={styles.textFooterChat}>X</Text>
+          </TouchableOpacity>
+        </View>)
+    }
     if (imagePath) {
       return (
         <View style={styles.chatFooter}>
@@ -248,7 +424,7 @@ const _pickDocument = async () => {
       );
     }
     return null;
-  }, [filePath, imagePath]);
+  }, [audioPath,filePath, imagePath]);
   return (
     <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
     <Loader loading={loading}></Loader>
@@ -306,6 +482,7 @@ const _pickDocument = async () => {
       onSend={(messages) => onSend(messages)}
       user={{
         _id: 2,
+        avatar:require('../assets/images/profileImg.png')
       }}
       renderBubble={renderBubble}
       alwaysShowSend
@@ -316,6 +493,7 @@ const _pickDocument = async () => {
       showAvatarForEveryMessage
       scrollToBottomComponent={scrollToBottomComponent}
       renderChatFooter={renderChatFooter}
+      renderInputToolbar={renderInputToolbar} 
     />
           
 
@@ -339,7 +517,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   chatFooter: {
-    shadowColor: '#1F2687',
+    shadowColor: '#00B0FF',
     shadowOpacity: 0.37,
     shadowRadius: 8,
     shadowOffset: {width: 0, height: 8},
@@ -350,12 +528,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.18)',
     flexDirection: 'row',
     padding: 5,
-    backgroundColor: 'blue'
+    backgroundColor: '#00B0FF'
   },
   fileContainer: {
     flex: 1,
-    maxWidth: 300,
-    marginVertical: 2,
+    maxWidth: 200,
+    // marginVertical: 2,
     borderRadius: 15,
   },
   fileText: {
@@ -398,6 +576,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'gray',
+  },
+  audioPlayerContainer: {flexDirection: 'row', alignItems: 'center'},
+  progressDetailsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  progressDetailsText: {
+    paddingHorizontal: 5,
+    color: 'black',
+   
+  },
+  progressIndicatorContainer: {
+    flex: 1,
+    backgroundColor: '#e2e2e2',
+    marginTop:10
+  },
+  progressLine: {
+    borderWidth: 1,
+    borderColor: 'black',
   },
 });
 export default FriendsMessage;
