@@ -5,3 +5,6 @@ https://medium.com/@decentpianist/react-native-chat-with-image-and-audio-c09054c
 
 chat 
 https://github.com/Wynne-Tran/React-Native-Gifted-Chat
+
+voice
+https://github.com/GetStream/react-native-chat-voice-message-example/tree/main

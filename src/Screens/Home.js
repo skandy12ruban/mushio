@@ -54,8 +54,8 @@ const data=[
          />
          </TouchableOpacity>
       </View>
-     <Text style={{fontSize:25,fontWeight:'bold',marginLeft:Metrics.rfv(30),color:'black'}}>Hello, <Text style={{color:'#00B0FF'}}>Satish</Text></Text>
-     <Text style={{marginLeft:Metrics.rfv(30),color:'black'}}>Mushio greets you good morning</Text>
+     <Text style={{fontSize:25,marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Montserrat-Bold',}}>Hello, <Text style={{color:'#00B0FF',fontStyle:'Montserrat-Bold',}}>Satish</Text></Text>
+     <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Roboto-Regular'}}>Mushio greets you good morning</Text>
       <View style={{marginTop:10}}>
       <CalendarStrip
       scrollable
