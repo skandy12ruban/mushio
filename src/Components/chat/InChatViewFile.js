@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {
   View,
   Modal,
@@ -9,8 +9,10 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import Pdf from 'react-native-pdf';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
-function InChatViewFile({props, visible, onClose,loadingAudio,currentPositionSec,paused,onPausePlay,onStartPlay,currentDurationSec,playTime,duration}) {
+function InChatViewFile({props, visible, onClose,}) {
   const {currentMessage} = props;
   // console.log("currentMessage",currentMessage)
   var fileType = '';
@@ -18,6 +20,50 @@ function InChatViewFile({props, visible, onClose,loadingAudio,currentPositionSec
     fileType= currentMessage.file && currentMessage.file.url.split('.').pop();
   }
 
+  const [recordTime, setRecordTime] = useState(0);
+const [audioPath, setAudioPath] = useState((currentMessage.file && currentMessage.file.url) );
+const [paused, setPaused] = useState(false);
+const [currentPositionSec, setCurrentPositionSec] = useState(0);
+const [loadingAudio, setLoadingAudio] = useState(false);
+const [currentDurationSec, setCurrentDurationSec] = useState(recordTime);
+const [playTime, setPlayTime] = useState(0);
+const [duration, setDuration] = useState(recordTime);
+
+  const onStartPlay = async () => {
+    setPaused(false);
+    setLoadingAudio(true);
+    await audioRecorderPlayer.startPlayer(audioPath);
+  
+    setLoadingAudio(false);
+    audioRecorderPlayer.addPlayBackListener(e => {
+      if (e.currentPosition < 0) {
+        return;
+      }
+  
+      setCurrentPositionSec(e.currentPosition);
+      setCurrentDurationSec(e.duration);
+      setPlayTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
+      setDuration(audioRecorderPlayer.mmssss(Math.floor(e.duration)));
+  
+      if (e.currentPosition === e.duration) {
+        onStopPlay();
+      }
+      return;
+    });
+  };
+  
+  const onPausePlay = async () => {
+    setPaused(true);
+    await audioRecorderPlayer.pausePlayer();
+  };
+  
+  const onStopPlay = async () => {
+    setPaused(false);
+    setCurrentPositionSec(0);
+    setPlayTime(0);
+    audioRecorderPlayer.stopPlayer();
+    audioRecorderPlayer.removePlayBackListener();
+  };
   return (
     <Modal
       visible={visible}

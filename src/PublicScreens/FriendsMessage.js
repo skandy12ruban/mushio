@@ -1,5 +1,5 @@
-import React,{useState,useEffect,useCallback} from 'react';
-import { View, Text, SafeAreaView,Image,TouchableOpacity,ScrollView,StyleSheet,PermissionsAndroid,Platform,ActivityIndicator } from 'react-native';
+import React,{useState,useEffect,useCallback,} from 'react';
+import { View, Text, SafeAreaView,Image,TouchableOpacity,ScrollView,StyleSheet,PermissionsAndroid,Platform,ActivityIndicator,Clipboard } from 'react-native';
 import Loader from '../Components/Loader';
 import Metrics from '../Constants/Metrics';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -27,18 +27,17 @@ const FriendsMessage = () => {
   const[loading,setLoading]=useState(false)
   const route= useRoute()
   const{item}=route.params;
+  
 // console.log('item',item)
+const time =`${new Date().toLocaleTimeString('en-US', {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true, // This will display AM/PM
+})}`
+console.log('time',time)
 
 const [recordingActive, setRecordingActive] = useState(false);
-const [recordSecs, setRecordSecs] = useState(0);
-const [recordTime, setRecordTime] = useState(0);
 const [audioPath, setAudioPath] = useState('');
-const [paused, setPaused] = useState(false);
-const [currentPositionSec, setCurrentPositionSec] = useState(0);
-const [loadingAudio, setLoadingAudio] = useState(false);
-const [currentDurationSec, setCurrentDurationSec] = useState(recordTime);
-const [playTime, setPlayTime] = useState(0);
-const [duration, setDuration] = useState(recordTime);
 
 const [isAttachAudio, setIsAttachAudio] = useState(false);
 const [isAttachImage, setIsAttachImage] = useState(false);
@@ -104,59 +103,16 @@ const onStartRecord = async () => {
   setRecordingActive(true);
 
   await audioRecorderPlayer.startRecorder(path);
-  audioRecorderPlayer.addRecordBackListener(e => {
-    setRecordSecs(e.currentPosition);
-    setRecordTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
-
-    return;
-  });
 }
 const onStopRecord = async () => {
   setRecordingActive(false);
 
   const result = await audioRecorderPlayer.stopRecorder();
   audioRecorderPlayer.removeRecordBackListener();
-  setRecordSecs(0);
   setAudioPath(result)
   setIsAttachAudio(true)
    console.log('response',result)
   
-};
-
-const onStartPlay = async () => {
-  setPaused(false);
-  setLoadingAudio(true);
-  await audioRecorderPlayer.startPlayer(audioPath);
-
-  setLoadingAudio(false);
-  audioRecorderPlayer.addPlayBackListener(e => {
-    if (e.currentPosition < 0) {
-      return;
-    }
-
-    setCurrentPositionSec(e.currentPosition);
-    setCurrentDurationSec(e.duration);
-    setPlayTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
-    setDuration(audioRecorderPlayer.mmssss(Math.floor(e.duration)));
-
-    if (e.currentPosition === e.duration) {
-      onStopPlay();
-    }
-    return;
-  });
-};
-
-const onPausePlay = async () => {
-  setPaused(true);
-  await audioRecorderPlayer.pausePlayer();
-};
-
-const onStopPlay = async () => {
-  setPaused(false);
-  setCurrentPositionSec(0);
-  setPlayTime(0);
-  audioRecorderPlayer.stopPlayer();
-  audioRecorderPlayer.removePlayBackListener();
 };
 
 
@@ -215,7 +171,7 @@ const _pickDocument = async () => {
       );
       setImagePath('');
       setIsAttachImage(false);
-    }   if (isAttachAudio) {
+    } else if (isAttachAudio) {
       const newMessage = {
         _id: messages[0]._id + 1,
         text: messageToSend.text,
@@ -261,7 +217,6 @@ const _pickDocument = async () => {
   },
   [filePath, imagePath, isAttachFile, isAttachImage,audioPath, isAttachAudio],
   );
-  
 
   const renderSend = (props) => {
     return (
@@ -311,7 +266,6 @@ const _pickDocument = async () => {
 
   const renderBubble = (props) => {
     const {currentMessage} = props;
-    // console.log("currentMessage",currentMessage)
     if (currentMessage.file && currentMessage.file.url) {
       return (
         <TouchableOpacity
@@ -331,13 +285,6 @@ const _pickDocument = async () => {
               props={props}
               visible={fileVisible}
               onClose={() => setFileVisible(false)}
-              loadingAudio={loadingAudio}
-              currentPositionSec={currentPositionSec}
-              paused={paused}
-              onPausePlay={onPausePlay}
-              onStartPlay={onStartPlay}
-              playTime={playTime}
-              duration={duration}
             />
           <View style={{flexDirection: 'column'}}>
             <Text style={{
@@ -346,7 +293,7 @@ const _pickDocument = async () => {
                 }} >
               {currentMessage.text}
             </Text>
-           
+            <Text style={{alignSelf:'flex-end',color:'white',fontSize:10,padding:5}}>{`${time}`}</Text>
           </View>
         </TouchableOpacity>
       );
@@ -425,6 +372,16 @@ const _pickDocument = async () => {
     }
     return null;
   }, [audioPath,filePath, imagePath]);
+
+  const onDeleteMessage = (messageId) => {
+    // Filter out the message to be deleted
+    const updatedMessages = messages.filter((message) => message._id !== messageId);
+    setMessages(updatedMessages);
+  };
+  const handleCopyMessage = (message) => {
+    const textToCopy = message.text;
+    Clipboard.setString(textToCopy);
+  };
   return (
     <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
     <Loader loading={loading}></Loader>
@@ -494,6 +451,28 @@ const _pickDocument = async () => {
       scrollToBottomComponent={scrollToBottomComponent}
       renderChatFooter={renderChatFooter}
       renderInputToolbar={renderInputToolbar} 
+      onLongPress={(context, message) => {
+        // Handle long press on a message
+        const options = [ 'copy', 'Delete Message', 'Cancel'];
+        const cancelButtonIndex = options.length - 1;
+
+        context.actionSheet().showActionSheetWithOptions(
+          {
+            options,
+            cancelButtonIndex,
+          },
+          (buttonIndex) => {
+            switch (buttonIndex) {
+              case 0:
+                  handleCopyMessage(message);
+                  break;
+              case 1:
+                onDeleteMessage(message._id);
+                  break;
+          }
+          }
+        );
+      }}
     />
           
 

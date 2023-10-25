@@ -51,7 +51,7 @@ const SplashPage = () => {
                 style={{
                     width:"100%",height:"100%",
                 }}
-                source={require('../assets/images/splashImage.jpg')}
+                source={require('../assets/images/splashImg.jpg')}
             >
             </BackgroundImage>
                     

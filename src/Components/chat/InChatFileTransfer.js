@@ -3,14 +3,14 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const InChatFileTransfer = ({filePath}) => {
-  const [date,setDate]=useState(new Date())
+
   var fileType = '';
   var name = '';
   if (filePath !== undefined) {
     name = filePath.split('/').pop();
     fileType= filePath.split('.').pop();
   }
-console.log(date)
+
   return (
     <View style={styles.container}>
       <View
