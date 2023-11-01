@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import { isObject, isArray, isString } from 'util';
 import Config from 'react-native-config';
 
-export const API_BASE_URL = "https://admin.buyexpert.shop"  //QA
+export const API_BASE_URL = "https://sehalobackend.onrender.com"  //QA
 
 export default class ApiClient {
     constructor(prefix = '/api') {

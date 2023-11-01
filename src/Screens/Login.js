@@ -9,7 +9,7 @@ import {
   Image,
   BackHandler,
 } from 'react-native';
-import {Input} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient'
 import {withGlobalize} from 'react-native-globalize';
 import {TouchableOpacity} from 'react-native';
 import Metrics from '../Constants/Metrics';
@@ -18,6 +18,7 @@ import IntlProvider from '../utils/IntlProvider';
 import Loader from '../Components/Loader';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {
   BLACK_COLOR,
@@ -31,7 +32,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import AppTextFieldPassword from '../Components/AppTextFieldPassword';
 import {useDispatch} from 'react-redux';
@@ -73,18 +74,29 @@ const Login = withGlobalize(
     }, []);
 
     return (
+      <LinearGradient
+      colors={['#cdffd8', '#94b9ff' ]}
+      style={{flex:1,width:"100%",height:'100%'}}
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+    >
       <ScrollView
         style={{
-          backgroundColor: 'lightblue',
+          // backgroundColor: 'lightblue',
         }}>
         <Loader loading={loading}></Loader>
-
+        <Image
+          style={{
+             width:60,height:60,margin:10,borderRadius:10,
+            }}
+           source={require('../assets/images/image3.jpg')}
+         />
         <View
           style={{
             alignSelf: 'center',
-            width: '90%',marginTop:Metrics.rfv(150)
+            width: '90%',marginTop:Metrics.rfv(50)
           }}>
-          <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> ᗰuᔕ<Text style={{color:'black'}}>hi</Text>o </Text>
+          <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Se<Text style={{color:'black'}}>halo</Text></Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
             // validationSchema={SignInFormValidator(props)}
@@ -106,9 +118,9 @@ const Login = withGlobalize(
                
                 <TextInput
                    value={values.email}
-                   placeholder={'email'}
-                   placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+                   placeholder={'Email'}
+                   placeholderTextColor={'black'}
+                   style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold'}}
                    onChangeText={text => {
                    setFieldValue('email' ,text);
                    }}
@@ -121,7 +133,8 @@ const Login = withGlobalize(
                   </Text>
                 )}
                 
-                <View >
+                  
+                  {/* <View>
                   <AppTextFieldPassword
                     placeHolder={'password'}
                     value={values.password}
@@ -130,9 +143,36 @@ const Login = withGlobalize(
                     }}
                     secureTextEntry={true}
                   />
+                  </View> */}
+                 
+
+                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
+                  justifyContent:'space-between',}}>
+                    <TextInput
+                   value={values.password}
+                   placeholder={'password'}
+                   placeholderTextColor={'black'}
+                   style={{fontSize:20,fontWeight:'bold',marginLeft:5,}}
+                   onChangeText={text => {
+                   setFieldValue('password' ,text);
+                   }}
+                   secureTextEntry={viewPassword}
+                 />
+                    <Icon
+                      name={viewPassword ? 'eye-slash' : 'eye'}
+                      color={'gray'}
+                      size={Metrics.rfv(18)}
+                      style={{
+                        textAlignVertical: 'center',
+                        marginBottom: Metrics.rfv(3),marginRight:10
+                      }}
+                      onPress={() => {
+                        setViewPassword(!viewPassword);
+                      }}
+                    />
                 </View>
                 {errors.password && touched.password && (
-                  <Text style={{fontSize: 10, color: 'red', marginLeft: 20}}>
+                  <Text style={{fontSize: 10, color: 'red', marginLeft: 20,}}>
                     {' '}
                     * {errors.password}
                   </Text>
@@ -140,13 +180,13 @@ const Login = withGlobalize(
 
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#00B0FF',
-                    padding:5,
-                    width: width * 0.7,
+                    // backgroundColor: '#00B0FF',
+                    // padding:5,
+                    // width: width * 0.7,
                     alignSelf: 'center',
-                    borderRadius: 10,
+                    // borderRadius: 10,
                     marginTop: 20,
-                    marginBottom: 20,
+                    // marginBottom: 20,
                   }}
                   activeOpacity={0.5}
                   onPress={async() => {
@@ -168,7 +208,12 @@ const Login = withGlobalize(
                     }
                     handleSubmit();
                   }}>
-                  <Text style={styles.buttonTextStyle}>Sign In</Text>
+                  {/* <Text style={styles.buttonTextStyle}>Sign In</Text> */}
+                  <MaterialCommunityIcons
+                     name="check-decagram"
+                     color={'white'}
+                    size={70}
+                  />
                 </TouchableOpacity>
               </>
             )}
@@ -186,6 +231,7 @@ const Login = withGlobalize(
          
           </View>
       </ScrollView>
+      </LinearGradient>
     );
   }),
 );
