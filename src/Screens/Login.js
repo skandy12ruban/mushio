@@ -94,9 +94,9 @@ const Login = withGlobalize(
         <View
           style={{
             alignSelf: 'center',
-            width: '90%',marginTop:Metrics.rfv(50)
+            width: '90%',marginTop:Metrics.rfv(30)
           }}>
-          <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Se<Text style={{color:'black'}}>halo</Text></Text>
+          <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'sans-serif-condensed'}}> Se<Text style={{color:'black',fontFamily:'serif'}}>halo</Text></Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
             // validationSchema={SignInFormValidator(props)}
@@ -120,7 +120,8 @@ const Login = withGlobalize(
                    value={values.email}
                    placeholder={'Email'}
                    placeholderTextColor={'black'}
-                   style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold'}}
+                   style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold',
+                   borderRadius:30,borderColor:'blue',borderWidth:1}}
                    onChangeText={text => {
                    setFieldValue('email' ,text);
                    }}
@@ -147,7 +148,7 @@ const Login = withGlobalize(
                  
 
                   <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
-                  justifyContent:'space-between',}}>
+                  justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
                     <TextInput
                    value={values.password}
                    placeholder={'password'}
@@ -160,7 +161,7 @@ const Login = withGlobalize(
                  />
                     <Icon
                       name={viewPassword ? 'eye-slash' : 'eye'}
-                      color={'gray'}
+                      color={'black'}
                       size={Metrics.rfv(18)}
                       style={{
                         textAlignVertical: 'center',
@@ -177,7 +178,7 @@ const Login = withGlobalize(
                     * {errors.password}
                   </Text>
                 )}
-
+              <Text style={{color: 'black',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
                 <TouchableOpacity
                   style={{
                     // backgroundColor: '#00B0FF',
@@ -219,12 +220,13 @@ const Login = withGlobalize(
             )}
           </Formik>
         </View>
-        <View style={{marginTop:150}}>
+       
+        <View style={{marginTop:100}}>
               <Text
-                style={{marginTop: 5, alignSelf: 'center',}}>
-                You don't have account ? {' '} 
+                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'black'}}>
+                Don't have an account ? {' '} 
                 {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
-                <Text style={{color: 'black',fontSize:20,}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
+                <Text style={{color: 'white',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
                 {/* </TouchableOpacity> */}
                
               </Text>

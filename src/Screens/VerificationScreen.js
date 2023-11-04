@@ -1,11 +1,13 @@
-import { View, Text, SafeAreaView,TextInput,TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView,TextInput,TouchableOpacity,Image } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import AppDropDown from '../Components/AppDropDown'
 import Metrics from '../Constants/Metrics'
 import { useNavigation } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
-
-
+import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const VerificationScreen = () => {
   const navigation=useNavigation()
@@ -34,51 +36,79 @@ const [email,setEmail]=useState('')
   }
 
 useEffect(()=>{
-  getCountryList()
+  // getCountryList()
 },[])
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'lightblue'}}>
-
+    <SafeAreaView style={{flex:1,}}>
+       <LinearGradient
+      colors={['#cdffd8', '#94b9ff' ]}
+      style={{flex:1,width:"100%",height:'100%'}}
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+    >
+      <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
+        <Ionicons
+        name='arrow-back'
+        size={50}
+        color='white'
+        onPress={()=>{navigation.goBack()}}
+        />
+              <Image
+          style={{
+             width:60,height:60,margin:10,borderRadius:10,
+            }}
+           source={require('../assets/images/image3.jpg')}
+         />
+         </View>
       <View style={{
           alignSelf: 'center',
-          width: '90%',marginTop:Metrics.rfv(100)
+          width: '90%',marginTop:Metrics.rfv(50)
         }}>
 
-             <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Verification </Text> 
-             <Text style={{marginLeft:Metrics.rfv(30),color:'black',marginTop:20,fontWeight:'bold'}}>Country</Text> 
+             <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Verification </Text> 
+             {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',marginTop:20,fontWeight:'bold'}}>Country</Text>  */}
             <AppDropDown
                   label={''}
                   items={countryList ||[]}
                   value={country}
                   placeholder={'select country'}
+                  placeholderTextColor={'black'}
                   changeText={(text) => {
                     setCountry( text)
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
+                    width:'80%',alignSelf:'center',margin:20
                   }}
                   viewStyle={{
-                    borderRadius: Metrics.rfv(5),
-                    
+                    borderRadius: Metrics.rfv(30),
+                    borderWidth:1,
+                    borderColor:'blue'
                   }}
                 />
-                <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontWeight:'bold'}}>Phone number / email</Text>
+                {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontWeight:'bold'}}>Phone number / email</Text> */}
                  <TextInput
                    value={email}
-                   placeholder={'Enter'}
-                    placeholderTextColor={'grey'}
-                    style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
-                    onChangeText={text => {
+                   placeholder={'Enter Phone number/email'}
+                    placeholderTextColor={'black'}
+                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
+                    borderRadius:30,borderColor:'blue',borderWidth:1}}     
+                     onChangeText={text => {
                       setEmail(text);
                      }}
                   />
-             <TouchableOpacity style={{backgroundColor:'#00B0FF',width:'60%',padding:15,
-                 alignSelf:'center',marginTop:20,borderRadius:5}}
-                   onPress={()=>{navigation.navigate("OtpScreen")}}>
-              <Text style={{alignSelf:'center',color:'white'}}>Next</Text>
-         </TouchableOpacity>
+              <TouchableOpacity style={{ alignSelf:'center',marginTop:20,}}
+           onPress={()=>{navigation.navigate('OtpScreen')}}>
+      {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
+                      <Icon
+                      name={'arrow-circle-right'}
+                      color={'white'}
+                      size={Metrics.rfv(50)}
+                      />
+     </TouchableOpacity>
        </View>
+       </LinearGradient>
     </SafeAreaView>
   )
 }

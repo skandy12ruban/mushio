@@ -1,10 +1,12 @@
-import {View, Text, SafeAreaView,StyleSheet,TouchableOpacity,TextInput,Dimensions} from 'react-native';
-import React from 'react';
+import {View, Text, SafeAreaView,StyleSheet,TouchableOpacity,TextInput,Dimensions,Image} from 'react-native';
+import React,{useState} from 'react';
 import { Formik } from 'formik';
 import Metrics from '../Constants/Metrics';
+import LinearGradient from 'react-native-linear-gradient'
 import AppTextFieldPassword from '../Components/AppTextFieldPassword';
 import { useNavigation } from '@react-navigation/native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 const { width, height } = Dimensions.get('window');
 
 export const SignUpFormInitialValues = props => ({
@@ -27,16 +29,29 @@ export const SignUpFormValidator = props => {
 };
 const SignUp = (props) => {
 const navigation=useNavigation()
-
+const [viewPassword, setViewPassword] = useState(true);
+const [viewPassword1, setViewPassword1] = useState(true);
   return (
-    <SafeAreaView style={{ backgroundColor: 'lightblue',flex:1}}>
- 
+    <SafeAreaView style={{ flex:1}}>
+   <LinearGradient
+      colors={['#cdffd8', '#94b9ff' ]}
+      style={{flex:1,width:"100%",height:'100%'}}
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+    >
+         <Image
+          style={{
+             width:60,height:60,margin:10,borderRadius:10,
+            }}
+           source={require('../assets/images/image3.jpg')}
+         />
       <View
         style={{
           alignSelf: 'center',
-          width: '90%',marginTop:Metrics.rfv(100)
+          width: '90%',marginTop:Metrics.rfv(10)
         }}>
-            <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30}}> Sign Up </Text>
+         
+            <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Sign up </Text>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
         //   validationSchema={SignUpFormValidator(props)}
@@ -59,38 +74,91 @@ const navigation=useNavigation()
         <TextInput
          value={values.name}
          placeholder={'Nickname'}
-         placeholderTextColor={'grey'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+         placeholderTextColor={'black'}
+         style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
+         borderRadius:30,borderColor:'blue',borderWidth:1}}
          onChangeText={text => {
             setFieldValue('name' ,text);
           }}
         />
-                 <AppTextFieldPassword
-                    placeHolder={'password'}
-                    value={values.password}
-                    changeText={text => {
-                      setFieldValue('password', text);
-                    }}
-                    secureTextEntry={true}
-                  />
-                   <AppTextFieldPassword
-                    value={values.confirmpassword}
-                    placeHolder={'confirm password'}
-                    changeText={text => {
-                      setFieldValue('confirmpassword', text);
-                    }}
-                    secureTextEntry={true}
-                  />
-        <TouchableOpacity style={{backgroundColor:'#00B0FF',width:'60%',padding:15,
-          alignSelf:'center',marginTop:20,borderRadius:5}}
-           onPress={()=>{handleSubmit()}}>
-      <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
+               
+                  
+                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
+                  justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
+                    <TextInput
+                   value={values.password}
+                   placeholder={'password'}
+                   placeholderTextColor={'black'}
+                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,}}
+                   onChangeText={text => {
+                   setFieldValue('password' ,text);
+                   }}
+                   secureTextEntry={viewPassword}
+                 />
+                    <Icon
+                      name={viewPassword ? 'eye-slash' : 'eye'}
+                      color={'black'}
+                      size={Metrics.rfv(18)}
+                      style={{
+                        textAlignVertical: 'center',
+                        marginBottom: Metrics.rfv(3),marginRight:10
+                      }}
+                      onPress={() => {
+                        setViewPassword(!viewPassword);
+                      }}
+                    />
+                </View>
+                
+                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
+                  justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
+                    <TextInput
+                   value={values.confirmpassword}
+                   placeholder={'confirm password'}
+                   placeholderTextColor={'black'}
+                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,}}
+                   onChangeText={text => {
+                   setFieldValue('confirmpassword' ,text);
+                   }}
+                   secureTextEntry={viewPassword1}
+                 />
+                    <Icon
+                      name={viewPassword1 ? 'eye-slash' : 'eye'}
+                      color={'black'}
+                      size={Metrics.rfv(18)}
+                      style={{
+                        textAlignVertical: 'center',
+                        marginBottom: Metrics.rfv(3),marginRight:10
+                      }}
+                      onPress={() => {
+                        setViewPassword1(!viewPassword1);
+                      }}
+                    />
+                </View>
+        <TouchableOpacity style={{ alignSelf:'center',marginTop:20,}}
+           onPress={()=>{navigation.navigate('VerificationScreen')}}>
+      {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
+                      <Icon
+                      name={'arrow-circle-right'}
+                      color={'white'}
+                      size={Metrics.rfv(50)}
+                      />
      </TouchableOpacity>
+     <Text style={{alignSelf:'center',color:'white',fontWeight:'bold',fontSize:30,margin:20}}>OR</Text>
+     <TouchableOpacity onPress={()=>{ }}>
+             <Feather
+              name={'chrome'}
+              color={'white'}
+              style={{alignSelf:'center'}}
+              size={Metrics.rfv(50)}
+             />
+     </TouchableOpacity>
+             <Text style={{alignSelf:'center',color:'white',fontWeight:'bold',fontSize:20,margin:20}}>Sign Up with Google</Text>
        </View>
             </>
           )}
         </Formik>
       </View>
+      </LinearGradient>
     </SafeAreaView>
   );
 };

@@ -11,7 +11,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { Card } from 'react-native-paper'
 import { PUBLIC_MAIN_ROUTE } from '../routes/PublicRouteConts'
 import { setusertype } from '../Redux/reducer/userType'
-
+import LinearGradient from 'react-native-linear-gradient'
 
 const Profile = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
@@ -36,6 +36,12 @@ const Profile = () => {
   return (
     <SafeAreaView>
       {/* <Header bellIcon={true}/> */}
+      <LinearGradient
+      colors={['#cdffd8', '#94b9ff' ]}
+      style={{flex:0,width:"100%",height:'100%'}}
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+    >
       <View style={{marginTop:10}}>
           <Switch
               style={{
@@ -51,27 +57,30 @@ const Profile = () => {
                   name="menu"
                    size={40}
                    style={{marginRight: 20,color:'black'}}
-                onPress={()=>{navigation.navigate('ProfileDetails')}}   
+                onPress={()=>{navigation.navigate('PrivateAppDrawer')}}   
                  />
       </View>
        
-       <Card style={{backgroundColor:'#00B0FF',alignSelf:'center',width:'80%'}}>
-            <View style={{flexDirection:'row',justifyContent:'space-between',padding:10}}>
-              <View style={{marginTop:10}}>
-              <Text style={{color:'white',alignSelf:'center',}}>Mushio Scores you</Text>
-              <Text style={{color:'white',fontWeight:'bold',fontSize:30,alignSelf:'center',}}>76</Text>
+       <Card style={{backgroundColor:'white',alignSelf:'center',width:'80%'}}>
+       
+            <View style={{flexDirection:'row',justifyContent:'space-between',padding:5}}>
+              <View style={{alignSelf:'center',}}>
+              <Text style={{color:'black',fontWeight:'bold',fontSize:25,margin:5,alignSelf:'center',}}>Status</Text>
+              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Sehalo Scores you</Text>
+              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:50,padding:5}}>76</Text>
               </View>
-           
+              <View>
             <Image
           style={{
-             width:50,height:50,margin:10,borderRadius:10,
+             width:80,height:80,borderRadius:10,margin:10
             }}
            source={require('../assets/images/image3.jpg')}
          />
+         </View>
             </View>
             <View style={{marginBottom:10,}}>
-              <Text style={{color:'white',alignSelf:'center',fontSize:15}}>you are a happy person,
-              <Text style={{color:'blue',fontWeight:'bold',fontSize:20,marginTop:10}}> Satish</Text></Text>
+              <Text style={{color:'black',alignSelf:'center',fontSize:15}}>you are a happy person,
+              <Text style={{color:'#00B0FF',fontWeight:'bold',fontSize:20,marginTop:10}}> Satish</Text></Text>
             </View>
        </Card>
        <View style={{marginTop:10,alignSelf:'center'}}>
@@ -86,7 +95,7 @@ const Profile = () => {
            <Text style={{color:'white',alignSelf:'center'}}>Logout</Text>
        </TouchableOpacity> */}
        </View>
-          
+     </LinearGradient>
     </SafeAreaView>
   )
 }

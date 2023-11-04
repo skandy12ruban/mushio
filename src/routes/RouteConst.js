@@ -11,3 +11,5 @@ export const VERIFICATION_SCREEN = 'VerificationScreen';
 export const OTP_SCREEN = 'OtpScreen'
 export const CATEGORY = "Category"
 export const PROFILE_DETAILS = 'ProfileDetails'
+export const AGREEMENT = 'Agreement'
+export const PRIVATE_APP_DRAWER = 'PrivateAppDrawer'

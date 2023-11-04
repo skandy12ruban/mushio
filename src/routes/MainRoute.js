@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
+import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  PRIVATE_APP_DRAWER,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
-import { Category, DetailsPage, ListPage, Login,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
+import { Category, DetailsPage, DrawerScreen, ListPage, Login,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
@@ -12,6 +12,7 @@ import Home from '../Screens/Home';
 import BottomTabs from './BottomTabs';
 import { PUBLIC_MAIN_ROUTE } from './PublicRouteConts';
 import PublicMainRoute from './PublicMainRoute';
+import PrivateAppDrawer from './PrivateAppDrawer';
 
 const MainStack = createStackNavigator();
 
@@ -42,6 +43,7 @@ const MainRoute = () => {
                      <MainStack.Screen name={CATEGORY} component={Category} />
                      <MainStack.Screen name={PROFILE_DETAILS} component={ProfileDetails} />
                      <MainStack.Screen name={PUBLIC_MAIN_ROUTE} component={PublicMainRoute} />
+                     <MainStack.Screen name={PRIVATE_APP_DRAWER} component={PrivateAppDrawer} />
                 </>
             ) : (
                 <>
