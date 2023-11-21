@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { Alert } from 'react-native'
 
-export const APP_NAME = "Buy Exp"
+export const APP_NAME = "Sehalo"
 
 export const AppOkAlert = (msg, onOkCallback, btnText = 'OK', title = APP_NAME) => {
     setTimeout(() => {

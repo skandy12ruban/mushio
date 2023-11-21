@@ -20,3 +20,4 @@ export const ARTIST_MESSAGE = 'ArtistMessage'
 export const ENTERTAINMENT = 'Entertainment'
 export const  ADD_CARDS = "AddCards"
 export const NEW_POST = "NewPost"
+export const MY_PROFILE = "MyProfile"

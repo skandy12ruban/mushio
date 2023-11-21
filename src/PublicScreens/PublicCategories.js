@@ -8,7 +8,11 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { AppOkAlert } from '../utils/AlertHelper';
 import Metrics from '../Constants/Metrics';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import Video from 'react-native-video';
+import { API_BASE_URL } from '../api/ApiClient';
+import Loader from '../Components/Loader';
+import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 
 
 
@@ -16,10 +20,10 @@ const PublicCategories = () => {
   const navigation=useNavigation()
   const [fileUri, setFileUri] = useState(null);
    const[type,setType]=useState('')
-  
+  const[loading,setLoading]=useState(false)
    const[imgArray,setImagArray]=useState([])
 
-console.log("imgArray res",imgArray)
+// console.log("imgArray res",imgArray)
 
   const launchNativeImageLibrary = () => {
     let options = {
@@ -42,6 +46,7 @@ console.log("imgArray res",imgArray)
         const source = { uri: response.assets.uri };
         console.log('response', JSON.stringify(response));
         setImagArray(response.assets)
+        
         setType(response.assets[0].type)
         setFileUri(response.assets[0].uri)
       }
@@ -49,10 +54,49 @@ console.log("imgArray res",imgArray)
 
   }
 
+  const filesUpload = async ()=>{
+    setLoading(true)
+    const res = await getUserProfileInfo()
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    const formdata = new FormData();
+
+    imgArray.forEach((image, index) => {
+      formdata.append('files', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName,
+      });
+    });
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+// console.log(requestOptions) 
+fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result.success)
+    if(result && result.success == true){ 
+      navigation.navigate('NewPost',{imgArray:result.data})
+      setLoading(false)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    console.log('error', error)
+    setLoading(false)
+  });
+  }
  
-  console.log('imgArray',imgArray)
+  // console.log('imgArray',imgArray)
   return (
     <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
+      <Loader loading={loading}></Loader>
       <View style={{flexDirection:'row'}}>
        <Ionicons
             onPress={() => {
@@ -72,7 +116,7 @@ console.log("imgArray res",imgArray)
     <ScrollView   horizontal style={{flexDirection:'row'}}>
        {/* {fileUri != null ?(*/}
     {imgArray.map((e)=>{
-          console.log('ee',e)
+          // console.log('ee',e)
           return(
             < View style={{}}>
        { e.type == 'image/jpeg'  ? (
@@ -113,7 +157,10 @@ console.log("imgArray res",imgArray)
                
              {/* ):(  */}
         <View style={{marginTop:Metrics.rfv(50),}}>
-    <TouchableOpacity onPress={()=>{launchNativeImageLibrary()}} style={{alignSelf:'center',}}>
+    <TouchableOpacity onPress={()=>{
+      launchNativeImageLibrary()
+     
+      }} style={{alignSelf:'center',}}>
       <Text style={{fontSize:20,alignSelf:'center',}}>Add </Text>
       <Text style={{alignSelf:'center',color:'#00B0FF',}}>Image (or) Video</Text>
       </TouchableOpacity>  
@@ -122,7 +169,10 @@ console.log("imgArray res",imgArray)
  
       
     </View>
-    <TouchableOpacity onPress={()=>{navigation.navigate('NewPost',{type:type,fileUri:fileUri})}} 
+    <TouchableOpacity onPress={()=>{
+      filesUpload()
+      // navigation.navigate('NewPost',{imgArray:imgArray})
+    }} 
     style={{backgroundColor:'black',padding:10,width:150,borderRadius:5,marginTop:Metrics.rfv(30),alignSelf:'center',}}>
       <Text style={{alignSelf:'center',color:'white'}}>Next</Text>
     </TouchableOpacity>

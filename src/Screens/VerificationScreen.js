@@ -2,15 +2,19 @@ import { View, Text, SafeAreaView,TextInput,TouchableOpacity,Image } from 'react
 import React,{useState,useEffect} from 'react'
 import AppDropDown from '../Components/AppDropDown'
 import Metrics from '../Constants/Metrics'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Loader from '../Components/Loader'
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const VerificationScreen = () => {
+  const route=useRoute();
+  const{values}=route.params;
   const navigation=useNavigation()
+  const[loading,setLoading]=useState(false)
 const[country,setCountry]=useState('')
 const[countryList,setCountryList]=useState([])
 const [email,setEmail]=useState('')
@@ -20,23 +24,57 @@ const [email,setEmail]=useState('')
       method: 'GET',
       redirect: 'follow'
     };
-    
-    fetch(`${API_BASE_URL}/api/users/countryList`, requestOptions)
+    console.log(`${API_BASE_URL}/api/getCountries`)
+    fetch(`${API_BASE_URL}/api/getCountries`, requestOptions)
       .then(response => response.json())
       .then(result =>{
-        //  console.log('country res',result.data)
          const country=result.data.map(e=>({
              ...e,
-             label: e.country_name,
-             value:e.country_id
+             label: e.name,
+             value:e.code
          }))
          setCountryList(country)
+         console.log('country res',country)
         })
       .catch(error =>{ console.log('error', error)});
   }
 
+
+const sendOtp = async ()=>{
+  setLoading(true)
+  let myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+let raw = JSON.stringify({
+  "email": `${email}`
+});
+
+let requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(`${API_BASE_URL}/api/userAuth/sendOtp`, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+    if(result && result.success == true){
+      navigation.navigate('OtpScreen',{values:values,country:country,email:email})
+      setLoading(false)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    console.log('error', error)
+    setLoading(false)
+  });
+ 
+}
+
 useEffect(()=>{
-  // getCountryList()
+  getCountryList()
 },[])
 
   return (
@@ -47,6 +85,7 @@ useEffect(()=>{
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
     >
+      <Loader loading={loading}></Loader>
       <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
         <Ionicons
         name='arrow-back'
@@ -97,9 +136,17 @@ useEffect(()=>{
                      onChangeText={text => {
                       setEmail(text);
                      }}
-                  />
+                  /> 
               <TouchableOpacity style={{ alignSelf:'center',marginTop:20,}}
-           onPress={()=>{navigation.navigate('OtpScreen')}}>
+           onPress={()=>{
+            if(country == '' || country == 'select country'){
+                    alert('please select country')
+            }else if(email == ''){
+                   alert('please enter email')
+            }else{
+              sendOtp()
+            }
+            }}>
       {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
                       <Icon
                       name={'arrow-circle-right'}

@@ -4,7 +4,8 @@ import queryString from 'query-string';
 import { isObject, isArray, isString } from 'util';
 import Config from 'react-native-config';
 
-export const API_BASE_URL = "https://sehalobackend.onrender.com"  //QA
+export const API_BASE_URL = "https://sehelo.onrender.com"  //prod
+// export const API_BASE_URL = "http://192.168.0.121:5000"  //QA
 
 export default class ApiClient {
     constructor(prefix = '/api') {

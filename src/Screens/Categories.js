@@ -25,10 +25,10 @@ const data1=[
   {id:'#home',name:'#home',},
   {id:'#work',name:'#work',},
   {id:'#boss',name:'#boss',},
-  {id:'#communication',name:'#communication',},
-  {id:'#relationships',name:'#relationships',},
   {id:'#tastyfood',name:'#tastyfood',},
   {id:'#drive',name:'#drive',},
+  {id:'#communication',name:'#communication',},
+  {id:'#relationships',name:'#relationships',},
 ]
 
 const [hastags,setHastags]=useState(data1)
@@ -102,7 +102,7 @@ const Item1=({item})=>{
       <Text style={{alignSelf: 'center',color:'black',fontSize:Metrics.rfv(20),marginTop:10,}}>What made you feel like that ?</Text>
       <View style={{marginTop:10,}}>
       <FlatList
-        numColumns={2}
+        numColumns={3}
         data={hastags}
         renderItem={Item1}
         keyExtractor={item =>item.id}

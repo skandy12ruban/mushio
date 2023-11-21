@@ -73,6 +73,58 @@ const Login = withGlobalize(
       return () => backHandler.remove();
     }, []);
 
+   const Login = async (values)=>{
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    var raw = JSON.stringify({
+      "password": `${values.password}`,
+      "email": `${values.email}`
+    });
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+    };
+    
+    fetch(`${API_BASE_URL}/api/userAuth/login`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result.data)
+        if(result && result.success == true){
+           const usertype= getUserType()
+           console.log('vsfvfzv',usertype)
+              const userInfo = result.data;
+              saveUserProfileInfo(userInfo);
+              dispatch(setuser(userInfo))
+                  if(usertype && usertype == 'Public'){
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: PUBLIC_MAIN_ROUTE}],
+                      });
+                      setLoading(false)
+                    }else{
+             navigation.reset({
+                        index: 0,
+                        routes: [{name: MAIN_ROUTE}],
+                      });
+                      setLoading(false)
+                    }
+           setLoading(false)
+        }else{
+          alert(result.message)
+          setLoading(false)
+        }
+      })
+      .catch(error => {
+        console.log('error', error)
+        setLoading(false)
+      });
+   }
+
+
     return (
       <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
@@ -99,9 +151,9 @@ const Login = withGlobalize(
           <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'sans-serif-condensed'}}> Se<Text style={{color:'black',fontFamily:'serif'}}>halo</Text></Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
-            // validationSchema={SignInFormValidator(props)}
+            validationSchema={SignInFormValidator(props)}
             onSubmit={(values, {resetForm}) => {
-              // SignUpFunction()
+              Login(values)
             }}>
             {({
               values,
@@ -191,22 +243,22 @@ const Login = withGlobalize(
                   }}
                   activeOpacity={0.5}
                   onPress={async() => {
-                    const usertype=await getUserType()
-                    console.log('vsfvfzv',usertype)
-                    const userInfo = {userId: 101};
-                    saveUserProfileInfo(userInfo);
-                    dispatch(setuser(userInfo))
-                    if(usertype && usertype == 'Public'){
-                      navigation.reset({
-                        index: 0,
-                        routes: [{name: PUBLIC_MAIN_ROUTE}],
-                      });
-                    }else{
-                      navigation.reset({
-                        index: 0,
-                        routes: [{name: MAIN_ROUTE}],
-                      });
-                    }
+                    // const usertype=await getUserType()
+                    // console.log('vsfvfzv',usertype)
+                    // const userInfo = {userId: 101};
+                    // saveUserProfileInfo(userInfo);
+                    // dispatch(setuser(userInfo))
+                    // if(usertype && usertype == 'Public'){
+                      // navigation.reset({
+                      //   index: 0,
+                      //   routes: [{name: PUBLIC_MAIN_ROUTE}],
+                      // });
+                    // }else{
+                    //   navigation.reset({
+                    //     index: 0,
+                    //     routes: [{name: MAIN_ROUTE}],
+                    //   });
+                    // }
                     handleSubmit();
                   }}>
                   {/* <Text style={styles.buttonTextStyle}>Sign In</Text> */}

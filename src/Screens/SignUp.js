@@ -7,6 +7,8 @@ import AppTextFieldPassword from '../Components/AppTextFieldPassword';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import * as yup from 'yup'
+
 const { width, height } = Dimensions.get('window');
 
 export const SignUpFormInitialValues = props => ({
@@ -18,13 +20,13 @@ export const SignUpFormValidator = props => {
     return yup.object().shape({
         name: yup
             .string()
-            .required('email or mobile Number is Required'),
+            .required('Name is Required'),
             password: yup
             .string()
             .required('Password is required'),
             confirmpassword: yup
             .string()
-            .required('Password is required'),
+            .required('confirmPassword is required'),
     });
 };
 const SignUp = (props) => {
@@ -54,10 +56,11 @@ const [viewPassword1, setViewPassword1] = useState(true);
             <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Sign up </Text>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
-        //   validationSchema={SignUpFormValidator(props)}
+          validationSchema={SignUpFormValidator(props)}
           onSubmit={(values, {resetForm}) => {
             // SignUpFunction(values, resetForm);
-            navigation.navigate('VerificationScreen')
+            console.log('values',values)
+            navigation.navigate('VerificationScreen',{values:values})
           }}>
           {({
             values,
@@ -81,7 +84,12 @@ const [viewPassword1, setViewPassword1] = useState(true);
             setFieldValue('name' ,text);
           }}
         />
-               
+              {errors.name && touched.name && (
+                  <Text style={{fontSize: 10, color: 'red', alignSelf:'center'}}>
+                    {' '}
+                    * {errors.name}
+                  </Text>
+                )}   
                   
                   <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
                   justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
@@ -108,7 +116,12 @@ const [viewPassword1, setViewPassword1] = useState(true);
                       }}
                     />
                 </View>
-                
+                {errors.password && touched.password && (
+                  <Text style={{fontSize: 10, color: 'red', alignSelf:'center'}}>
+                    {' '}
+                    * {errors.password}
+                  </Text>
+                )}
                   <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
                   justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
                     <TextInput
@@ -134,8 +147,20 @@ const [viewPassword1, setViewPassword1] = useState(true);
                       }}
                     />
                 </View>
+                {errors.confirmpassword && touched.confirmpassword && (
+                  <Text style={{fontSize: 10, color: 'red', alignSelf:'center'}}>
+                    {' '}
+                    * {errors.confirmpassword}
+                  </Text>
+                )}
         <TouchableOpacity style={{ alignSelf:'center',marginTop:20,}}
-           onPress={()=>{navigation.navigate('VerificationScreen')}}>
+           onPress={()=>{
+            if(values.password == values.confirmpassword){
+              handleSubmit()
+            }else{
+              alert('Password does not match')
+            }
+            }}>
       {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
                       <Icon
                       name={'arrow-circle-right'}
