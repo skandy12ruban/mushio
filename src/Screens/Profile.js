@@ -109,37 +109,38 @@ const Profile = () => {
        
        <Card style={{backgroundColor:'white',alignSelf:'center',width:'80%'}}>
        
-            <View style={{flexDirection:'row',justifyContent:'space-between',padding:5}}>
+            <View style={{flexDirection:'row',padding:5,justifyContent:'space-between'}}>
               <View style={{alignSelf:'center',}}>
-              <Text style={{color:'black',fontWeight:'bold',fontSize:25,margin:5,alignSelf:'center',}}>Status</Text>
+              <Text style={{color:'black',fontWeight:'bold',fontSize:25,margin:5,alignSelf:'center',fontStyle:'Montserrat-Bold',}}>Status</Text>
               <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Dec Scores you</Text>
               <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:100,padding:5,}}>{scoreRes.averageMaxScore}</Text>
               </View>
               <View>
-            
-            <FlatList
+              <FlatList
                     data={data}
                     keyExtractor={item => item.id}
                     renderItem={(e1)=>{
-                     let name = e1.item.name ==  scoreRes.emoji ? e1.item : '';
+                     let name = e1.item.name ==  scoreRes.emoji ? e1.item : null;
                       console.log('eeeeee',name);
+                      if(name != null){
                       return(
-                        <TouchableOpacity style={{backgroundColor:name.color, width:30,height:30,borderRadius:5,}} >
+                        <TouchableOpacity style={{backgroundColor: name.color ,width:70,height:70,margin:20, borderRadius:5,}} >
                         <Image
                           style={{
-                          width:20,height:20,margin:5,borderRadius:5,
+                          width:60,height:60,borderRadius:5,margin:5
                          }}
-                        source={name.image}
+                        source={ name.image}
                       />
                      </TouchableOpacity> 
                       )
+                        }
                     }}
                     />
-         </View>
+                    </View>
             </View>
             <View style={{marginBottom:10,}}>
               <Text style={{color:'black',alignSelf:'center',fontSize:15,fontWeight:'bold',}}>you are a happy person,
-              <Text style={{color:'#00B0FF',fontWeight:'bold',fontSize:25,marginTop:10}}> {userInfo.name}</Text></Text>
+              <Text style={{color:'#00B0FF',fontWeight:'bold',fontSize:25,marginTop:10,fontStyle:'Montserrat-Bold',}}> {userInfo.name}</Text></Text>
             </View>
        </Card>
        <View style={{marginTop:10,alignSelf:'center'}}>

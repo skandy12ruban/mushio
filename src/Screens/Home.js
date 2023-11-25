@@ -127,31 +127,14 @@ useEffect(()=>{
             
            
             return(
-              <View style={{margin:10,alignSelf:'center',width:'90%'}}>
-              <Card style={{backgroundColor:'white'}}>
+              <View style={{margin:10,flex:1}}>
+              <Card style={{backgroundColor:'white',}}>
+                
                  <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,}}>
-                  <Text style={{fontWeight:'bold',color:'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,}}>{item.title}</Text>
-                 <FlatList
-                    data={data}
-                    keyExtractor={item => item.id}
-                    renderItem={(e1)=>{
-                     let name = e1.item.name ==  item.emoji ? e1.item : '';
-                      console.log('eeeeee',item);
-                      return(
-                        <TouchableOpacity style={{backgroundColor:name.color, width:30,height:30,borderRadius:5,}} >
-                        <Image
-                          style={{
-                          width:20,height:20,margin:5,borderRadius:5,
-                         }}
-                        source={name.image}
-                      />
-                     </TouchableOpacity> 
-                      )
-                    }}
-                    />
-                 </View>
-                 <Text style={{padding:5,alignSelf:'center',color:'black'}}>{item.description}</Text>
-                    <FlatList
+                   <View style={{width:'70%'}}>
+                   <Text style={{fontWeight:'bold',color:'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,alignSelf:'flex-start'}}>{item.title}</Text>
+                  <Text style={{padding:5,color:'black',marginTop:5,}}>{item.description} </Text>
+                  <FlatList
                     // horizontal
                     numColumns={3}
                     data={item.keywords}
@@ -159,12 +142,40 @@ useEffect(()=>{
                     renderItem={(e)=>{
                       // console.log(e)
                       return(
-                        <View style={{paddingLeft:10,backgroundColor:'lightblue',margin:10,borderRadius:10,}}>
-                        <Text style={{alignSelf:'center',padding:2}}>{e.item}</Text>
+                        <View style={{paddingLeft:10,backgroundColor:'#00B0FF',margin:5,borderRadius:10,}}>
+                        <Text style={{alignSelf:'center',padding:2,color:'black'}}>#{e.item}</Text>
                         </View>
                       )
                     }}
                     />
+                  </View>
+                  <View style={{width:'25%'}}>
+                 <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    renderItem={(e1)=>{
+                     let name = e1.item.name ==  item.emoji ? e1.item : null;
+                      console.log('eeeeee',name);
+                      if(name != null){
+                      return(
+                        <View>
+                        <TouchableOpacity style={{backgroundColor:name.color, width:50,height:50,borderRadius:5,marginTop:20,marginLeft:10}} >
+                        <Image
+                          style={{
+                          width:40,height:40,margin:5,borderRadius:5,
+                         }}
+                        source={name.image}
+                      />
+                     </TouchableOpacity>
+                     {/* <Text style={{alignSelf:'flex-end',marginRight:10,color:'black',margin:5,marginTop:10}}>10.99 pm</Text>  */}
+                     </View>
+                      )
+                        }
+                    }}
+                    />
+                    </View>
+                 </View>
+                
               </Card>
            </View>
             )
