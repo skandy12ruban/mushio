@@ -67,21 +67,6 @@ useEffect(()=>{
   getAllMoments()
 },[])
 
-  const Item =async ({item})=>{
-    console.log('item.',item)
-    return(
-      <View>
-         <TouchableOpacity style={{backgroundColor:item.color, width:30,height:30,borderRadius:5,}} >
-                        <Image
-                          style={{
-                          width:20,height:20,margin:5,borderRadius:5,
-                         }}
-                        source={item.image}
-                      />
-             </TouchableOpacity>
-      </View>
-    )
-  }
 
   return (
     <SafeAreaView style={{flex:1}}>
@@ -179,7 +164,11 @@ useEffect(()=>{
               </Card>
            </View>
             )
-          }):(null)}
+          }):(
+            <View style={{alignSelf:'center',marginTop:20}}>
+             <Text style={{fontWeight:'bold',fontSize:20}}> No Moments </Text> 
+           </View>
+          )}
         </View>
       </ScrollView>
 

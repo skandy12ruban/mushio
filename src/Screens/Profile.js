@@ -91,14 +91,14 @@ const Profile = () => {
       <View style={{marginTop:10}}>
           <Switch
               style={{
-                marginRight: 10,
+               transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],alignSelf:'flex-end',marginRight:10
               }}
               color='#00B0FF'
               value={isSwitchOn}
               onValueChange={onToggleSwitch}
             />
       </View>
-      <View style={{alignSelf:'flex-end'}}>
+      <View style={{alignSelf:'flex-end',marginTop:5}}>
                 <Entypo
                   name="menu"
                    size={40}
@@ -111,9 +111,9 @@ const Profile = () => {
        
             <View style={{flexDirection:'row',padding:5,justifyContent:'space-between'}}>
               <View style={{alignSelf:'center',}}>
-              <Text style={{color:'black',fontWeight:'bold',fontSize:25,margin:5,alignSelf:'center',fontStyle:'Montserrat-Bold',}}>Status</Text>
+              <Text style={{color:'black',fontSize:25,margin:5,alignSelf:'center',fontFamily:'Montserrat-Bold',}}>Status</Text>
               <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Dec Scores you</Text>
-              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:100,padding:5,}}>{scoreRes.averageMaxScore}</Text>
+              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:100,padding:5,}}>{scoreRes.averageMaxScore != undefined ? scoreRes.averageMaxScore : 0}</Text>
               </View>
               <View>
               <FlatList
@@ -140,7 +140,7 @@ const Profile = () => {
             </View>
             <View style={{marginBottom:10,}}>
               <Text style={{color:'black',alignSelf:'center',fontSize:15,fontWeight:'bold',}}>you are a happy person,
-              <Text style={{color:'#00B0FF',fontWeight:'bold',fontSize:25,marginTop:10,fontStyle:'Montserrat-Bold',}}> {userInfo.name}</Text></Text>
+              <Text style={{color:'#00B0FF',fontSize:25,marginTop:10,fontFamily:'Montserrat-Bold',}}> {userInfo.name}</Text></Text>
             </View>
        </Card>
        <View style={{marginTop:10,alignSelf:'center'}}>

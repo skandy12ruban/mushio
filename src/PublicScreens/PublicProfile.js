@@ -152,7 +152,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
           <View style={{marginTop:Metrics.rfv(10)}}>
           <Switch
               style={{
-                marginRight: Metrics.rfv(10),
+                transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],alignSelf:'flex-end',marginRight:10
               }}
               color='#00B0FF'
               value={!isSwitchOn}
