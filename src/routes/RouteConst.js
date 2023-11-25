@@ -13,3 +13,6 @@ export const CATEGORY = "Category"
 export const PROFILE_DETAILS = 'ProfileDetails'
 export const AGREEMENT = 'Agreement'
 export const PRIVATE_APP_DRAWER = 'PrivateAppDrawer'
+export const SETTINGS = "Settings"
+export const HELP = "Help"
+export const PRIVATE_ABOUT = "PrivateAbout"

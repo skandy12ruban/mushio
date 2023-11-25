@@ -9,32 +9,32 @@ const Help = () => {
     const navigation=useNavigation()
     return (
       <SafeAreaView style={{alignSelf:'center',width:'100%'}}>
-       <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
-       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+       {/* <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}> */}
+       <View style={{flexDirection:'row',margin:10}}>
           
           <Ionicons
               onPress={() => {
                  navigation.goBack()
               }}
               style={{
-                paddingRight: 5
+                paddingLeft: 10
               }}
               name={'arrow-back'}
               size={30}
               color={'black'}
             />
-           
+            <Text style={{color:'black',fontWeight:'bold',fontSize:25,paddingLeft: 20}}>{'Help'}</Text>
            </View>
-           <Text style={{color:'black',fontWeight:'bold',fontSize:25}}>{'Help'}</Text>
-           <View style={{bottom:10}}>
+          
+           {/* <View style={{bottom:10}}>
                  <Entypo
                     name="menu"
                      size={40}
                      style={{color:'black',}}
                     onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
                    /> 
-          </View>
-      </View>
+          </View> */}
+      {/* </View> */}
   
       <View style={{alignSelf:'center',marginTop:Metrics.rfv(50)}}>
      

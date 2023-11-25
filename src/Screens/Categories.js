@@ -13,22 +13,20 @@ const navigation = useNavigation()
 const [selectedItem,setselectedItem]=useState('')
 const[value,setvalues]=useState(false)
 const data=[
-  {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Outstanding'},
-  {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Great'},
-  {id:3,color:'#C7F6B6',image:require('../assets/images/image2.jpg'),name:'Excellent'},
-  {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'calm down'},
-  {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Don't cry"},
+  {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Super Happy'},
+  {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
+  {id:3,color:'#008B8B',image:require('../assets/images/image2.jpg'),name:'Neutral'},
+  {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'Sad'},
+  {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Very Sad"},
   // {id:6,color:'lightgrey',image:require('../assets/images/image2.jpg'),name:''},
 ]
 const data1=[
-  {id:'#Type',name:'#Type',},
-  {id:'#home',name:'#home',},
   {id:'#work',name:'#work',},
-  {id:'#boss',name:'#boss',},
-  {id:'#tastyfood',name:'#tastyfood',},
-  {id:'#drive',name:'#drive',},
-  {id:'#communication',name:'#communication',},
-  {id:'#relationships',name:'#relationships',},
+  {id:'#travel',name:'#travel',},
+  {id:'#promotion',name:'#promotion',},
+  {id:'#food',name:'#food',},
+  {id:'#award',name:'#award',},
+  {id:'#family',name:'#family',},
 ]
 
 const [hastags,setHastags]=useState(data1)
@@ -70,7 +68,7 @@ const Item1=({item})=>{
           }
          
       }}>
-     <Text style={{alignSelf:'center',color:'black'}}>{item.name}</Text>
+     <Text style={{alignSelf:'center',color:'black',fontWeight:'bold'}}>{item.name}</Text>
      </TouchableOpacity>
           
     </View>
@@ -80,7 +78,7 @@ const Item1=({item})=>{
     <SafeAreaView style={{backgroundColor:'white',flex:1}}>
       <ScrollView>
     <View style={{marginTop:Metrics.rfv(10),margin:10}}>
-     <Card style={{padding:20,}}>
+     <Card style={{padding:20,backgroundColor:'white'}}>
       <View style={{ alignSelf: 'flex-end',}}>
          <Entypo
            name="cross"
@@ -89,7 +87,7 @@ const Item1=({item})=>{
             />
       </View>
       <View style={{alignSelf: 'center',}}>
-      <Text style={{fontSize:Metrics.rfv(25),fontWeight:'bold',color:'black'}}>How are you feeling Today ?</Text>
+      <Text style={{fontSize:Metrics.rfv(25),fontWeight:'bold',color:'black',alignSelf:'center',}}>How are you feeling Today ?</Text>
       </View>
       <View style={{marginTop:20,}}>
       <FlatList
@@ -109,16 +107,19 @@ const Item1=({item})=>{
         />
       </View>
      </Card>
-     <TouchableOpacity style={{backgroundColor:'black',width:'60%',padding:10,
-          alignSelf:'center',marginTop:20,borderRadius:5}}
+     <TouchableOpacity style={{backgroundColor:'black',width:'40%',padding:10,
+          alignSelf:'center',marginTop:20,borderRadius:15}}
        onPress={()=>{
-        if(selectedItem != ''){
-          navigation.navigate('Category',{item:selectedItem})
-        }else{
+        if(selectedItem != '' && selectedHastags.length > 0){
+          navigation.navigate('Category',{item:selectedItem,hashtags:selectedHastags})
+        }else if(selectedHastags.length == 0){
+          alert('Please select any one Hashtag')
+         }
+        else{
              alert('Please select any one emoji')
         }
         }}>
-      <Text style={{alignSelf:'center',color:'white'}}>Next</Text>
+      <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
      </TouchableOpacity>
     </View>
     </ScrollView>

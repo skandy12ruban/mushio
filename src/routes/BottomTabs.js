@@ -70,7 +70,7 @@ const BottomTabs = (props) => {
                     <Ionicons
                       name="home"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray', },
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black', borderRadius: 44,padding:5 },
                         focused && { fontSize: Metrics.rfv(30), color: 'white', },
                       ]}
                     />
@@ -112,7 +112,7 @@ const BottomTabs = (props) => {
                     <AntDesign
                       name="pluscircleo"
                       style={[
-                        { fontSize: Metrics.rfv(30), color: 'gray' },
+                        { fontSize: Metrics.rfv(30),color: 'white',backgroundColor:'black', borderRadius: 44,padding:5  },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />
@@ -154,7 +154,7 @@ const BottomTabs = (props) => {
                     <Octicons
                       name="graph"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray', },
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black', borderRadius: 44,padding:5 },
                         focused && { fontSize: Metrics.rfv(25), color: 'white' },
                       ]}
                     />
@@ -198,7 +198,7 @@ const BottomTabs = (props) => {
                       user-circle
                       name="user-circle"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray' },
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black', borderRadius: 44,padding:5 },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />

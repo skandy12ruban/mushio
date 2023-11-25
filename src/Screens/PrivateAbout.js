@@ -9,31 +9,32 @@ const PrivateAbout = () => {
     const navigation=useNavigation()
     return (
       <SafeAreaView style={{alignSelf:'center',width:'100%'}}>
-       <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
-       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+       {/* <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}> */}
+       <View style={{flexDirection:'row',margin:10}}>
           
           <Ionicons
               onPress={() => {
                  navigation.goBack()
               }}
               style={{
-                paddingRight: 5
+                paddingLeft: 10
               }}
               name={'arrow-back'}
               size={30}
               color={'black'}
             />
+            <Text style={{color:'black',fontWeight:'bold',fontSize:25,paddingLeft: 20}}>{'About'}</Text>
            </View>
-           <Text style={{color:'black',fontWeight:'bold',fontSize:25}}>{'About'}</Text>
-           <View style={{bottom:10}}>
+           
+           {/* <View style={{bottom:10}}>
                  <Entypo
                     name="menu"
                      size={40}
                      style={{color:'black',}}
                     onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
                    /> 
-          </View>
-      </View>
+          </View> */}
+      {/* </View> */}
      <ScrollView>
     <View style={{margin:10,backgroundColor:'white',padding:10,alignSelf:'center'}}>
     <Text style={{color:'black',alignSelf:'center'}}>The Sehalo app has two modes, Mood Tracker and Entertainment, each with its unique features. 

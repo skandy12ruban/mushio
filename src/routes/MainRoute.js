@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HOME,LOGIN,  PRIVATE_APP_DRAWER,  PROFILE_DETAILS,  SIGNIN, SIGNUP,  } from './RouteConst';
+import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HELP,  HOME,LOGIN,  PRIVATE_ABOUT,  PRIVATE_APP_DRAWER,  PROFILE_DETAILS,  SETTINGS,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
 import { Category, DetailsPage, DrawerScreen, ListPage, Login,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +13,9 @@ import BottomTabs from './BottomTabs';
 import { PUBLIC_MAIN_ROUTE } from './PublicRouteConts';
 import PublicMainRoute from './PublicMainRoute';
 import PrivateAppDrawer from './PrivateAppDrawer';
+import Settings from '../Screens/Settings';
+import PrivateAbout from '../Screens/PrivateAbout';
+import Help from '../Screens/Help';
 
 const MainStack = createStackNavigator();
 
@@ -42,6 +45,9 @@ const MainRoute = () => {
                      <MainStack.Screen name={BOTTOM_TABS} component={BottomTabs} />
                      <MainStack.Screen name={CATEGORY} component={Category} />
                      <MainStack.Screen name={PROFILE_DETAILS} component={ProfileDetails} />
+                     <MainStack.Screen name={SETTINGS} component={Settings} />
+                     <MainStack.Screen name={HELP} component={Help} />
+                     <MainStack.Screen name={PRIVATE_ABOUT} component={PrivateAbout} />
                      <MainStack.Screen name={PUBLIC_MAIN_ROUTE} component={PublicMainRoute} />
                      <MainStack.Screen name={PRIVATE_APP_DRAWER} component={PrivateAppDrawer} />
                 </>

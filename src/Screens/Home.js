@@ -9,33 +9,79 @@ import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
+import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 
 
 const Home = (props) => {
   const navigation = useNavigation();
 
   const[loading,setLoading]=useState(false)
-  const [date, setFromDate] = useState({
-    date: new Date(),
-    formatFromDate: DateHelper.formatToDate(new Date())
-});
-const [selectedDateString, setSelectedDateString] = useState(moment(new Date()));
-
+  const[momentsArray,setMomentsArray]=useState([])
+  
+//   const [date, setFromDate] = useState({
+//     date: new Date(),
+//     formatFromDate: DateHelper.formatToDate(new Date())
+// });
+const [selectedDateString, setSelectedDateString] = useState(DateHelper.formatToDateYMD(new Date()));
+console.log('dddd',selectedDateString)
 const data=[
-  {id:1,title:'Felt happy',
-  description:'The CalendarStrip source files are copied from the project root directory into',
-  likes:[{id:2,name:'#work'},{id:4,name:'#communication'},],
-  image:{id:2,color:'#00B0FF',image:require('../assets/images/image2.jpg'),name:'Great'},},
-  {id:2,title:'Felt sad',
-  description:'The CalendarStrip source files are copied from the project root directory into',
-  likes:[{id:2,name:'#work'},{id:4,name:'#communication'},],
-  image: {id:4,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Don't cry"},},
-  {id:3,title:'Felt super happy',
-  description:'The CalendarStrip source files are copied from the project root directory into',
-  likes:[{id:2,name:'#work'},{id:4,name:'#communication'},],
-  image:{id:3,color:'#C7F6B6',image:require('../assets/images/image3.jpg'),name:'Excellent'},}
+  {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'SuperHappy'},
+  {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
+  {id:3,color:'#008B8B',image:require('../assets/images/image2.jpg'),name:'Neutral'},
+  {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'Sad'},
+  {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"VerySad"},
 ]
 
+
+const getAllMoments = async (Date)=>{
+
+  // console.log('date.',Date != undefined ? Date : selectedDateString);
+  const res= await getUserProfileInfo()
+  // console.log(res.accessToken)
+ setLoading(true)
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+    // console.log(`${API_BASE_URL}/api/private/moment/myMoments?date=${Date != undefined ? Date : selectedDateString}&sortType=desc&page=1&perPage=100`)
+    fetch(`${API_BASE_URL}/api/private/moment/myMoments?date=${Date != undefined ? Date : selectedDateString}&sortType=desc&page=1&perPage=100`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      console.log(result.data.list)
+      if(result && result.success == true){
+        setMomentsArray(result.data.list)
+        setLoading(false)
+      }
+      setLoading(false)
+    })
+    .catch(error => {
+      console.log('error', error)
+      setLoading(false)
+    });
+}
+
+useEffect(()=>{
+  getAllMoments()
+},[])
+
+  const Item =async ({item})=>{
+    console.log('item.',item)
+    return(
+      <View>
+         <TouchableOpacity style={{backgroundColor:item.color, width:30,height:30,borderRadius:5,}} >
+                        <Image
+                          style={{
+                          width:20,height:20,margin:5,borderRadius:5,
+                         }}
+                        source={item.image}
+                      />
+             </TouchableOpacity>
+      </View>
+    )
+  }
 
   return (
     <SafeAreaView style={{flex:1}}>
@@ -55,7 +101,7 @@ const data=[
          </TouchableOpacity>
       </View>
      <Text style={{fontSize:25,marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Montserrat-Bold',}}>Hello, <Text style={{color:'#00B0FF',fontStyle:'Montserrat-Bold',}}>Satish</Text></Text>
-     <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Roboto-Regular'}}>Mushio greets you good morning</Text>
+     <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Roboto-Regular'}}>Dec greets you good morning</Text>
       <View style={{marginTop:10}}>
       <CalendarStrip
       scrollable
@@ -68,38 +114,53 @@ const data=[
       selectedDate={selectedDateString}
       highlightDateNumberStyle={{backgroundColor:'#00B0FF',borderRadius:50,color:'white',padding:2}}
       onDateSelected={(date) => {
-        console.log(date)
-        setSelectedDateString(date)
+        let Date=DateHelper.formatToDateYMD(date)
+        // console.log('date..',DateHelper.formatToDateYMD(date))
+        setSelectedDateString(DateHelper.formatToDateYMD(Date))
+        getAllMoments(Date)
       }}
     />
       </View>
       <ScrollView>
         <View style={{flex:2}}>
-          {data.map((item)=>{
+          {momentsArray.length > 0 ? momentsArray.map((item)=>{
+            
+           
             return(
-              <View style={{margin:10,alignSelf:'center'}}>
-              <Card style={{width:'100%',backgroundColor:'white'}}>
-                 <View style={{flexDirection:'row',justifyContent:'space-between',padding:10}}>
-                  <Text style={{fontWeight:'bold',color:'black'}}>{item.title}</Text>
-                  <TouchableOpacity style={{backgroundColor:item.image.color, width:30,height:30,borderRadius:5,}} >
-                  <Image
-                    style={{
-                    width:20,height:20,margin:5,borderRadius:5,
-                   }}
-                  source={item.image.image}
-                />
-                </TouchableOpacity>
+              <View style={{margin:10,alignSelf:'center',width:'90%'}}>
+              <Card style={{backgroundColor:'white'}}>
+                 <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,}}>
+                  <Text style={{fontWeight:'bold',color:'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,}}>{item.title}</Text>
+                 <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    renderItem={(e1)=>{
+                     let name = e1.item.name ==  item.emoji ? e1.item : '';
+                      console.log('eeeeee',item);
+                      return(
+                        <TouchableOpacity style={{backgroundColor:name.color, width:30,height:30,borderRadius:5,}} >
+                        <Image
+                          style={{
+                          width:20,height:20,margin:5,borderRadius:5,
+                         }}
+                        source={name.image}
+                      />
+                     </TouchableOpacity> 
+                      )
+                    }}
+                    />
                  </View>
                  <Text style={{padding:5,alignSelf:'center',color:'black'}}>{item.description}</Text>
                     <FlatList
-                    horizontal
-                    data={item.likes}
-                    keyExtractor={item =>item.id}
+                    // horizontal
+                    numColumns={3}
+                    data={item.keywords}
+                    keyExtractor={item => item.index}
                     renderItem={(e)=>{
-                      console.log(e)
+                      // console.log(e)
                       return(
                         <View style={{paddingLeft:10,backgroundColor:'lightblue',margin:10,borderRadius:10,}}>
-                        <Text style={{alignSelf:'center',padding:2}}>{e.item.name}</Text>
+                        <Text style={{alignSelf:'center',padding:2}}>{e.item}</Text>
                         </View>
                       )
                     }}
@@ -107,7 +168,7 @@ const data=[
               </Card>
            </View>
             )
-          })}
+          }):(null)}
         </View>
       </ScrollView>
 

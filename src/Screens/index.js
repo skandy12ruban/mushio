@@ -11,8 +11,9 @@ import _Category from './Category'
 import _ProfileDetails from './ProfileDetails'
 import _Moments from '../PublicScreens/Moments'
 import _Agreement from './Agreement'
-
-
+import _Settings from './Settings'
+import _Help from './Help'
+import _PrivateAbout from './PrivateAbout'
 
 export const Splash = _Splash;
 export const Login = _Login;
@@ -25,5 +26,8 @@ export const VerificationScreen = _VerificationScreen
 export const OtpScreen = _OtpScreen
 export const Category = _Category
 export const ProfileDetails = _ProfileDetails
+export const Help = _Help
+export const PrivateAbout = _PrivateAbout
 export const Moments = _Moments
 export const Agreement = _Agreement
+export const Settings = _Settings

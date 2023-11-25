@@ -1,5 +1,5 @@
-import { View, Text,Alert,TouchableOpacity,SafeAreaView,Image } from 'react-native'
-import React,{useState} from 'react'
+import { View, Text,Alert,TouchableOpacity,SafeAreaView,Image,FlatList } from 'react-native'
+import React,{useEffect, useState} from 'react'
 import Header from '../Components/Header'
 import { useDispatch } from 'react-redux'
 import { logout } from '../Redux/reducer/User'
@@ -12,11 +12,23 @@ import { Card } from 'react-native-paper'
 import { PUBLIC_MAIN_ROUTE } from '../routes/PublicRouteConts'
 import { setusertype } from '../Redux/reducer/userType'
 import LinearGradient from 'react-native-linear-gradient'
+import Loader from '../Components/Loader'
 
 const Profile = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [userInfo,setUserInfo]=useState({})
+  const [loading,setLoading]=useState(false)
+  const[scoreRes,setScoreRes]=useState({})
     const dispatch = useDispatch()
     const navigation= useNavigation()
+
+    const data=[
+      {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Super Happy'},
+      {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
+      {id:3,color:'#008B8B',image:require('../assets/images/image2.jpg'),name:'Neutral'},
+      {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'Sad'},
+      {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Very Sad"},
+    ]
 
     const onToggleSwitch = () => {
       setIsSwitchOn(!isSwitchOn);
@@ -32,10 +44,44 @@ const Profile = () => {
       }
    }
  
+   const MyScore = async ()=>{
+    const res = await getUserProfileInfo()
+    setUserInfo(res)
+    // console.log(res)
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+  
+  var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+  };
+
+  fetch(`${API_BASE_URL}/api/private/moment/myProfile`, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result.data)
+    if(result && result.success == true){
+    setScoreRes(result.data)
+      setLoading(false)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    console.log('error', error)
+    setLoading(false)
+  });
+  }
+
+  useEffect(()=>{
+   MyScore()
+  },[])
 
   return (
     <SafeAreaView>
       {/* <Header bellIcon={true}/> */}
+      <Loader loading={loading}></Loader>
       <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:0,width:"100%",height:'100%'}}
@@ -57,7 +103,7 @@ const Profile = () => {
                   name="menu"
                    size={40}
                    style={{marginRight: 20,color:'black'}}
-                onPress={()=>{navigation.navigate('PrivateAppDrawer')}}   
+                onPress={()=>{navigation.navigate('Settings')}}   
                  />
       </View>
        
@@ -66,21 +112,34 @@ const Profile = () => {
             <View style={{flexDirection:'row',justifyContent:'space-between',padding:5}}>
               <View style={{alignSelf:'center',}}>
               <Text style={{color:'black',fontWeight:'bold',fontSize:25,margin:5,alignSelf:'center',}}>Status</Text>
-              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Sehalo Scores you</Text>
-              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:50,padding:5}}>76</Text>
+              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Dec Scores you</Text>
+              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:100,padding:5,}}>{scoreRes.averageMaxScore}</Text>
               </View>
               <View>
-            <Image
-          style={{
-             width:80,height:80,borderRadius:10,margin:10
-            }}
-           source={require('../assets/images/image3.jpg')}
-         />
+            
+            <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    renderItem={(e1)=>{
+                     let name = e1.item.name ==  scoreRes.emoji ? e1.item : '';
+                      console.log('eeeeee',name);
+                      return(
+                        <TouchableOpacity style={{backgroundColor:name.color, width:30,height:30,borderRadius:5,}} >
+                        <Image
+                          style={{
+                          width:20,height:20,margin:5,borderRadius:5,
+                         }}
+                        source={name.image}
+                      />
+                     </TouchableOpacity> 
+                      )
+                    }}
+                    />
          </View>
             </View>
             <View style={{marginBottom:10,}}>
-              <Text style={{color:'black',alignSelf:'center',fontSize:15}}>you are a happy person,
-              <Text style={{color:'#00B0FF',fontWeight:'bold',fontSize:20,marginTop:10}}> Satish</Text></Text>
+              <Text style={{color:'black',alignSelf:'center',fontSize:15,fontWeight:'bold',}}>you are a happy person,
+              <Text style={{color:'#00B0FF',fontWeight:'bold',fontSize:25,marginTop:10}}> {userInfo.name}</Text></Text>
             </View>
        </Card>
        <View style={{marginTop:10,alignSelf:'center'}}>

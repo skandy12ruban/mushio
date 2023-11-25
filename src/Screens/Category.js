@@ -1,5 +1,5 @@
 import { View, Text,SafeAreaView,FlatList,Image,ScrollView,TouchableOpacity,TextInput,
-  PermissionsAndroid,Platform,ActivityIndicator,Button,StyleSheet } from 'react-native'
+  PermissionsAndroid,Platform,ActivityIndicator,Button,StyleSheet,Alert } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import { Card } from 'react-native-paper'
 import Metrics from '../Constants/Metrics'
@@ -13,17 +13,25 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
+import Loader from '../Components/Loader';
+import { API_BASE_URL } from '../api/ApiClient';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const Category = () => {
     const route =useRoute()
-    const {item}=route.params;
+    const {item,hashtags}=route.params;
+    console.log(item,hashtags)
+    const[loading,setLoading]=useState(false)
     const navigation=useNavigation()
     const[title,setTitle]=useState('')
     const[description,setDescription]=useState('')
     const [selectedDate, setSelectedDate] = useState(new Date());
   const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const[imgArray,setImagArray]=useState([])
+  const[videoArray,setVideoArray]=useState([])
+  const[audioArray,setAudioArray]=useState([])
   const [visible,setVisible]=useState(false)
   const [fileUri, setFileUri] = useState(null);
   const [fileUri1, setFileUri1] = useState(null);
@@ -39,6 +47,9 @@ const Category = () => {
    const [currentDurationSec, setCurrentDurationSec] = useState(recordTime);
    const [playTime, setPlayTime] = useState(0);
    const [duration, setDuration] = useState(recordTime);
+
+  
+
 console.log('duration',duration)
 
   const showDatePicker = () => {
@@ -106,7 +117,20 @@ console.log('duration',duration)
     const result = await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
     setRecordSecs(0);
+    const fileNameWithoutExtension = result.replace(/\.[^/.]+$/, "");
+
+// Constructing the desired object
+    const resultObject = {
+          uri: result,
+           type: "audio/mp3", // Change this to the appropriate MIME type for your use case
+          fileName: 'audio',
+       };
+       console.log(resultObject);
     setAudioPath(result)
+    const audioArray=[]
+    audioArray.push(resultObject)
+    // console.log('audioArray...',audioArray)
+    filesUpload2(audioArray)
      console.log('response',result)
     
   };
@@ -151,7 +175,7 @@ console.log('duration',duration)
     let options = {
       mediaType: 'photo',
       // includeBase64: true,
-      selectionLimit:100,
+      selectionLimit:4,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -167,8 +191,10 @@ console.log('duration',duration)
       } else {
         const source = { uri: response.assets.uri };
         console.log('response', JSON.stringify(response));
+       
         setType(response.assets[0].type)
         setFileUri(response.assets[0].uri)
+        filesUpload(response.assets)
       }
     });
 
@@ -195,24 +221,225 @@ console.log('duration',duration)
         console.log('response', JSON.stringify(response));
         setType(response.assets[0].type)
         setFileUri1(response.assets[0].uri)
+        filesUpload1(response.assets)
       }
     });
 
   }
 
+  const filesUpload = async (ImgArray)=>{
+    setLoading(true)
+    const res = await getUserProfileInfo()
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    const formdata = new FormData();
+
+    ImgArray.forEach((image, index) => {
+      formdata.append('files', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName,
+      });
+    });
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+// console.log(requestOptions) 
+fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    // console.log('upload res',result.data)
+    if(result && result.success == true){ 
+      const urlArray = result.data.map(item => item.url);
+      setImagArray(urlArray)
+      // console.log(urlArray)
+      alert(result.message)
+      setLoading(false)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    console.log('error', error)
+    setLoading(false)
+  });
+  }
+  const filesUpload1 = async (ImgArray)=>{
+    setLoading(true)
+    const res = await getUserProfileInfo()
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    const formdata = new FormData();
+
+    ImgArray.forEach((image, index) => {
+      formdata.append('files', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName,
+      });
+    });
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+// console.log(requestOptions) 
+fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log('upload res',result.data)
+    if(result && result.success == true){ 
+      const urlArray = result.data.map(item => item.url);
+      setVideoArray(urlArray)
+      // console.log(urlArray)
+      alert(result.message)
+      setLoading(false)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    console.log('error', error)
+    setLoading(false)
+  });
+  }
+  const filesUpload2 = async (ImgArray)=>{
+    setLoading(true)
+    const res = await getUserProfileInfo()
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    const formdata = new FormData();
+
+    ImgArray.forEach((image, index) => {
+      formdata.append('files', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName,
+      });
+    });
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+// console.log(formdata) 
+fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    // console.log('upload res',result.data)
+    if(result && result.success == true){ 
+      const urlArray = result.data.map(item => item.url);
+      setAudioArray(urlArray)
+      // console.log(urlArray)
+      alert(result.message)
+      setLoading(false)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    console.log('error', error)
+    setLoading(false)
+  });
+  }
+
+  console.log('audio res',audioArray)
+  console.log('video res',videoArray)
+  console.log('image res',imgArray)
+
+ const onSubmit = async ()=>{
+  const res= await getUserProfileInfo()
+  console.log(res.accessToken)
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+
+  var raw = JSON.stringify({
+    "emoji": `${item.name}`,
+    "date":new Date(),
+    "title": `${title}`,
+    "description": `${description}`,
+    "keywords": hashtags,
+    "audioUrls": audioArray,
+    "videoUrls": videoArray,
+    "imageUrls": imgArray
+  });
+  
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  console.log(raw)
+  fetch(`${API_BASE_URL}/api/private/moment`, requestOptions)
+.then(response => response.json())
+.then(result => {
+// console.log('moment res',result)
+if(result && result.success == true){
+  console.log(result.data)
+  Alert.alert(' ', result.message, [
+    {
+      text: 'Cancel',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+    {text: 'OK', onPress: () =>  navigation.goBack()},
+  ]);
+
+  setLoading(false)
+}
+setLoading(false)
+})
+.catch(error => {
+alert(result.message)
+console.log('error', error)
+setLoading(false)
+});
+}
+
+
+ 
+
+
   return (
     <SafeAreaView style={{backgroundColor:item.color,flex:1}}>
+      <Loader loading={loading}></Loader>
         <ScrollView>
-       <View style={{marginTop:Metrics.rfv(30),margin:10,flex:1}}>
+       <View style={{marginTop:Metrics.rfv(10),margin:10,flex:1}}>
     
-      <View style={{ alignSelf: 'flex-end',}}>
+       <View>
+        <Ionicons
+            onPress={() => {
+               navigation.goBack()
+            }}
+            style={{
+              marginLeft:10,
+            }}
+            name={'arrow-back'}
+            size={40}
+            color={'white'}
+          />
+        </View>
+      {/* <View style={{ alignSelf: 'flex-end',}}>
          <Entypo
            name="cross"
            size={30}
            color='black'
+           onPress={()=>{navigation.goBack()}}
             />
-      </View>
-      <View style={{alignSelf: 'center',marginTop:Metrics.rfv(30),}}>
+      </View> */}
+
+      <View style={{alignSelf: 'center',marginTop:Metrics.rfv(10),}}>
         <Text style={{fontSize:Metrics.rfv(30),color:'black',alignSelf: 'center',fontWeight:'bold'}}>{item.name}</Text>
       <Image
           style={{
@@ -221,12 +448,13 @@ console.log('duration',duration)
            source={item.image}
          />
       </View>
-       <Text style={{color:'black',alignSelf: 'center',marginTop:Metrics.rfv(10),}}>Tell mushio about your day</Text>
+       <Text style={{color:'black',alignSelf: 'center',marginTop:Metrics.rfv(10),fontWeight:'bold'}}>Tell dec about your day</Text>
        <View style={{alignSelf:'center',width:'90%'}}>
         <TextInput
          value={title}
          placeholder={'Title'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,}}
+         placeholderTextColor={'black'}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,fontWeight:'bold'}}
          onChangeText={text => {
             setTitle( text);
           }}
@@ -234,7 +462,8 @@ console.log('duration',duration)
         <TextInput
          value={description}
          placeholder={'Description'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,height:100}}
+         placeholderTextColor={'black'}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,height:100,fontWeight:'bold'}}
          multiline={true}
          onChangeText={text => {
             setDescription( text);
@@ -288,8 +517,9 @@ console.log('duration',duration)
            </TouchableOpacity>
         </View>
         <View>
-        <Text> {fileUri != null ? fileUri : null}</Text>
-        <Text> {fileUri1 != null ? fileUri1 : null}</Text>
+        {/* <Text> {fileUri != null ? fileUri : null}</Text>
+            <Text> {fileUri1 != null ? fileUri1 : null}</Text>
+           <Text>{audioPath != ''? audioPath : null}</Text> */}
         <Text style={{color:'black'}}>  {selectedDate && visible ? selectedDate.toLocaleDateString() : null}</Text>
         </View>
         {audioPath != '' ?( 
@@ -333,9 +563,12 @@ console.log('duration',duration)
       </View>
       </View>
       ):(null)}
-        <TouchableOpacity style={{backgroundColor:'black',width:'60%',padding:10,
-          alignSelf:'center',marginTop:20,borderRadius:5}}
-           onPress={()=>{navigation.navigate('Home')}}>
+        <TouchableOpacity style={{backgroundColor:'black',width:'40%',padding:10,
+          alignSelf:'center',marginTop:20,borderRadius:15}}
+           onPress={()=>{
+            onSubmit()
+            // navigation.navigate('Home')
+            }}>
       <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
      </TouchableOpacity>
        </View>
