@@ -126,12 +126,13 @@ const Login = withGlobalize(
 
 
     return (
-      <LinearGradient
-      colors={['#cdffd8', '#94b9ff' ]}
-      style={{flex:1,width:"100%",height:'100%'}}
-      start={{ x: 0, y: 0.5 }}
-      end={{ x: 1, y: 0.5 }}
-    >
+    //   <LinearGradient
+    //   colors={['#cdffd8', '#94b9ff' ]}
+    //   style={{flex:1,width:"100%",height:'100%'}}
+    //   start={{ x: 0, y: 0.5 }}
+    //   end={{ x: 1, y: 0.5 }}
+    // >
+    <View style={{backgroundColor:'black',flex:1}}>
       <ScrollView
         style={{
           // backgroundColor: 'lightblue',
@@ -148,7 +149,7 @@ const Login = withGlobalize(
             alignSelf: 'center',
             width: '90%',marginTop:Metrics.rfv(30)
           }}>
-          <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'sans-serif-condensed'}}> Se<Text style={{color:'black',fontFamily:'serif'}}>halo</Text></Text>
+          <Text style={{color:'#00B0FF',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'sans-serif-condensed'}}> Se<Text style={{color:'white',fontFamily:'serif'}}>halo</Text></Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
             validationSchema={SignInFormValidator(props)}
@@ -230,14 +231,14 @@ const Login = withGlobalize(
                     * {errors.password}
                   </Text>
                 )}
-              <Text style={{color: 'black',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
+              <Text style={{color: 'white',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
                 <TouchableOpacity
                   style={{
-                    // backgroundColor: '#00B0FF',
-                    // padding:5,
-                    // width: width * 0.7,
+                    backgroundColor: 'white',
+                    padding:3,
+                    width: width * 0.5,
                     alignSelf: 'center',
-                    // borderRadius: 10,
+                    borderRadius: 10,
                     marginTop: 20,
                     // marginBottom: 20,
                   }}
@@ -261,12 +262,12 @@ const Login = withGlobalize(
                     // }
                     handleSubmit();
                   }}>
-                  {/* <Text style={styles.buttonTextStyle}>Sign In</Text> */}
-                  <MaterialCommunityIcons
+                  <Text style={styles.buttonTextStyle}>Login </Text>
+                  {/* <MaterialCommunityIcons
                      name="check-decagram"
                      color={'white'}
                     size={70}
-                  />
+                  /> */}
                 </TouchableOpacity>
               </>
             )}
@@ -275,17 +276,18 @@ const Login = withGlobalize(
        
         <View style={{marginTop:100}}>
               <Text
-                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'black'}}>
+                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'white'}}>
                 Don't have an account ? {' '} 
                 {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
-                <Text style={{color: 'white',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
+                <Text style={{color: '#00B0FF',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
                 {/* </TouchableOpacity> */}
                
               </Text>
          
           </View>
       </ScrollView>
-      </LinearGradient>
+       {/* </LinearGradient> */}
+      </View>
     );
   }),
 );
@@ -308,7 +310,7 @@ const styles = StyleSheet.create({
     paddingRight: Metrics.rfv(20),
   },
   buttonTextStyle: {
-    color: 'white',
+    color: 'black',
     paddingVertical: 10,
     fontSize: 15,
     fontWeight: 'bold',

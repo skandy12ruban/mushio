@@ -34,13 +34,13 @@ const navigation=useNavigation()
 const [viewPassword, setViewPassword] = useState(true);
 const [viewPassword1, setViewPassword1] = useState(true);
   return (
-    <SafeAreaView style={{ flex:1}}>
-   <LinearGradient
+    <SafeAreaView style={{ flex:1,backgroundColor:'black'}}>
+   {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-    >
+    > */}
          <Image
           style={{
              width:60,height:60,margin:10,borderRadius:10,
@@ -153,7 +153,15 @@ const [viewPassword1, setViewPassword1] = useState(true);
                     * {errors.confirmpassword}
                   </Text>
                 )}
-        <TouchableOpacity style={{ alignSelf:'center',marginTop:20,}}
+        <TouchableOpacity style={{ 
+            backgroundColor: 'white',
+                    padding:3,
+                    width: width * 0.5,
+                    alignSelf: 'center',
+                    borderRadius: 10,
+                    marginTop: 20,
+                  }}
+                  activeOpacity={0.5}
            onPress={()=>{
             if(values.password == values.confirmpassword){
               handleSubmit()
@@ -161,12 +169,16 @@ const [viewPassword1, setViewPassword1] = useState(true);
               alert('Password does not match')
             }
             }}>
-      {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
-                      <Icon
+      <Text style={{color: 'black',
+    paddingVertical: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',}}>Next</Text>
+                      {/* <Icon
                       name={'arrow-circle-right'}
                       color={'white'}
                       size={Metrics.rfv(50)}
-                      />
+                      /> */}
      </TouchableOpacity>
      <Text style={{alignSelf:'center',color:'white',fontWeight:'bold',fontSize:30,margin:20}}>OR</Text>
      <TouchableOpacity onPress={()=>{ }}>
@@ -183,7 +195,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
           )}
         </Formik>
       </View>
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </SafeAreaView>
   );
 };

@@ -113,7 +113,7 @@ const DATA=years;
 const Item=({item})=>{
   console.log('iii',item == new Date().getFullYear())
     return(
-      <View style={{margin:3}}>
+      <View style={{margin:2,}}>
 
           <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,
            backgroundColor: item == new Date().getFullYear() ? 'grey' :''}}
@@ -263,18 +263,18 @@ const getWeeklyAverageScore =async (week)=>{
 
   return (
     <SafeAreaView style={styles.container}>
-         <LinearGradient
+         {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-    >
+    > */}
         <Loader loading={loading}></Loader>
       {/* <Header name={' '} Language={''} bellIcon={true} /> */}
       <Ionicons
         name='arrow-back'
         size={50}
-        color='white'
+        color='black'
         onPress={()=>{setWeek(false),setWeekName(''),setMonth(false),setMonthName(''),setyear(false),setYearName('')}}
         />
       <ScrollView>
@@ -314,22 +314,22 @@ const getWeeklyAverageScore =async (week)=>{
         ):(
         <View>
           <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:100,width:'20%'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10}}
       onPress={()=>{getWeeklyAverageScore(1), setWeek(!week),setWeekName('1st Week')}}>
       <Text style={{fontSize:10,color:'black'}}> 1st Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10}}
      onPress={()=>{getWeeklyAverageScore(2),setWeek(!week),setWeekName('2nd Week')}}>
       <Text style={{fontSize:10,color:'black'}}> 2nd Week</Text>
      </TouchableOpacity>
      </View>
      <Text style={{color:'black',fontWeight:'bold',alignSelf:'center'}}>{month}</Text>
      <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10}}
      onPress={()=>{getWeeklyAverageScore(3),setWeek(!week),setWeekName('3rd Week')}}>
       <Text style={{fontSize:10,color:'black'}}> 3rd Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'21%',marginRight:10}}
      onPress={()=>{getWeeklyAverageScore(4),setWeek(!week),setWeekName('4th Week')}}>
       <Text style={{fontSize:10,color:'black' }}> 4th Week</Text>
      </TouchableOpacity>
@@ -465,7 +465,7 @@ const getWeeklyAverageScore =async (week)=>{
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{yearname}</Text>
             <Text style={{color:'#FF0040',fontWeight:'bold',alignSelf:'center',}}>" {yearlyscoreRes && yearlyscoreRes.emoji} "</Text>
-        </View>):(<View>
+        </View>):(<View style={{marginRight:10,}}>
      <FlatList
      numColumns={5}
      data={DATA}
@@ -477,7 +477,7 @@ const getWeeklyAverageScore =async (week)=>{
       )}
      
       </ScrollView>
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </SafeAreaView>
   )
 }
@@ -485,7 +485,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginTop: 12,
-  
+  // width:'100%'
   },
   ButtonStyles: {
     backgroundColor: '#FFF',

@@ -19,7 +19,7 @@ const { width, height } = Dimensions.get('window');
 const OtpScreen = () => {
     const navigation=useNavigation()
     const route=useRoute();
-    const {values,country,email}=route.params;
+    const {values,country,email,phoneNumber}=route.params;
     const [loading,setLoading] = useState(false)
    const[checked,setChecked]=useState(false)
     const[otp,setOtp]=useState('')
@@ -34,7 +34,8 @@ const OtpScreen = () => {
         "password": `${values.password}`,
         "email": `${email}`,
         "country": `${country}`,
-        "otp": `${otp}`
+        "otp": `${otp}`,
+        "phoneNumber": `${phoneNumber}`
       });
       console.log(payload)
       let requestOptions = {
@@ -72,14 +73,14 @@ const OtpScreen = () => {
 
   
     return (
-        <SafeAreaView style={{ flex:1}}>
+        <SafeAreaView style={{ flex:1,backgroundColor:'black'}}>
           <Loader loading={loading}></Loader>
-           <LinearGradient
+           {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-    >
+    > */}
        <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
         <Ionicons
         name='arrow-back'
@@ -116,12 +117,19 @@ const OtpScreen = () => {
                        onPress={() => {
                          setChecked(!checked);
                        }}
-                       
+                      //  style={{borderColor:'white'}}
                   />
-                  <Text style={{color:'black',fontWeight:'bold',}}> I heredby consent to our privacy policy and agree to its terms and conditions.
+                  <Text style={{color:'white',fontWeight:'bold',}}> I heredby consent to our privacy policy and agree to its terms and conditions.
                     <Text style={{fontWeight:'bold',color:'white'}} onPress={()=> {navigation.navigate('Agreement')}}> Read more</Text></Text>
                   </View>
-              <TouchableOpacity style={{alignSelf:'center',margin:20,}}
+              <TouchableOpacity style={{ backgroundColor: 'white',
+                    padding:4,
+                    width: width * 0.5,
+                    alignSelf: 'center',
+                    borderRadius: 10,
+                    marginTop: 30,
+                  }}
+                  activeOpacity={0.5}
                    onPress={()=>{
                     if(otp == ''){
                       alert('please enter otp')
@@ -133,15 +141,19 @@ const OtpScreen = () => {
                     }
                    
                     }}>
-              {/* <Text style={{alignSelf:'center',color:'white'}}>Finish</Text> */}
-              <MaterialCommunityIcons
+               <Text style={{color: 'black',
+    paddingVertical: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',}}>Register</Text>
+              {/* <MaterialCommunityIcons
                      name="check-decagram"
                      color={'white'}
                     size={70}
-                  />
+                  /> */}
          </TouchableOpacity>
         </View>
-        </LinearGradient>
+        {/* </LinearGradient> */}
         </SafeAreaView>
       );
     }

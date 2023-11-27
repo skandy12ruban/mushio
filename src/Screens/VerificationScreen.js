@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView,TextInput,TouchableOpacity,Image } from 'react-native'
+import { View, Text, SafeAreaView,TextInput,TouchableOpacity,Image,Dimensions } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import AppDropDown from '../Components/AppDropDown'
 import Metrics from '../Constants/Metrics'
@@ -10,6 +10,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../Components/Loader'
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+const { width, height } = Dimensions.get('window');
+
+
 const VerificationScreen = () => {
   const route=useRoute();
   const{values}=route.params;
@@ -18,6 +21,7 @@ const VerificationScreen = () => {
 const[country,setCountry]=useState('')
 const[countryList,setCountryList]=useState([])
 const [email,setEmail]=useState('')
+const[phoneNumber,setPhoneNumber]=useState('')
 
   const getCountryList =async ()=>{
     var requestOptions = {
@@ -61,13 +65,17 @@ fetch(`${API_BASE_URL}/api/userAuth/sendOtp`, requestOptions)
   .then(result => {
     console.log(result)
     if(result && result.success == true){
-      navigation.navigate('OtpScreen',{values:values,country:country,email:email})
+      navigation.navigate('OtpScreen',{values:values,country:country,email:email,phoneNumber:phoneNumber})
+      setLoading(false)
+    }else{
+      alert(result.message)
       setLoading(false)
     }
     setLoading(false)
   })
   .catch(error => {
     console.log('error', error)
+ 
     setLoading(false)
   });
  
@@ -78,13 +86,13 @@ useEffect(()=>{
 },[])
 
   return (
-    <SafeAreaView style={{flex:1,}}>
-       <LinearGradient
+    <SafeAreaView style={{flex:1,backgroundColor:'black'}}>
+       {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-    >
+    > */}
       <Loader loading={loading}></Loader>
       <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
         <Ionicons
@@ -118,7 +126,7 @@ useEffect(()=>{
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
-                    width:'80%',alignSelf:'center',margin:20
+                    width:'80%',alignSelf:'center',margin:10
                   }}
                   viewStyle={{
                     borderRadius: Metrics.rfv(30),
@@ -129,33 +137,57 @@ useEffect(()=>{
                 {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontWeight:'bold'}}>Phone number / email</Text> */}
                  <TextInput
                    value={email}
-                   placeholder={'Enter Phone number/email'}
+                   placeholder={'Enter email'}
                     placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
+                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
                     borderRadius:30,borderColor:'blue',borderWidth:1}}     
                      onChangeText={text => {
                       setEmail(text);
                      }}
                   /> 
-              <TouchableOpacity style={{ alignSelf:'center',marginTop:20,}}
+                    <TextInput
+                   value={phoneNumber}
+                   placeholder={'Enter Phone number'}
+                    placeholderTextColor={'black'}
+                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+                    borderRadius:30,borderColor:'blue',borderWidth:1}}    
+                    keyboardType='numeric' 
+                     onChangeText={text => {
+                      setPhoneNumber(text);
+                     }}
+                  /> 
+              <TouchableOpacity style={{ backgroundColor: 'white',
+                    padding:3,
+                    width: width * 0.5,
+                    alignSelf: 'center',
+                    borderRadius: 10,
+                    marginTop: 20,
+                  }}
+                  activeOpacity={0.5}
            onPress={()=>{
             if(country == '' || country == 'select country'){
                     alert('please select country')
             }else if(email == ''){
                    alert('please enter email')
-            }else{
+            }else if(phoneNumber == ''){
+              alert('please enter phoneNumber')
+             }else{
               sendOtp()
             }
             }}>
-      {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
-                      <Icon
+       <Text style={{color: 'black',
+    paddingVertical: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',}}>Next</Text>
+                      {/* <Icon
                       name={'arrow-circle-right'}
                       color={'white'}
                       size={Metrics.rfv(50)}
-                      />
+                      /> */}
      </TouchableOpacity>
        </View>
-       </LinearGradient>
+       {/* </LinearGradient> */}
     </SafeAreaView>
   )
 }

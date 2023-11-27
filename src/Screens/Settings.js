@@ -75,15 +75,15 @@ const Settings = () => {
             color={'black'}
           />
         </View>
-          <View style={{margin:20,}}>
-           <TouchableOpacity style={{margin:10,padding:10}} onPress={()=>{navigation.navigate('ProfileDetails',{profileRes:profileRes,getProfile:getProfile})}}>
-            <Text style={{color:'black',fontSize:25,fontWeight:'bold'}}>Edit Profile</Text>
+          <View style={{margin:20,alignSelf:'center'}}>
+           <TouchableOpacity style={{margin:10,padding:10,backgroundColor:'black',borderRadius:10,}} onPress={()=>{navigation.navigate('ProfileDetails',{profileRes:profileRes,getProfile:getProfile})}}>
+            <Text style={{color:'white',fontSize:25,fontWeight:'bold',alignSelf:'center'}}>Edit Profile</Text>
            </TouchableOpacity>
-           <TouchableOpacity style={{margin:10,padding:10}} onPress={()=>{navigation.navigate('Help')}}>
-            <Text style={{color:'black',fontSize:25,fontWeight:'bold'}}>Help</Text>
+           <TouchableOpacity style={{margin:10,padding:10,backgroundColor:'black',borderRadius:10,}} onPress={()=>{navigation.navigate('Help')}}>
+            <Text style={{color:'white',fontSize:25,fontWeight:'bold',alignSelf:'center',}}>Help</Text>
            </TouchableOpacity>
-           <TouchableOpacity style={{margin:10,padding:10}} onPress={()=>{navigation.navigate('PrivateAbout')}}>
-            <Text style={{color:'black',fontSize:25,fontWeight:'bold'}}>About </Text>
+           <TouchableOpacity style={{margin:10,padding:10,backgroundColor:'black',borderRadius:10,}} onPress={()=>{navigation.navigate('PrivateAbout')}}>
+            <Text style={{color:'white',fontSize:25,fontWeight:'bold',alignSelf:'center',}}>About </Text>
            </TouchableOpacity>
           </View>
           <View style={{alignSelf:'center',marginTop: Metrics.rfv(200)}}>

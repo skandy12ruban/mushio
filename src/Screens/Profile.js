@@ -82,12 +82,12 @@ const Profile = () => {
     <SafeAreaView>
       {/* <Header bellIcon={true}/> */}
       <Loader loading={loading}></Loader>
-      <LinearGradient
+      {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:0,width:"100%",height:'100%'}}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-    >
+    > */}
       <View style={{marginTop:10}}>
           <Switch
               style={{
@@ -113,7 +113,7 @@ const Profile = () => {
               <View style={{alignSelf:'center',}}>
               <Text style={{color:'black',fontSize:25,margin:5,alignSelf:'center',fontFamily:'Montserrat-Bold',}}>Status</Text>
               <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Dec Scores you</Text>
-              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:100,padding:5,}}>{scoreRes.averageMaxScore != undefined ? scoreRes.averageMaxScore : 0}</Text>
+              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:200,padding:10,}}>{scoreRes.averageMaxScore != undefined ? scoreRes.averageMaxScore : 0}</Text>
               </View>
               <View>
               <FlatList
@@ -155,7 +155,7 @@ const Profile = () => {
            <Text style={{color:'white',alignSelf:'center'}}>Logout</Text>
        </TouchableOpacity> */}
        </View>
-     </LinearGradient>
+     {/* </LinearGradient> */}
     </SafeAreaView>
   )
 }

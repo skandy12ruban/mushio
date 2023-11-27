@@ -316,7 +316,8 @@ const ProfileDetails = () => {
                   />
     </View>
 
-    <TouchableOpacity style={{ alignSelf:'center',marginTop:20,marginBottom:50,backgroundColor:'black',padding:10,borderRadius: Metrics.rfv(100)}}
+    <TouchableOpacity style={{ alignSelf:'center',marginTop:20,marginBottom:50,backgroundColor:'black',
+    padding:15,borderRadius: Metrics.rfv(10),width:'40%'}}
            onPress={()=>{
             // if(country == '' || country == 'select country'){
             //         alert('please select country')
@@ -326,12 +327,12 @@ const ProfileDetails = () => {
               Profile()
             // }
             }}>
-      {/* <Text style={{alignSelf:'center',color:'white'}}>Submit</Text> */}
-                      <Icon
+      <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
+                      {/* <Icon
                       name={'arrow-circle-right'}
                       color={'white'}
                       size={Metrics.rfv(50)}
-                      />
+                      /> */}
      </TouchableOpacity>
      </ScrollView>
     </SafeAreaView>

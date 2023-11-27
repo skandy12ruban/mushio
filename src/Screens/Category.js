@@ -358,7 +358,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
  const onSubmit = async ()=>{
   const res= await getUserProfileInfo()
   console.log(res.accessToken)
-
+     setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -384,7 +384,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   fetch(`${API_BASE_URL}/api/private/moment`, requestOptions)
 .then(response => response.json())
 .then(result => {
-// console.log('moment res',result)
+console.log('moment res',result)
 if(result && result.success == true){
   console.log(result.data)
   Alert.alert(' ', result.message, [
@@ -393,7 +393,9 @@ if(result && result.success == true){
       onPress: () => console.log('Cancel Pressed'),
       style: 'cancel',
     },
-    {text: 'OK', onPress: () =>  navigation.goBack()},
+    {text: 'OK', onPress: () =>  {
+      navigation.navigate('Home')
+    }},
   ]);
 
   setLoading(false)
@@ -563,8 +565,9 @@ setLoading(false)
       </View>
       </View>
       ):(null)}
-        <TouchableOpacity style={{backgroundColor:'black',width:'40%',padding:10,
+        <TouchableOpacity style={{backgroundColor:'black',width:'50%',padding:15,
           alignSelf:'center',marginTop:20,borderRadius:15}}
+          activeOpacity={0.5}
            onPress={()=>{
             onSubmit()
             // navigation.navigate('Home')

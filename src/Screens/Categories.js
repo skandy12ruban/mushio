@@ -112,6 +112,8 @@ const Item1=({item})=>{
        onPress={()=>{
         if(selectedItem != '' && selectedHastags.length > 0){
           navigation.navigate('Category',{item:selectedItem,hashtags:selectedHastags})
+          setselectedItem('')
+          setSelectedHastags([])
         }else if(selectedHastags.length == 0){
           alert('Please select any one Hashtag')
          }
