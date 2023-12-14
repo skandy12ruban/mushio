@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HELP,  HOME,LOGIN,  PRIVATE_ABOUT,  PRIVATE_APP_DRAWER,  PROFILE_DETAILS,  SETTINGS,  SIGNIN, SIGNUP,  } from './RouteConst';
+import { APP_DRAWER, BOTTOM_TABS,  CATEGORY,  HELP,  HOME,LOGIN,  MY_MOMENT,  PRIVATE_ABOUT,  PRIVATE_APP_DRAWER,  PROFILE_DETAILS,  SETTINGS,  SIGNIN, SIGNUP,  } from './RouteConst';
 import AppDrawer from './AppDrawer';
-import { Category, DetailsPage, DrawerScreen, ListPage, Login,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
+import { Category, DetailsPage, DrawerScreen, ListPage, Login,  MyMoment,  Profile, ProfileDetails, SignIn, SignUp,   } from '../Screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
@@ -44,6 +44,7 @@ const MainRoute = () => {
                 <>
                      <MainStack.Screen name={BOTTOM_TABS} component={BottomTabs} />
                      <MainStack.Screen name={CATEGORY} component={Category} />
+                     <MainStack.Screen name={MY_MOMENT} component={MyMoment} />
                      <MainStack.Screen name={PROFILE_DETAILS} component={ProfileDetails} />
                      <MainStack.Screen name={SETTINGS} component={Settings} />
                      <MainStack.Screen name={HELP} component={Help} />

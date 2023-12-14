@@ -17,6 +17,7 @@ import PublicEntertainment from '../PublicScreens/PublicEntertainment';
 import PublicProfile from '../PublicScreens/PublicProfile';
 import { PUBLIC_HOME, PUBLIC_PROFILE } from './PublicRouteConts';
 import EditProfile from '../PublicScreens/EditProfile';
+import Entertainment from '../PublicScreens/Entertainment';
 
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -172,8 +173,8 @@ const PublicBottomTabs = (props) => {
           }}
         />
         <Tab.Screen
-          name="PublicEntertainment"
-          component={PublicEntertainment}
+          name="Entertainment"
+          component={Entertainment}
           options={{
             tabBarIcon: ({ focused }) => {
               return (
@@ -207,13 +208,7 @@ const PublicBottomTabs = (props) => {
                         focused && { fontSize: Metrics.rfv(25), color: 'white' },
                       ]}
                     />
-                    {/* <MaterialIcons
-                      name="mic"
-                      style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray', },
-                        focused && { fontSize: Metrics.rfv(25), color: 'white' },
-                      ]}
-                    /> */}
+                    
                   </View>
                 </View>
               );

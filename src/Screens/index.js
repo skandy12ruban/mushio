@@ -14,6 +14,10 @@ import _Agreement from './Agreement'
 import _Settings from './Settings'
 import _Help from './Help'
 import _PrivateAbout from './PrivateAbout'
+import _Forget from './Forget'
+import _Reset from './Reset'
+import  _verifyForget from './VerifyForget'
+import _MyMoment from './MyMoment'
 
 export const Splash = _Splash;
 export const Login = _Login;
@@ -31,3 +35,7 @@ export const PrivateAbout = _PrivateAbout
 export const Moments = _Moments
 export const Agreement = _Agreement
 export const Settings = _Settings
+export const Forget = _Forget
+export const Reset = _Reset
+export const VerifyForget = _verifyForget;
+export const MyMoment = _MyMoment

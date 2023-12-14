@@ -45,13 +45,13 @@ const SplashPage = () => {
     }, [])
 
     return (
-        <View style={{ }}>
+        <View style={{backgroundColor:'black' }}>
           
              <BackgroundImage
                 style={{
-                    width:"100%",height:"100%",
+                    width:"100%",height:"101%",
                 }}
-                source={require('../assets/images/splashImage.jpg')}
+                source={require('../assets/images/splashImg.jpg')}
             >
             </BackgroundImage>
                     

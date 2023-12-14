@@ -140,16 +140,16 @@ const Login = withGlobalize(
         <Loader loading={loading}></Loader>
         <Image
           style={{
-             width:60,height:60,margin:10,borderRadius:10,
+             width:120,height:120,margin:10,borderRadius:10,alignSelf:'center',marginTop:30,borderRadius:150,transform: [{ rotate: '40deg'}]
             }}
-           source={require('../assets/images/image3.jpg')}
+           source={require('../assets/images/Name1.jpg')}
          />
         <View
           style={{
             alignSelf: 'center',
-            width: '90%',marginTop:Metrics.rfv(30)
+            width: '90%',
           }}>
-          <Text style={{color:'#00B0FF',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'sans-serif-condensed'}}> Se<Text style={{color:'white',fontFamily:'serif'}}>halo</Text></Text>
+          <Text style={{color:'#0058aa',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'Arial'}}> Sehalo</Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
             validationSchema={SignInFormValidator(props)}
@@ -171,10 +171,10 @@ const Login = withGlobalize(
                
                 <TextInput
                    value={values.email}
-                   placeholder={'Email'}
-                   placeholderTextColor={'black'}
-                   style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold',
-                   borderRadius:30,borderColor:'blue',borderWidth:1}}
+                   placeholder={' Email'}
+                   placeholderTextColor={'grey'}
+                   style={{padding:6,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold',
+                   borderRadius:10,borderColor:'blue',borderWidth:1}}
                    onChangeText={text => {
                    setFieldValue('email' ,text);
                    }}
@@ -200,12 +200,12 @@ const Login = withGlobalize(
                   </View> */}
                  
 
-                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
-                  justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
+                  <View style={{backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
+                  justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1,height:45}}>
                     <TextInput
                    value={values.password}
-                   placeholder={'password'}
-                   placeholderTextColor={'black'}
+                   placeholder={' Password'}
+                   placeholderTextColor={'grey'}
                    style={{fontSize:20,fontWeight:'bold',marginLeft:5,}}
                    onChangeText={text => {
                    setFieldValue('password' ,text);
@@ -231,12 +231,14 @@ const Login = withGlobalize(
                     * {errors.password}
                   </Text>
                 )}
-              <Text style={{color: 'white',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Forget')}}>
+              <Text style={{color: '#00B0FF',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
+              </TouchableOpacity>
                 <TouchableOpacity
                   style={{
                     backgroundColor: 'white',
-                    padding:3,
-                    width: width * 0.5,
+                    padding:5,
+                    width: width * 0.4,
                     alignSelf: 'center',
                     borderRadius: 10,
                     marginTop: 20,
@@ -274,9 +276,9 @@ const Login = withGlobalize(
           </Formik>
         </View>
        
-        <View style={{marginTop:100}}>
+        <View style={{marginTop:80}}>
               <Text
-                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'white'}}>
+                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'#0058aa'}}>
                 Don't have an account ? {' '} 
                 {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
                 <Text style={{color: '#00B0FF',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
@@ -311,7 +313,7 @@ const styles = StyleSheet.create({
   },
   buttonTextStyle: {
     color: 'black',
-    paddingVertical: 10,
+    paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',
     alignSelf: 'center',

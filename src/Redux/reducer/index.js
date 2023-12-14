@@ -6,5 +6,6 @@ import userType from "./userType";
 export default combineReducers({
    User,
    Location,
-   userType
+   userType,
+   
 })

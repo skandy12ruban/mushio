@@ -9,6 +9,7 @@ import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import { DateHelper } from '../utils/DateHelper';
 import Loader from '../Components/Loader';
+import VideoPlayer from 'react-native-video-player';
 
 const NewPost = () => {
   const navigation = useNavigation()
@@ -39,7 +40,7 @@ const MyPost = async ()=>{
     "files": imgArray,
     "location": `${locationName}`,
     "postType": `${category}`,
-    "tagPeoples": tag != '' ? tag : [],
+    "tagPeoples": tag != '' ? [] : [],
     "date": `${dob}`  ,
     "head":`${caption}`
   });
@@ -50,7 +51,7 @@ const MyPost = async ()=>{
     body: raw,
     redirect: 'follow'
   };
-  console.log(raw)
+  console.log('raw',raw)
   fetch(`${API_BASE_URL}/api/post`, requestOptions)
   .then(response => response.json())
   .then(result => {
@@ -58,7 +59,7 @@ const MyPost = async ()=>{
     if(result && result.success == true){
         // setImagePath(result.data.url)
      alert(result.message)
-     navigation.goBack();
+     navigation.navigate('PublicHome');
       setLoading(false)
     }
     setLoading(false)
@@ -105,9 +106,9 @@ const MyPost = async ()=>{
          </View>
                ):(
         < View style={{margin:10,}}>
-              <Video  
-                source={{ uri: e.url}}
-                style={{width:200,height:200}}
+              <VideoPlayer  
+                video={{ uri: e.uri}}
+                style={{width:250,height:150}}
                 // paused={true}
                 />
         </View>
@@ -149,9 +150,9 @@ const MyPost = async ()=>{
                    setLocationName(text);
                    }}
                  />
-        </View>):(
+        </View>):category == 'people' ?(
         <View style={{}}>
-        <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>{'Tag'} </Text>
+        <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>{'Mention'} </Text>
              <TextInput
                    value={tag}
                    placeholder={' @ Tag'}
@@ -161,7 +162,7 @@ const MyPost = async ()=>{
                    setTag(text);
                    }}
                  />
-        </View>)}
+        </View>):(null)}
         <View style={{}}>
         <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>Head  : </Text>
              <TextInput
@@ -190,8 +191,12 @@ const MyPost = async ()=>{
            <TouchableOpacity style={{backgroundColor:'black',width:200,padding:10,
           alignSelf:'center',marginTop:20,borderRadius:5}}
           onPress={()=>{
-            
-            MyPost()
+            if(caption != ''){
+              MyPost()
+            }else{
+              alert('please enter headline')
+            }
+          
             
           }}>
       <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>

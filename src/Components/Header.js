@@ -51,7 +51,7 @@ const Header = withGlobalize(memo(props => {
   
   return (
     <View style={{
-      backgroundColor: '#00B0FF',
+      backgroundColor: 'skyblue',
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 15,

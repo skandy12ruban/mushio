@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
 import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-player'
+import { ScrollView } from 'react-native'
 
 const Places = () => {
   const [loading,setLoading]=useState(false)
@@ -36,7 +38,21 @@ const Places = () => {
   .then(result => {
     console.log(result.data.list)
     if(result && result.success == true){
-      setPlaceArray(result.data.list)
+      const updatedA = result.data.list.map(item => ({
+        files: item.files.map(file => ({
+          ...file,
+          userId: item._id
+        }))
+      }));
+      let userdata=[]
+      updatedA.map((e)=>{
+         let a= e.files;
+           for(let i=0; i<a.length;i++){
+             // console.log('iiiiiiii',a[i])
+             userdata.push(a[i])
+           }
+       })
+      setPlaceArray(userdata)
       setLoading(false)
     }
     setLoading(false)
@@ -51,31 +67,42 @@ const Places = () => {
     MyPlace();
   },[])
   
-  const Item= ({item})=>{
+  const Item= ({item,index})=>{
+    // console.log(item)
     return(
-      <View style={{margin:1,alignSelf:'center'}}>
-        <TouchableOpacity style={{backgroundColor:'white', borderWidth:Metrics.rfv(1), }}
+      <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
+          
+        <View>
+          <TouchableOpacity style={{    }}
           onPress={()=>{
-          //   setProfileImg()
+            let id=item.userId
+            navigation.navigate('PublicSearchScreen1',{selectedId:id})
+         
             }}>
-           
-                 { item.type == 'image'  ? (
-            < View style={{margin:5,}}>
-               <Image
-                    source={{uri:item.url}}
-                    style={{width:100,height:100}}
-                   />
-             </View>
-                   ):(
-            < View style={{margin:5,}}>
-                  <Video  
-                    source={{ uri: item.url}}
-                    style={{width:100,height:100}}
-                    // paused={true}
-                    />
-            </View>
-                 )}
+            { item.type == 'video'  ? (
+                   < View style={{}}>
+                     <VideoPlayer
+                       video={{ uri:`${item.url}` }}
+                      //  videoWidth={3000}
+                      //  videoHeight={2000}
+                      //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+                       style={{width:110,height:100,alignSelf:'center',}}
+                     />
+              </View>
+                   ) : item.type == 'image'  ?(
+             < View style={{}}>
+                    <Image
+                    key={index}
+                         source={{uri:item.url}}
+                         style={{width:110,height:100,alignSelf:'center',}}
+                        />
+                  </View>
+             
+                 ):(null)}
            </TouchableOpacity>
+           
+        </View>
+       
       </View>
     )
   }
@@ -85,20 +112,52 @@ const Places = () => {
     return (
       <SafeAreaView style={{width:'100%',alignSelf:'center',}}>
         <Loader loading={loading}></Loader>
-         
-         {placeArray.map((e)=>{
-               console.log('ee',e)
-              return(
-                < View style={{}}>
-                  <FlatList
-                  numColumns={3}
-                  data={e.files}
-                  renderItem={Item}
-                  keyExtractor={item =>item._id}
-                  />
-                 </View>
-                 )  } )
-           }
+        <ScrollView>
+        < View style={{}}>
+              <FlatList
+                numColumns={3}
+                // horizontal
+                data={placeArray || []}
+                renderItem={Item}
+                keyExtractor={item =>item._id}
+                />
+               </View>
+           
+                {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {placeArray.map((item) => (
+             <View key={item._id} style={{ width: '33.33%',padding:1 }}>
+                 {item.files.map((file) => (
+                   
+            <View key={file._id} style={{margin:2}}>
+              {file.type === 'image' && (
+               <TouchableOpacity style={{backgroundColor:'white',  }}
+                onPress={()=>{
+          
+                 }}>
+                <Image
+                  source={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                </TouchableOpacity>
+              )}
+              {file.type === 'video' && (
+            <TouchableOpacity style={{backgroundColor:'white',  }}
+                 onPress={()=>{
+                      
+                }}>
+                  <VideoPlayer
+                  video={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                   </TouchableOpacity>
+              )}
+           
+            </View>
+          ))}
+              </View>
+          ))}
+          </View> */}
+         </ScrollView>
       </SafeAreaView>
     )
   }

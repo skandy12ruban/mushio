@@ -98,22 +98,22 @@ useEffect(()=>{
         <Ionicons
         name='arrow-back'
         size={50}
-        color='white'
+        color='#0058aa'
         onPress={()=>{navigation.goBack()}}
         />
-              <Image
+              {/* <Image
           style={{
              width:60,height:60,margin:10,borderRadius:10,
             }}
-           source={require('../assets/images/image3.jpg')}
-         />
+           source={require('../assets/images/image6.jpg')}
+         /> */}
          </View>
       <View style={{
           alignSelf: 'center',
           width: '90%',marginTop:Metrics.rfv(50)
         }}>
 
-             <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Verification </Text> 
+             <Text style={{color:'#0058aa',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Verification </Text> 
              {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',marginTop:20,fontWeight:'bold'}}>Country</Text>  */}
             <AppDropDown
                   label={''}
@@ -125,40 +125,40 @@ useEffect(()=>{
                     setCountry( text)
                   }}
                   containerStyle={{
-                    padding: Metrics.rfv(20),
-                    width:'80%',alignSelf:'center',margin:10
+                    padding: Metrics.rfv(0),
+                    width:'70%',alignSelf:'center',margin:0
                   }}
                   viewStyle={{
-                    borderRadius: Metrics.rfv(30),
+                    borderRadius: Metrics.rfv(10),
                     borderWidth:1,
-                    borderColor:'blue'
+                    borderColor:'blue',marginTop:10
                   }}
                 />
                 {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontWeight:'bold'}}>Phone number / email</Text> */}
                  <TextInput
                    value={email}
-                   placeholder={'Enter email'}
+                   placeholder={' email'}
                     placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
-                    borderRadius:30,borderColor:'blue',borderWidth:1}}     
+                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+                    borderRadius:10,borderColor:'blue',borderWidth:1,}}     
                      onChangeText={text => {
                       setEmail(text);
                      }}
                   /> 
                     <TextInput
                    value={phoneNumber}
-                   placeholder={'Enter Phone number'}
+                   placeholder={' phone number'}
                     placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
-                    borderRadius:30,borderColor:'blue',borderWidth:1}}    
+                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+                    borderRadius:10,borderColor:'blue',borderWidth:1}}    
                     keyboardType='numeric' 
                      onChangeText={text => {
                       setPhoneNumber(text);
                      }}
                   /> 
               <TouchableOpacity style={{ backgroundColor: 'white',
-                    padding:3,
-                    width: width * 0.5,
+                    padding:5,
+                    width: width * 0.4,
                     alignSelf: 'center',
                     borderRadius: 10,
                     marginTop: 20,
@@ -176,7 +176,7 @@ useEffect(()=>{
             }
             }}>
        <Text style={{color: 'black',
-    paddingVertical: 10,
+    paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',
     alignSelf: 'center',}}>Next</Text>

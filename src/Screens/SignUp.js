@@ -41,19 +41,19 @@ const [viewPassword1, setViewPassword1] = useState(true);
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
     > */}
-         <Image
-          style={{
-             width:60,height:60,margin:10,borderRadius:10,
-            }}
-           source={require('../assets/images/image3.jpg')}
-         />
+         
       <View
         style={{
           alignSelf: 'center',
-          width: '90%',marginTop:Metrics.rfv(10)
+          width: '90%',marginTop:Metrics.rfv(0)
         }}>
-         
-            <Text style={{color:'white',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Sign up </Text>
+          <Image
+          style={{
+             width:120,height:120,margin:0,borderRadius:10,alignSelf:'center',marginTop:30,borderRadius:150,transform: [{ rotate: '40deg'}]
+            }}
+           source={require('../assets/images/Name1.jpg')}
+         />
+            <Text style={{color:'#0058aa',alignSelf:'center',fontWeight:'bold',fontSize:35,fontFamily:'Arial',marginTop:Metrics.rfv(10)}}> Sign up </Text>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
           validationSchema={SignUpFormValidator(props)}
@@ -73,13 +73,13 @@ const [viewPassword1, setViewPassword1] = useState(true);
             handleSubmit,
           }) => (
             <>
-             <View style={{alignSelf:'center',width:'100%',}}>
+             <View style={{alignSelf:'center',width:'100%',marginTop:20}}>
         <TextInput
          value={values.name}
-         placeholder={'Nickname'}
+         placeholder={'  Name'}
          placeholderTextColor={'black'}
-         style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
-         borderRadius:30,borderColor:'blue',borderWidth:1}}
+         style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+         borderRadius:10,borderColor:'blue',borderWidth:1}}
          onChangeText={text => {
             setFieldValue('name' ,text);
           }}
@@ -91,8 +91,8 @@ const [viewPassword1, setViewPassword1] = useState(true);
                   </Text>
                 )}   
                   
-                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
-                  justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
+                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',flexDirection:'row',height:40,
+                  justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1,}}>
                     <TextInput
                    value={values.password}
                    placeholder={'password'}
@@ -122,8 +122,8 @@ const [viewPassword1, setViewPassword1] = useState(true);
                     * {errors.password}
                   </Text>
                 )}
-                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
-                  justifyContent:'space-between',borderRadius:30,borderColor:'blue',borderWidth:1}}>
+                  <View style={{padding:0,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',height:40,
+                  justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1}}>
                     <TextInput
                    value={values.confirmpassword}
                    placeholder={'confirm password'}
@@ -155,11 +155,11 @@ const [viewPassword1, setViewPassword1] = useState(true);
                 )}
         <TouchableOpacity style={{ 
             backgroundColor: 'white',
-                    padding:3,
-                    width: width * 0.5,
+                    padding:5,
+                    width: width * 0.4,
                     alignSelf: 'center',
                     borderRadius: 10,
-                    marginTop: 20,
+                    marginTop: 30,
                   }}
                   activeOpacity={0.5}
            onPress={()=>{
@@ -170,7 +170,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
             }
             }}>
       <Text style={{color: 'black',
-    paddingVertical: 10,
+    paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',
     alignSelf: 'center',}}>Next</Text>
@@ -180,7 +180,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
                       size={Metrics.rfv(50)}
                       /> */}
      </TouchableOpacity>
-     <Text style={{alignSelf:'center',color:'white',fontWeight:'bold',fontSize:30,margin:20}}>OR</Text>
+     <Text style={{alignSelf:'center',color:'#2484c6',fontWeight:'bold',fontSize:30,margin:20,marginTop:30}}>OR</Text>
      <TouchableOpacity onPress={()=>{ }}>
              <Feather
               name={'chrome'}
@@ -189,7 +189,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
               size={Metrics.rfv(50)}
              />
      </TouchableOpacity>
-             <Text style={{alignSelf:'center',color:'white',fontWeight:'bold',fontSize:20,margin:20}}>Sign Up with Google</Text>
+             <Text style={{alignSelf:'center',color:'#0058aa',fontWeight:'bold',fontSize:20,margin:20}}>Sign Up with Google</Text>
        </View>
             </>
           )}

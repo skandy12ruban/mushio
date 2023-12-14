@@ -85,33 +85,33 @@ const OtpScreen = () => {
         <Ionicons
         name='arrow-back'
         size={50}
-        color='white'
+        color='#0058aa'
         onPress={()=>{navigation.goBack()}}
         />
-              <Image
+              {/* <Image
           style={{
              width:60,height:60,margin:10,borderRadius:10,
             }}
            source={require('../assets/images/image3.jpg')}
-         />
+         /> */}
          </View>
           <View style={{
           alignSelf: 'center',
           width: '90%',marginTop:Metrics.rfv(100)
         }}>
-          <Text style={{color:'white',fontSize:20,fontWeight:'bold',alignSelf:'center',fontFamily:'sans-serif-condensed'}}>
+          <Text style={{color:'#0058aa',fontSize:20,fontWeight:'bold',alignSelf:'center',fontFamily:'sans-serif-condensed'}}>
             OTP has been sent to your Phone number (or) Email </Text>
                <TextInput
                    value={otp}
-                   placeholder={'Enter'}
+                   placeholder={'enter otp'}
                     placeholderTextColor={'black'}
                     style={{padding:15,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
-                    borderRadius:30,borderColor:'blue',borderWidth:1}}  
+                    borderRadius:10,borderColor:'blue',borderWidth:1}}  
                       onChangeText={text => {
                       setOtp(text);
                      }}
                   />
-                  <View style={{alignSelf:'center',flexDirection:'row',justifyContent:'space-between',width:'80%'}}>
+                  <View style={{alignSelf:'center',flexDirection:'row',justifyContent:'space-between',width:'80%',marginRight:30}}>
                   <Checkbox
                        status={checked ? 'checked' : 'unchecked'}
                        onPress={() => {
@@ -119,8 +119,12 @@ const OtpScreen = () => {
                        }}
                       //  style={{borderColor:'white'}}
                   />
-                  <Text style={{color:'white',fontWeight:'bold',}}> I heredby consent to our privacy policy and agree to its terms and conditions.
-                    <Text style={{fontWeight:'bold',color:'white'}} onPress={()=> {navigation.navigate('Agreement')}}> Read more</Text></Text>
+                  <View>
+                  <Text style={{color:'#2484c6',fontWeight:'bold',}}>I heredby consent to our privacy policy  and agree to its terms and conditions.</Text>
+                  <Text style={{fontWeight:'bold',color:'#00B0FF',marginLeft:150}} onPress={()=> {navigation.navigate('Agreement')}}> Read more</Text>
+                  </View>
+                  
+                    
                   </View>
               <TouchableOpacity style={{ backgroundColor: 'white',
                     padding:4,

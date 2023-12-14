@@ -16,3 +16,7 @@ export const PRIVATE_APP_DRAWER = 'PrivateAppDrawer'
 export const SETTINGS = "Settings"
 export const HELP = "Help"
 export const PRIVATE_ABOUT = "PrivateAbout"
+export const FORGET = 'Forget'
+export const RESET = 'Reset'
+export const VERIFY_FORGET = 'VerifyForget'
+export const MY_MOMENT = 'MyMoment'

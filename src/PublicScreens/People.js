@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
 import Video from 'react-native-video';
+import { ScrollView } from 'react-native'
+import VideoPlayer from 'react-native-video-player'
 
 const People = () => {
   const [loading,setLoading]=useState(false)
@@ -36,7 +38,21 @@ const People = () => {
   .then(result => {
     console.log('people res',result.data.list)
     if(result && result.success == true){
-      setPeopleArray(result.data.list)
+      const updatedA = result.data.list.map(item => ({
+        files: item.files.map(file => ({
+          ...file,
+          userId: item._id
+        }))
+      }));
+      let userdata=[]
+      updatedA.map((e)=>{
+         let a= e.files;
+           for(let i=0; i<a.length;i++){
+             // console.log('iiiiiiii',a[i])
+             userdata.push(a[i])
+           }
+       })
+      setPeopleArray(userdata)
       setLoading(false)
     }
     setLoading(false)
@@ -51,32 +67,42 @@ const People = () => {
     MyPeople();
   },[])
   
-  const Item= ({item})=>{
-    console.log('item',item)
+  const Item= ({item,index})=>{
+    // console.log(item)
     return(
-      <View style={{margin:1,alignSelf:'center'}}>
-        <TouchableOpacity style={{backgroundColor:'white', borderWidth:Metrics.rfv(1), }}
+      <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
+          
+        <View>
+          <TouchableOpacity style={{    }}
           onPress={()=>{
-          //   setProfileImg()
+            let id=item.userId
+            navigation.navigate('PublicSearchScreen1',{selectedId:id})
+         
             }}>
-           
-                 { item.type == 'image'  ? (
-            < View style={{margin:5,}}>
-               <Image
-                    source={{uri:item.url}}
-                    style={{width:100,height:100}}
-                   />
-             </View>
-                   ):(
-            < View style={{margin:5,}}>
-                  <Video  
-                    source={{ uri: item.url}}
-                    style={{width:100,height:100,}}
-                    // paused={true}
-                    />
-            </View>
-                 )}
+            { item.type == 'video'  ? (
+                   < View style={{}}>
+                     <VideoPlayer
+                       video={{ uri:`${item.url}` }}
+                      //  videoWidth={3000}
+                      //  videoHeight={2000}
+                      //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+                       style={{width:110,height:100,alignSelf:'center',}}
+                     />
+              </View>
+                   ) : item.type == 'image'  ?(
+             < View style={{}}>
+                    <Image
+                    key={index}
+                         source={{uri:item.url}}
+                         style={{width:110,height:100,alignSelf:'center',}}
+                        />
+                  </View>
+             
+                 ):(null)}
            </TouchableOpacity>
+           
+        </View>
+       
       </View>
     )
   }
@@ -87,19 +113,51 @@ const People = () => {
       <SafeAreaView style={{width:'100%',alignSelf:'center',}}>
         <Loader loading={loading}></Loader>
          
-         {peopleArray.map((e)=>{
-              
-              return(
-                < View style={{}}>
-                  <FlatList
-                  numColumns={3}
-                  data={e.files}
-                  renderItem={Item}
-                  keyExtractor={item =>item._id}
-                  />
-                 </View>
-                 )  } )
-           }
+           <ScrollView>
+                {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {peopleArray.map((item) => (
+             <View key={item._id} style={{ width: '33.33%',padding:1 }}>
+              {item.files.map((file) => (
+                    // console.log(file)
+            <View key={file._id} style={{margin:2}}>
+              {file.type === 'image' && (
+               <TouchableOpacity style={{backgroundColor:'white',  }}
+                onPress={()=>{
+                      //   setProfileImg()
+                 }}>
+                <Image
+                  source={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                </TouchableOpacity>
+              )}
+              {file.type === 'video' && (
+            <TouchableOpacity style={{backgroundColor:'white',  }}
+                 onPress={()=>{
+                      //   setProfileImg()
+                }}>
+                  <VideoPlayer
+                  video={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                   </TouchableOpacity>
+              )}
+           
+            </View>
+          ))}
+              </View>
+          ))}
+          </View> */}
+            < View style={{}}>
+              <FlatList
+                numColumns={3}
+                // horizontal
+                data={peopleArray || []}
+                renderItem={Item}
+                keyExtractor={item =>item._id}
+                />
+               </View>
+         </ScrollView>
       </SafeAreaView>
     )
   }

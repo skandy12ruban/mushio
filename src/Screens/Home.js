@@ -18,6 +18,7 @@ const Home = (props) => {
   const[loading,setLoading]=useState(false)
   const[momentsArray,setMomentsArray]=useState([])
   const[userInfo,setUserInfo]=useState({})
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const UserProfileInfo = async ()=>{
     const res= await getUserProfileInfo()
@@ -29,12 +30,14 @@ const Home = (props) => {
 //     date: new Date(),
 //     formatFromDate: DateHelper.formatToDate(new Date())
 // });
+const [showAllMonths, setShowAllMonths] = useState(false);
+const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 const [selectedDateString, setSelectedDateString] = useState(DateHelper.formatToDateYMD(new Date()));
-console.log('dddd',selectedDateString)
+// console.log('dddd',selectedDateString)
 const data=[
   {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'SuperHappy'},
   {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
-  {id:3,color:'#008B8B',image:require('../assets/images/image2.jpg'),name:'Neutral'},
+  {id:3,color:'#67a596',image:require('../assets/images/image2.jpg'),name:'Neutral'},
   {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'Sad'},
   {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"VerySad"},
 ]
@@ -94,36 +97,67 @@ function convertTo12HourFormat(time24) {
   return time12;
 }
 
+useEffect(() => {
+  // Update current time every second
+  const intervalId = setInterval(() => {
+    setCurrentTime(new Date());
+  }, 1000);
+
+  // Clear interval on component unmount
+  return () => clearInterval(intervalId);
+}, []);
+
+const getGreetingText = () => {
+  const currentHour = currentTime.getHours();
+
+  if (currentHour >= 0 && currentHour < 12) {
+    return ' Dec greets you Good morning!';
+  } else if (currentHour >= 12 && currentHour < 16) {
+    return ' Dec greets you Good afternoon!';
+  } else if (currentHour >= 16 && currentHour < 19) {
+    return ' Dec greets you Good evening!';
+  } else {
+    return ' Dec greets you Good night!';
+  }
+};
+
+const handleMonthChanged = (start, end) => {
+  // Handle month change event
+  console.log('Month changed:', start.format('MMMM YYYY'));
+};
+
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex:1,backgroundColor:'#fefeff',}}>
         <Loader loading={loading}></Loader>
-      <Header name={'Home '} Language={''} bellIcon={true} />
+      {/* <Header name={'Home '} Language={''} bellIcon={false} /> */}
       <View>
-      <TouchableOpacity style={{backgroundColor:'white', width:60,height:60,borderRadius:10,}}
+      <TouchableOpacity style={{ width:60,height:60,borderRadius:10,marginTop:15,marginLeft:5}}
         onPress={()=>{
           // setselectedItem(item)
           }} >
       <Image
           style={{
-             width:40,height:40,margin:10,borderRadius:10,
+             width:50,height:50,margin:10,borderRadius:10,
             }}
            source={require('../assets/images/image3.jpg')}
          />
          </TouchableOpacity>
       </View>
-     <Text style={{fontSize:25,marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Montserrat-Bold',}}>Hello, <Text style={{color:'#00B0FF',fontStyle:'Montserrat-Bold',}}>{ userInfo && userInfo.name}</Text></Text>
-     <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontFamily:'Roboto-Regular'}}>Dec greets you good morning</Text>
+     <Text style={{fontSize:25,marginLeft:Metrics.rfv(20),color:'black',fontFamily:'Montserrat-Bold',marginTop:20}}>Halo, <Text style={{color:'#00B0FF',fontStyle:'Montserrat-Bold',}}>{ userInfo && userInfo.name}</Text></Text>
+     <Text style={{marginLeft:Metrics.rfv(20),color:'black',fontFamily:'Roboto-Regular'}}>{getGreetingText()}</Text>
+     
       <View style={{marginTop:10}}>
       <CalendarStrip
       scrollable
-      style={{height:100, paddingTop: 20, paddingBottom: 10}}
-      calendarColor={'white'}
+      style={{height:100, paddingTop: 20, paddingBottom: 10,backgroundColor:'skyblue',}}
+      calendarColor={'black'}
       calendarHeaderStyle={{color: 'black'}}
       dateNumberStyle={{color: 'black'}}
       dateNameStyle={{color: 'black'}}
       iconContainer={{flex: 0.1}}
+      // maxDate={new Date()}
       selectedDate={selectedDateString}
-      highlightDateNumberStyle={{backgroundColor:'#00B0FF',borderRadius:50,color:'white',padding:2}}
+      highlightDateNumberStyle={{backgroundColor:'white',borderRadius:100,color:'black',padding:3}}
       onDateSelected={(date) => {
         let Date=DateHelper.formatToDateYMD(date)
         // console.log('date..',DateHelper.formatToDateYMD(date))
@@ -132,20 +166,20 @@ function convertTo12HourFormat(time24) {
       }}
     />
       </View>
-      <ScrollView>
-        <View style={{flex:2}}>
+      <ScrollView style={{backgroundColor:'#fefeff'}}>
+        <View style={{flex:2,}}>
           {momentsArray.length > 0 ? momentsArray.map((item)=>{
             const date= item.createdAt.slice(11,16)
             var time12 = convertTo12HourFormat(date);
 
-           console.log(item)
+          //  console.log(item)
             return(
               <View style={{margin:10,flex:1}}>
-              <Card style={{backgroundColor:'white',}}>
-                
+              <Card style={{backgroundColor:'white',}} onPress={()=>{navigation.navigate('MyMoment',{item:item})}}>
+              
                  <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,}}>
                    <View style={{width:'70%'}}>
-                   <Text style={{fontWeight:'bold',color:'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,alignSelf:'flex-start'}}>{item.title}</Text>
+                   <Text style={{fontWeight:'bold',color:'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,alignSelf:'flex-start',}}>{item.title}</Text>
                   <Text style={{padding:5,color:'black',marginTop:5,}}>{item.description} </Text>
                   <FlatList
                     // horizontal
@@ -156,7 +190,7 @@ function convertTo12HourFormat(time24) {
                       // console.log(e)
                       return(
                         <View style={{paddingLeft:10,backgroundColor:'#00B0FF',margin:5,borderRadius:10,}}>
-                        <Text style={{alignSelf:'center',padding:2,color:'black'}}>#{e.item}</Text>
+                        <Text style={{alignSelf:'center',padding:2,color:'black',marginRight:5}}>{e.item}</Text>
                         </View>
                       )
                     }}
@@ -168,24 +202,26 @@ function convertTo12HourFormat(time24) {
                     keyExtractor={item => item.id}
                     renderItem={(e1)=>{
                      let name = e1.item.name ==  item.emoji ? e1.item : null;
-                      console.log('eeeeee',name);
+                      // console.log('eeeeee',name);
                       if(name != null){
                       return(
                         <View>
-                        <TouchableOpacity style={{backgroundColor:name.color, width:50,height:50,borderRadius:5,marginTop:20,marginLeft:10}} >
+
+                        <TouchableOpacity style={{backgroundColor:name.color, width:60,height:60,borderRadius:5,marginTop:20,marginLeft:5}} >
                         <Image
                           style={{
-                          width:40,height:40,margin:5,borderRadius:5,
+                          width:50,height:50,margin:5,borderRadius:5,
                          }}
                         source={name.image}
                       />
                      </TouchableOpacity>
-                     <Text style={{alignSelf:'flex-end',marginRight:10,color:'black',margin:5,marginTop:10}}>{time12}</Text> 
+                    
                      </View>
                       )
                         }
                     }}
                     />
+                    <Text style={{alignSelf:'flex-end',marginRight:20,color:'black',marginTop:5}}>{time12}</Text> 
                     </View>
                  </View>
                 

@@ -13,20 +13,29 @@ const navigation = useNavigation()
 const [selectedItem,setselectedItem]=useState('')
 const[value,setvalues]=useState(false)
 const data=[
-  {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Super Happy'},
-  {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
-  {id:3,color:'#008B8B',image:require('../assets/images/image2.jpg'),name:'Neutral'},
-  {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'Sad'},
-  {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Very Sad"},
+  {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'SuperHappy'},
+  {id:2,color:'#95D1F4',image:require('../assets/images/image3.jpg'),name:'Happy'},
+  {id:3,color:'#67a596',image:require('../assets/images/image2.jpg'),name:'Neutral'},
+  {id:4,color:'#FFD75A',image:require('../assets/images/image4.jpg'),name:'Sad'},
+  {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"VerySad"},
   // {id:6,color:'lightgrey',image:require('../assets/images/image2.jpg'),name:''},
 ]
 const data1=[
   {id:'#work',name:'#work',},
-  {id:'#travel',name:'#travel',},
-  {id:'#promotion',name:'#promotion',},
   {id:'#food',name:'#food',},
-  {id:'#award',name:'#award',},
+  {id:'#love',name:'#love',},
+  {id:'#promotion',name:'#promotion',}, 
+   {id:'#success',name:'#success',},
   {id:'#family',name:'#family',},
+  {id:'#travel',name:'#travel',},
+  {id:'#joy',name:'#joy',},
+  {id:'#holiday',name:'#holiday',},
+  {id:'#target',name:'#target',},
+  {id:'#mission',name:'#mission',},
+  {id:'#award',name:'#award',},
+  {id:'#fulfillment',name:'#fulfillment',},
+  {id:'#recognition',name:'#recognition',},
+  {id:'#achievement',name:'#achievement',},
 ]
 
 const [hastags,setHastags]=useState(data1)
@@ -87,7 +96,7 @@ const Item1=({item})=>{
             />
       </View>
       <View style={{alignSelf: 'center',}}>
-      <Text style={{fontSize:Metrics.rfv(25),fontWeight:'bold',color:'black',alignSelf:'center',}}>How are you feeling Today ?</Text>
+      <Text style={{fontSize:Metrics.rfv(22),fontWeight:'bold',color:'black',alignSelf:'center',marginTop:10}}>How are you feeling Today ?</Text>
       </View>
       <View style={{marginTop:20,}}>
       <FlatList

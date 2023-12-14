@@ -206,7 +206,7 @@ console.log('duration',duration)
       selectionLimit:100,
       storageOptions: {
         skipBackup: true,
-        path: 'images',
+        // path: 'images',
       },
     };
     launchImageLibrary(options, (response) => {
@@ -218,7 +218,7 @@ console.log('duration',duration)
         console.log('ImagePicker Error: ', response.error);
       } else {
         const source = { uri: response.assets.uri };
-        console.log('response', JSON.stringify(response));
+        console.log(' video response', JSON.stringify(response));
         setType(response.assets[0].type)
         setFileUri1(response.assets[0].uri)
         filesUpload1(response.assets)
@@ -258,7 +258,17 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
       const urlArray = result.data.map(item => item.url);
       setImagArray(urlArray)
       // console.log(urlArray)
-      alert(result.message)
+      // alert(result.message)
+      Alert.alert('Image', result.message, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () =>  {
+          // navigation.navigate('Home')
+        }},
+      ]);
       setLoading(false)
     }
     setLoading(false)
@@ -268,7 +278,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     setLoading(false)
   });
   }
-  const filesUpload1 = async (ImgArray)=>{
+  const filesUpload1 = async (VidArray)=>{
     setLoading(true)
     const res = await getUserProfileInfo()
     setLoading(true)
@@ -276,11 +286,11 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
     const formdata = new FormData();
 
-    ImgArray.forEach((image, index) => {
+    VidArray.forEach((video, index) => {
       formdata.append('files', {
-        uri: image.uri,
-        type: image.type,
-        name: image.fileName,
+        uri: video.uri,
+        type: video.type,
+        name: video.fileName,
       });
     });
 
@@ -294,12 +304,22 @@ var requestOptions = {
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log('upload res',result.data)
+    console.log(' video upload res',result.data)
     if(result && result.success == true){ 
       const urlArray = result.data.map(item => item.url);
       setVideoArray(urlArray)
       // console.log(urlArray)
-      alert(result.message)
+      // alert(result.message)
+      Alert.alert('Video', result.message, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () =>  {
+          // navigation.navigate('Home')
+        }},
+      ]);
       setLoading(false)
     }
     setLoading(false)
@@ -340,7 +360,17 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
       const urlArray = result.data.map(item => item.url);
       setAudioArray(urlArray)
       // console.log(urlArray)
-      alert(result.message)
+      // alert(result.message)
+      Alert.alert('Audio', result.message, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () =>  {
+          navigation.navigate('Home')
+        }},
+      ]);
       setLoading(false)
     }
     setLoading(false)
@@ -387,7 +417,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
 console.log('moment res',result)
 if(result && result.success == true){
   console.log(result.data)
-  Alert.alert(' ', result.message, [
+  Alert.alert('Moment', result.message, [
     {
       text: 'Cancel',
       onPress: () => console.log('Cancel Pressed'),
@@ -441,16 +471,16 @@ setLoading(false)
             />
       </View> */}
 
-      <View style={{alignSelf: 'center',marginTop:Metrics.rfv(10),}}>
-        <Text style={{fontSize:Metrics.rfv(30),color:'black',alignSelf: 'center',fontWeight:'bold'}}>{item.name}</Text>
+      <View style={{alignSelf: 'center',marginTop:Metrics.rfv(15),}}>
+        <Text style={{fontSize:Metrics.rfv(30),color:'white',alignSelf: 'center',fontFamily:'Montserrat-Bold',}}>{item.name}</Text>
       <Image
           style={{
-             width:120,height:120,margin:10,borderRadius:10,marginTop:Metrics.rfv(30),
+             width:120,height:120,margin:10,borderRadius:10,marginTop:Metrics.rfv(30),alignSelf: 'center'
             }}
            source={item.image}
          />
       </View>
-       <Text style={{color:'black',alignSelf: 'center',marginTop:Metrics.rfv(10),fontWeight:'bold'}}>Tell dec about your day</Text>
+       <Text style={{color:'black',alignSelf: 'center',marginTop:Metrics.rfv(10),fontWeight:'bold'}}>Tell Dec about your day</Text>
        <View style={{alignSelf:'center',width:'90%'}}>
         <TextInput
          value={title}
@@ -472,7 +502,7 @@ setLoading(false)
           }}
         />
         <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}}
+           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor: audioArray.length > 0 ? 'green' :'white'}}
              onPress={()=>{recordingActive ? onStopRecord() :onStartRecord()}}>
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
             {recordingActive ? ( <FontAwesome
@@ -490,7 +520,8 @@ setLoading(false)
             </View>
           
            </TouchableOpacity>
-           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}} onPress={()=>{launchNativeImageLibrary()}}>
+           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor: imgArray.length > 0 ? 'green' :'white'}}
+            onPress={()=>{launchNativeImageLibrary()}}>
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <Feather
            name="image"
@@ -500,14 +531,15 @@ setLoading(false)
               <Text  style={{alignSelf:'center',color:'black'}}> Add Images</Text>
             </View>
            </TouchableOpacity>
-           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor:'white'}} onPress={()=>{launchNativeImageLibrary1()}}>
-           <DateTimePickerModal
+           <TouchableOpacity style={{ borderRadius:20,padding:5,alignSelf:'center',backgroundColor: videoArray.length > 0 ? 'green' :'white'}} 
+           onPress={()=>{launchNativeImageLibrary1()}}>
+           {/* <DateTimePickerModal
           date={selectedDate}
           isVisible={datePickerVisible}
           mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-        />
+        /> */}
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <Ionicons
            name="videocam"
@@ -569,7 +601,12 @@ setLoading(false)
           alignSelf:'center',marginTop:20,borderRadius:15}}
           activeOpacity={0.5}
            onPress={()=>{
-            onSubmit()
+            if(title != ''){
+              onSubmit()
+            }else{
+                 alert('Please enter Title')
+            }
+          
             // navigation.navigate('Home')
             }}>
       <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>

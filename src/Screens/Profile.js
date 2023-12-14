@@ -23,11 +23,11 @@ const Profile = () => {
     const navigation= useNavigation()
 
     const data=[
-      {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'Super Happy'},
-      {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
-      {id:3,color:'#008B8B',image:require('../assets/images/image2.jpg'),name:'Neutral'},
-      {id:4,color:'#F4C430',image:require('../assets/images/image4.jpg'),name:'Sad'},
-      {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"Very Sad"},
+      {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'SuperHappy'},
+      {id:2,color:'#95D1F4',image:require('../assets/images/image3.jpg'),name:'Happy'},
+      {id:3,color:'#67a596',image:require('../assets/images/image2.jpg'),name:'Neutral'},
+      {id:4,color:'#FFD75A',image:require('../assets/images/image4.jpg'),name:'Sad'},
+      {id:5,color:'#FF7F7F',image:require('../assets/images/image5.jpg'),name:"VerySad"},
     ]
 
     const onToggleSwitch = () => {
@@ -91,29 +91,30 @@ const Profile = () => {
       <View style={{marginTop:10}}>
           <Switch
               style={{
-               transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],alignSelf:'flex-end',marginRight:10
+               transform: [{ scaleX: 1.5 }, { scaleY: 1.3 }],alignSelf:'flex-end',marginRight:10,marginTop:10
               }}
               color='#00B0FF'
               value={isSwitchOn}
               onValueChange={onToggleSwitch}
             />
       </View>
-      <View style={{alignSelf:'flex-end',marginTop:5}}>
+      {/* <View style={{alignSelf:'flex-end',marginTop:5}}>
                 <Entypo
                   name="menu"
                    size={40}
                    style={{marginRight: 20,color:'black'}}
                 onPress={()=>{navigation.navigate('Settings')}}   
                  />
-      </View>
+      </View> */}
        
-       <Card style={{backgroundColor:'white',alignSelf:'center',width:'80%'}}>
+       <Card style={{backgroundColor:'white',alignSelf:'center',width:'75%',marginTop:150}}>
        
-            <View style={{flexDirection:'row',padding:5,justifyContent:'space-between'}}>
-              <View style={{alignSelf:'center',}}>
-              <Text style={{color:'black',fontSize:25,margin:5,alignSelf:'center',fontFamily:'Montserrat-Bold',}}>Status</Text>
-              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:20}}>Dec Scores you</Text>
-              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:200,padding:10,}}>{scoreRes.averageMaxScore != undefined ? scoreRes.averageMaxScore : 0}</Text>
+            <View style={{flexDirection:'row',padding:5,justifyContent:'space-around'}}>
+              <View style={{}}>
+              <Text style={{color:'#0058aa',fontSize:25,margin:5,alignSelf:'center',fontFamily:'Montserrat-Bold',marginLeft:30}}>Status</Text>
+              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:30}}>Dec scores you</Text>
+              <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:200,
+              padding:10,marginTop:10,marginLeft:20}}>{scoreRes.averageMaxScore != undefined ? scoreRes.averageMaxScore : 0}</Text>
               </View>
               <View>
               <FlatList
@@ -124,7 +125,7 @@ const Profile = () => {
                       console.log('eeeeee',name);
                       if(name != null){
                       return(
-                        <TouchableOpacity style={{backgroundColor: name.color ,width:70,height:70,margin:20, borderRadius:5,}} >
+                        <TouchableOpacity style={{backgroundColor: name.color ,width:70,height:70,borderRadius:5,marginTop:50}} >
                         <Image
                           style={{
                           width:60,height:60,borderRadius:5,margin:5
@@ -140,7 +141,7 @@ const Profile = () => {
             </View>
             <View style={{marginBottom:10,}}>
               <Text style={{color:'black',alignSelf:'center',fontSize:15,fontWeight:'bold',}}>you are a happy person,
-              <Text style={{color:'#00B0FF',fontSize:25,marginTop:10,fontFamily:'Montserrat-Bold',}}> {userInfo.name}</Text></Text>
+              <Text style={{color:'#0058aa',fontSize:25,fontFamily:'Montserrat-Bold',}}> {userInfo.name}</Text></Text>
             </View>
        </Card>
        <View style={{marginTop:10,alignSelf:'center'}}>

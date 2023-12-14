@@ -111,12 +111,12 @@ console.log(years)
 const DATA=years;
 
 const Item=({item})=>{
-  console.log('iii',item == new Date().getFullYear())
+  // console.log('iii',item == new Date().getFullYear())
     return(
       <View style={{margin:2,}}>
 
           <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,
-           backgroundColor: item == new Date().getFullYear() ? 'grey' :''}}
+           backgroundColor: item == new Date().getFullYear() ? 'grey' :'#fefeff'}}
            onPress={()=>{getYearlyAverageScore(item),setyear(!YEAR),setYearName(item)}}>
       <Text style={{fontSize:10,color:item == new Date().getFullYear() ? 'white' : 'black' }}> {item}</Text>
      </TouchableOpacity>
@@ -126,9 +126,11 @@ const Item=({item})=>{
     )
 }
 
-const date = new Date();  // 2009-11-10
+let date = new Date();  // 2009-11-10
+date.setMonth(date.getMonth() - 1);
+
 const month = date.toLocaleString('default', { month: 'long' });
-console.log(month);
+console.log('month..',month);
 
 const getWeeklyAverageScore =async (week)=>{
  
@@ -165,7 +167,7 @@ const getWeeklyAverageScore =async (week)=>{
     headers: myHeaders,
     redirect: 'follow'
     };
-  
+     console.log(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`)
     fetch(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`, requestOptions)
     .then(response => response.json())
     .then(result => {
@@ -201,7 +203,7 @@ const getWeeklyAverageScore =async (week)=>{
       headers: myHeaders,
       redirect: 'follow'
       };
-    
+      console.log(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`)
       fetch(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`, requestOptions)
       .then(response => response.json())
       .then(result => {
@@ -234,7 +236,7 @@ const getWeeklyAverageScore =async (week)=>{
           headers: myHeaders,
           redirect: 'follow'
           };
-        
+          console.log(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`)
           fetch(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`, requestOptions)
           .then(response => response.json())
           .then(result => {
@@ -278,7 +280,7 @@ const getWeeklyAverageScore =async (week)=>{
         onPress={()=>{setWeek(false),setWeekName(''),setMonth(false),setMonthName(''),setyear(false),setYearName('')}}
         />
       <ScrollView>
-         <View style={{  alignSelf: 'center',  width: '60%',marginTop:Metrics.rfv(100)}}>
+         <View style={{  alignSelf: 'center',  width: '60%',marginTop:Metrics.rfv(50)}}>
       <TouchableOpacity style={styles.ButtonStyles} onPress={toggleDropdown}>
         <Text style={styles.TextStyles}>{'Weekly stats'}</Text>
         <MaterialIcons
@@ -306,30 +308,32 @@ const getWeeklyAverageScore =async (week)=>{
         {week ? (<View style={{backgroundColor:'white',padding:10,width:'70%',alignSelf:'center'}}>
           <Text style={{color:'black',fontWeight:'bold',alignSelf:'center'}}>{month}</Text>
           <TouchableOpacity style={{padding:15,borderWidth:1,borderRadius:100,alignSelf:'center',margin:10}}>
-      <Text style={{fontSize:10,color:'black'}}> {weeklyscoreRes && weeklyscoreRes.averageMaxScore}</Text>
+      <Text style={{fontSize:10,color:'black'}}> {weeklyscoreRes && weeklyscoreRes.averageMaxScore != 0 ? weeklyscoreRes && weeklyscoreRes.averageMaxScore: '--'}</Text>
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{weekname}</Text>
-            <Text style={{color:'#FF0040',fontWeight:'bold',alignSelf:'center',}}>" {weeklyscoreRes && weeklyscoreRes.emoji} "</Text>
+            <Text style={{color: weeklyscoreRes && weeklyscoreRes.averageMaxScore  <= 25 ? '#FF7F7F': weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 50 ? '#67a596':
+            weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 75 ? '#00B0FF': weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 100 ? '#FFB6C1':'black',
+            alignSelf:'center',fontSize:10}}>" { weeklyscoreRes && weeklyscoreRes.emoji} "</Text>
         </View>
         ):(
         <View>
           <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
       onPress={()=>{getWeeklyAverageScore(1), setWeek(!week),setWeekName('1st Week')}}>
       <Text style={{fontSize:10,color:'black'}}> 1st Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
      onPress={()=>{getWeeklyAverageScore(2),setWeek(!week),setWeekName('2nd Week')}}>
       <Text style={{fontSize:10,color:'black'}}> 2nd Week</Text>
      </TouchableOpacity>
      </View>
      <Text style={{color:'black',fontWeight:'bold',alignSelf:'center'}}>{month}</Text>
      <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
      onPress={()=>{getWeeklyAverageScore(3),setWeek(!week),setWeekName('3rd Week')}}>
       <Text style={{fontSize:10,color:'black'}}> 3rd Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'21%',marginRight:10}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
      onPress={()=>{getWeeklyAverageScore(4),setWeek(!week),setWeekName('4th Week')}}>
       <Text style={{fontSize:10,color:'black' }}> 4th Week</Text>
      </TouchableOpacity>
@@ -368,65 +372,67 @@ const getWeeklyAverageScore =async (week)=>{
      {Month ? (<View style={{backgroundColor:'white',padding:10,width:'70%',alignSelf:'center'}}>
           <Text style={{color:'black',fontWeight:'bold',alignSelf:'center'}}>{new Date().getFullYear()}</Text>
           <TouchableOpacity style={{padding:15,borderWidth:1,borderRadius:100,alignSelf:'center',margin:10}}>
-      <Text style={{fontSize:10,color:'black'}}> {monthlyscoreRes && monthlyscoreRes.averageMaxScore}</Text>
+      <Text style={{fontSize:10,color:'black'}}> {monthlyscoreRes && monthlyscoreRes.averageMaxScore != 0 ? monthlyscoreRes && monthlyscoreRes.averageMaxScore : '--'}</Text>
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{monthName}</Text>
-            <Text style={{color:'#FF0040',fontWeight:'bold',alignSelf:'center',}}>" {monthlyscoreRes && monthlyscoreRes.emoji} "</Text>
+            <Text style={{color: monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 25 ? '#FF7F7F': monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 50 ? '#67a596':
+            monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 75 ? '#00B0FF':'#FFB6C1',
+            fontWeight:'bold',alignSelf:'center',}}>" { monthlyscoreRes && monthlyscoreRes.emoji} "</Text>
         </View>):(<View>
 
         <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
      onPress={()=>{ getMonthlyAverageScore('01'),setMonth(!Month),setMonthName('January')}}>
       <Text style={{fontSize:10,color:'black'}}> Jan</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('02'),setMonth(!Month),setMonthName('February')}}>
       <Text style={{fontSize:10,color:'black'}}> Feb</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('03'),setMonth(!Month),setMonthName('March')}}>
       <Text style={{fontSize:10,color:'black'}}> Mar</Text>
      </TouchableOpacity>
      </View>
  
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('04'),setMonth(!Month),setMonthName('April')}}>
       <Text style={{fontSize:10,color:'black'}}> April</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('05'),setMonth(!Month),setMonthName('January')}}>
       <Text style={{fontSize:10,color:'black' }}> May</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('06'),setMonth(!Month),setMonthName('June')}}>
       <Text style={{fontSize:10,color:'black' }}> June</Text>
      </TouchableOpacity>
      </View>
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('07'),setMonth(!Month),setMonthName('July')}}>
       <Text style={{fontSize:10,color:'black'}}> July</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('08'),setMonth(!Month),setMonthName('August')}}>
       <Text style={{fontSize:10,color:'black'}}> Aug</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('09'),setMonth(!Month),setMonthName('September')}}>
       <Text style={{fontSize:10,color:'black'}}> Sep</Text>
      </TouchableOpacity>
      </View>
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('10'),setMonth(!Month),setMonthName('October')}}>
       <Text style={{fontSize:10,color:'black' }}> Oct</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('11'),setMonth(!Month),setMonthName('November')}}>
       <Text style={{fontSize:10,color:'black' }}> Nov</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
       onPress={()=>{getMonthlyAverageScore('12'),setMonth(!Month),setMonthName('December')}}>
       <Text style={{fontSize:10,color:'black' }}> Dec</Text>
      </TouchableOpacity>
@@ -461,10 +467,12 @@ const getWeeklyAverageScore =async (week)=>{
       {YEAR ? (<View style={{backgroundColor:'white',padding:10,width:'70%',alignSelf:'center'}}>
           <Text style={{color:'black',fontWeight:'bold',alignSelf:'center'}}>Decade of {years[0]} - {years[(years.length - 1)]}</Text>
           <TouchableOpacity style={{padding:15,borderWidth:1,borderRadius:100,alignSelf:'center',margin:10}}>
-      <Text style={{fontSize:10,color:'black'}}> {yearlyscoreRes && yearlyscoreRes.averageMaxScore}</Text>
+      <Text style={{fontSize:10,color:'black'}}> {yearlyscoreRes && yearlyscoreRes.averageMaxScore != 0 ? yearlyscoreRes && yearlyscoreRes.averageMaxScore : '--'}</Text>
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{yearname}</Text>
-            <Text style={{color:'#FF0040',fontWeight:'bold',alignSelf:'center',}}>" {yearlyscoreRes && yearlyscoreRes.emoji} "</Text>
+            <Text style={{color: yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 25 ? '#FF7F7F': yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 50 ? '#67a596':
+            yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 75 ? '#00B0FF':'#FFB6C1',
+            fontWeight:'bold',alignSelf:'center',}}>" { yearlyscoreRes && yearlyscoreRes.emoji} "</Text>
         </View>):(<View style={{marginRight:10,}}>
      <FlatList
      numColumns={5}

@@ -52,7 +52,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
         fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=artist`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            // console.log('artist res',result.data)
+            console.log('artist res',result.data)
             if(result && result.success == true){
             setArtistArray(result.data.list)
             setLoading(false)
@@ -81,7 +81,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
             fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=audience`, requestOptions)
               .then(response => response.json())
               .then(result => {
-                // console.log('audience res',result.data)
+                console.log('audience res',result.data)
                 if(result && result.success == true){
                 setAudienceArray(result.data.list)
                 setLoading(false)
@@ -111,7 +111,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                 fetch(`${API_BASE_URL}/api/user/myProfile`, requestOptions)
                   .then(response => response.json())
                   .then(result => {
-                    // console.log('profile res...',result.data)
+                    console.log('profile res...',result.data)
                     if(result && result.success == true){
                       setProfileRes(result.data)
                     setLoading(false)
@@ -190,24 +190,28 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
          </TouchableOpacity>
          <Text style={{color:'black',fontWeight:'bold'}}>{profileRes && profileRes.alias}</Text>
          <Text style={{color:'black'}}>{profileRes && profileRes.phile}</Text>
+         <Text style={{color:'black'}}>{profileRes && profileRes.about}</Text>
+         <Text style={{color:'black'}}>{profileRes && profileRes.userType}</Text>
+         <Text style={{color:'black'}}>{profileRes && profileRes.artistType}</Text>
       </View>
-        <View style={{marginTop:10}}>
-          <TouchableOpacity onPress={()=>{navigation.navigate('Posts',{audienceArray:audienceArray})}}>
-            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>{audienceArray.length}</Text>
-            <Text style={{color:'black',fontWeight:'bold'}}>Audience</Text>
-           </TouchableOpacity>
-        </View>
-        <View style={{marginTop:10}}>
-        <TouchableOpacity onPress={()=>{navigation.navigate('Friends',{artistArray:artistArray})}}>
-            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}> {artistArray.length}</Text>
-            <Text style={{color:'black',fontWeight:'bold'}}>Artists</Text>
-            </TouchableOpacity>
-        </View>
-        <View style={{marginRight:Metrics.rfv(20),marginTop:10}}>
+      <View style={{marginRight:Metrics.rfv(20),marginTop:10}}>
         <TouchableOpacity onPress={()=>{navigation.navigate('Cards')}}>
             <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>70</Text>
             <Text style={{color:'black',fontWeight:'bold'}}>Cards</Text>
             </TouchableOpacity>
+        </View>
+        
+        <View style={{marginTop:10}}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('Friends',{artistArray:artistArray,getArtists:getArtists})}}>
+            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}> {artistArray.length}</Text>
+            <Text style={{color:'black',fontWeight:'bold'}}>Artists</Text>
+            </TouchableOpacity>
+        </View>
+        <View style={{marginTop:10,marginRight:10}}>          
+          <TouchableOpacity onPress={()=>{navigation.navigate('Posts',{audienceArray:audienceArray,getAudience:getAudience})}}>
+            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>{audienceArray.length}</Text>
+            <Text style={{color:'black',fontWeight:'bold'}}>Audience</Text>
+           </TouchableOpacity>
         </View>
       </View>
     <View style={{marginTop:10,flex:1}}>

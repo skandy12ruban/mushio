@@ -2,16 +2,18 @@ import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,ScrollView,Styl
 import React,{useState,useEffect,useRef} from 'react'
 import Metrics from '../Constants/Metrics'
 import Loader from '../Components/Loader'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
 import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-player'
 
 
 
 const Moments = () => {
   const videoPlayer = useRef(null);
   const [loading,setLoading]=useState(false)
+  const isFocused=useIsFocused()
   const[momentsArray,setMomentsArray]=useState([]);
   const navigation=useNavigation()
   const data=[
@@ -40,9 +42,23 @@ console.log(myHeaders)
 fetch(`${API_BASE_URL}/api/post/myPosts?postType=moments`, requestOptions)
 .then(response => response.json())
 .then(result => {
-  console.log(result.data.list)
+  console.log('..',result.data.list)
   if(result && result.success == true){
-    setMomentsArray(result.data.list)
+    const updatedA = result.data.list.map(item => ({
+      files: item.files.map(file => ({
+        ...file,
+        userId: item._id
+      }))
+    }));
+    let userdata=[]
+    updatedA.map((e)=>{
+       let a= e.files;
+         for(let i=0; i<a.length;i++){
+           // console.log('iiiiiiii',a[i])
+           userdata.push(a[i])
+         }
+     })
+    setMomentsArray(userdata)
     setLoading(false)
   }
   setLoading(false)
@@ -55,36 +71,45 @@ fetch(`${API_BASE_URL}/api/post/myPosts?postType=moments`, requestOptions)
 
 useEffect(()=>{
   Mymoments();
-},[])
+},[isFocused])
 
-const Item= ({item})=>{
-  // console.log('item',item)
+const Item= ({item,index})=>{
+  // console.log(item)
   return(
-    <View style={{margin:1,alignSelf:'center',}}>
-
-      <TouchableOpacity style={{backgroundColor:'white', borderWidth:Metrics.rfv(1), }}
+    <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
+        
+      <View>
+        <TouchableOpacity style={{    }}
         onPress={()=>{
-        //   setProfileImg()
+          let id=item.userId
+          navigation.navigate('PublicSearchScreen1',{selectedId:id})
+          // selectSearchData(id)
+       
           }}>
-         
-               { item.type == 'image'  ? (
-          < View style={{margin:5,}}>
-             <Image
-                  source={{uri:item.url}}
-                  style={{width:100,height:100}}
-                 />
-           </View>
-                 ):(
-          < View style={{margin:5,}}>
-                <Video  
-                  ref={videoPlayer}
-                  source={{ uri: item.url }}
-                  style={styles.mediaPlayer}
-                  volume={10}
-                  />
-          </View>
-               )}
+          { item.type == 'video'  ? (
+                 < View style={{}}>
+                   <VideoPlayer
+                     video={{ uri:`${item.url}` }}
+                    //  videoWidth={3000}
+                    //  videoHeight={2000}
+                    //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+                     style={{width:110,height:100,alignSelf:'center',}}
+                   />
+            </View>
+                 ) : item.type == 'image'  ?(
+           < View style={{}}>
+                  <Image
+                  key={index}
+                       source={{uri:item.url}}
+                       style={{width:110,height:100,alignSelf:'center',}}
+                      />
+                </View>
+           
+               ):(null)}
          </TouchableOpacity>
+         
+      </View>
+     
     </View>
   )
 }
@@ -95,20 +120,52 @@ const Item= ({item})=>{
     <SafeAreaView style={{width:'100%',alignSelf:'center',}}>
       <Loader loading={loading}></Loader>
       <ScrollView>
-       {momentsArray.map((e)=>{
-            //  console.log('ee',e)
-            return(
-              < View style={{}}>
-                <FlatList
+      < View style={{}}>
+              <FlatList
                 numColumns={3}
-                data={e.files}
+                // horizontal
+                data={momentsArray || []}
                 renderItem={Item}
                 keyExtractor={item =>item._id}
                 />
                </View>
-               )  } )
-         }
-         
+    
+         {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {momentsArray.map((item) => (
+             <View key={item._id} style={{ width: '33.33%',padding:1 }}>
+        
+                   {item.files.map((file) => (
+                    // console.log(file)
+            <View key={file._id} style={{margin:2}}>
+              {file.type === 'image' && (
+               <TouchableOpacity style={{backgroundColor:'white',  }}
+                onPress={()=>{
+                      //   setProfileImg()
+                 }}>
+                <Image
+                  source={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                </TouchableOpacity>
+              )}
+              {file.type === 'video' && (
+            <TouchableOpacity style={{backgroundColor:'white',  }}
+                 onPress={()=>{
+                      //   setProfileImg()
+                }}>
+                  <VideoPlayer
+                  video={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                   </TouchableOpacity>
+              )}
+           
+            </View>
+          ))}
+        
+              </View>
+          ))}
+          </View> */}
          </ScrollView>
     </SafeAreaView>
   )

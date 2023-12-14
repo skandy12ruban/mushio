@@ -1,49 +1,72 @@
 import { View, Text, SafeAreaView,TouchableOpacity,Image,FlatList,ScrollView } from 'react-native'
 import React,{useState,useEffect} from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import SearchView from '../Components/SearchView'
 import Loader from '../Components/Loader'
 import Metrics from '../Constants/Metrics'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
 import Video from 'react-native-video';
+import { Card } from 'react-native-paper';
+import VideoPlayer from 'react-native-video-player';
+import { Searchbar } from 'react-native-paper';
+import { SearchBar } from 'react-native-elements'
+
 
 const PublicSearchScreen = () => {
   const navigation=useNavigation()
+  const isFocused= useIsFocused()
   const[loading,setLoading]=useState(false)
+  const [searchQuery, setSearchQuery] = React.useState('');
   const[serachArray,setSearchArray]=useState([])
+  const[searchRes,setSearchRes]=useState([])
+  const[serachArray1,setSearchArray1]=useState([])
   const data=[
     {id:1,image:require('../assets/images/place1.jpg'),name:'Satish',place:'Guntur'},
     {id:2,image:require('../assets/images/place2.jpg'),name:'Bharath',place:'Hyderabad'},
     {id:3,image:require('../assets/images/place3.jpg'),name:'Vamsi',place:'Warangal'},
     {id:4,image:require('../assets/images/place4.jpg'),name:'Vinay',place:'Vizag'},
   ]
-const Item= ({item})=>{
-  console.log(item)
+
+const Item= ({item,index})=>{
+  // console.log(item)
   return(
-    <View style={{margin:1,alignSelf:'center'}}>
-      <TouchableOpacity style={{backgroundColor:'white', borderWidth:Metrics.rfv(1), width:Metrics.rfv(120),}}
-        onPress={()=>{
-          navigation.navigate('PublicSearchScreen1',{item:item})
-          }}>
-            { item.type == 'image'  ? (
-          < View style={{margin:5,}}>
-             <Image
-                  source={{uri:item.url}}
-                  style={{width:100,height:100}}
-                 />
-           </View>
-                 ):(
-          < View style={{margin:5,}}>
-                <Video  
-                  source={{ uri: item.url}}
-                  style={{width:100,height:100}}
-                 
-                  />
-          </View>
-               )}
-         </TouchableOpacity>
-    </View>
+    // <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
+        
+      <Card style={{alignSelf:'center',margin:2,marginLeft:5,}} 
+       onPress={()=>{
+        let id=item.userId
+        navigation.navigate('PublicSearchScreen1',{selectedId:id})
+        // selectSearchData(id)
+     
+        }}>
+        {/* <TouchableOpacity style={{    }}
+       > */}
+          { item.type == 'video'  ? (
+                 < View style={{}}>
+                   <VideoPlayer
+                     video={{ uri:`${item.url}` }}
+                    //  videoWidth={3000}
+                    //  videoHeight={2000}
+                    //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+                     style={{width:110,height:100,alignSelf:'center',borderRadius:10}}
+                   />
+            </View>
+                 ) : item.type == 'image'  ?(
+           < View style={{borderRadius:5}}>
+                  <Image
+                  key={index}
+                       source={{uri:item.url}}
+                       style={{width:110,height:100,alignSelf:'center',borderRadius:10}}
+                      />
+                </View>
+           
+               ):(null)}
+         {/* </TouchableOpacity> */}
+         
+      </Card>
+     
+    // </View>
   )
 }
 
@@ -58,13 +81,41 @@ const getSearchdata = async ()=>{
     headers: myHeaders,
     redirect: 'follow'
   };
-  
+  console.log(`${API_BASE_URL}/api/post`)
   fetch(`${API_BASE_URL}/api/post`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log(result.data.posts)
+      console.log('rrsults',result.data.posts)
       if(result && result.success == true){
-      setSearchArray(result.data.posts)
+      //   let userdata=[]
+      //  result.data.posts.map((e)=>{
+      //     let a= e.files;
+      //       for(let i=0; i<a.length;i++){
+      //         // console.log('iiiiiiii',a[i])
+      //         userdata.push(a[i])
+      //       }
+      //   })
+       
+        // console.log('response',userdata)
+      // setSearchArray(userdata)
+
+      const updatedA = result.data.posts.map(item => ({
+        files: item.files.map(file => ({
+          ...file,
+          userId: item._id
+        }))
+      }));
+      let userdata=[]
+      updatedA.map((e)=>{
+         let a= e.files;
+           for(let i=0; i<a.length;i++){
+             // console.log('iiiiiiii',a[i])
+             userdata.push(a[i])
+           }
+       })
+      // console.log('response11',userdata)
+      setSearchArray(userdata)
+
       setLoading(false)
       }
       setLoading(false)
@@ -74,30 +125,165 @@ const getSearchdata = async ()=>{
       setLoading(false)
     });
   }
+  const getSearchdata1 = async (text)=>{
+   
+    const res = await getUserProfileInfo()
+    console.log(res.accessToken)
+      // setLoading(true)
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+      const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    console.log(`${API_BASE_URL}/api/post?q=${text}`)
+    fetch(`${API_BASE_URL}/api/post?q=${text}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log('rrsult',result.data.posts)
+        if(result && result.success == true){
+          const updatedA = result.data.posts.map(item => ({
+            files: item.files.map(file => ({
+              ...file,
+              userId: item._id
+            }))
+          }));
+          let userdata=[]
+          updatedA.map((e)=>{
+             let a= e.files;
+               for(let i=0; i<a.length;i++){
+                 // console.log('iiiiiiii',a[i])
+                 userdata.push(a[i])
+               }
+           })
+        setSearchArray(userdata)
+        // setSearchQuery(text)
+        setLoading(false)
+        }
+       
+      })
+      .catch(error => {
+        console.log('error', error)
+        setLoading(false)
+      });
+
+    }
+  
+    // const selectSearchData=async(id)=>{
+    //   const res = await getUserProfileInfo()
+    //   console.log(res.accessToken)
+    //     setLoading(true)
+    //     var myHeaders = new Headers();
+    //     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    //     const requestOptions = {
+    //     method: 'GET',
+    //     headers: myHeaders,
+    //     redirect: 'follow'
+    //   };
+    //   console.log(`${API_BASE_URL}/api/post/travel?postId=${id}`)
+    //   fetch(`${API_BASE_URL}/api/post/travel?postId=${id}`, requestOptions)
+    //     .then(response => response.json())
+    //     .then(result => {
+    //       console.log(' selecty rrsult',result.data.posts)
+    //       if(result && result.success == true){
+    //         let item =result.data.posts
+    //         navigation.navigate('PublicSearchScreen1',{searchArray:item,selectSearchData:selectSearchData})
+    //       // setSearchQuery(text)
+    //       setLoading(false)
+    //       }
+         
+    //     })
+    //     .catch(error => {
+    //       console.log('error', error)
+    //       setLoading(false)
+    //     });
+    // }
+   
   
   useEffect(()=>{
     getSearchdata()
-  },[])
+   
+  },[isFocused])
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1}}>
     <Loader loading={loading}></Loader>
-    <SearchView/>
-    <View style={{marginTop:5}}>
+    {/* <SearchView/> */}
+    <Searchbar
+      placeholder="Search"
+      onChangeText={(text) => {
+        setSearchQuery(text)
+        getSearchdata1(text)
+      }}
+      onClearIconPress={(text) => {
+        getSearchdata()
+       
+      }}
+      value={searchQuery}
+      style={{}}
+    />
+    <View style={{marginTop:1,flex:2}}>
     <ScrollView>
-       {serachArray.map((e)=>{
-             console.log('ee',e)
-            return(
-              < View style={{}}>
+    < View style={{}}>
                 <FlatList
                 numColumns={3}
-                data={e.files}
+                // horizontal
+                data={serachArray || []}
                 renderItem={Item}
                 keyExtractor={item =>item._id}
                 />
                </View>
-               )  } )
-         }
+       {/* {serachArray.map((e)=>{
+
+            console.log('ee',e)
+            return(
+              < View style={{}}>
+                <FlatList
+                // numColumns={3}
+                horizontal
+                data={e.files || []}
+                renderItem={Item}
+                keyExtractor={item =>item._id}
+                />
+               </View>
+               ) 
+               } )
+         } */}
+          {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {serachArray.map((item) => (
+            //  console.log()
+             <View key={item._id} style={{ width: '33.33%',padding:1 }}>           
+         {item.files.map((file) => (
+            <View key={file._id} style={{margin:2}}>
+              {file.type === 'image' && (
+               <TouchableOpacity style={{backgroundColor:'white',  }}
+                onPress={()=>{
+                      //   setProfileImg()
+                 }}>
+                <Image
+                  source={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                </TouchableOpacity>
+              )}
+              {file.type === 'video' && (
+            <TouchableOpacity style={{backgroundColor:'white',  }}
+                 onPress={()=>{
+                      //   setProfileImg()
+                }}>
+                  <VideoPlayer
+                  video={{ uri: file.url }}
+                  style={{ width: '100%', height: 100, resizeMode: 'cover' }}
+                />
+                   </TouchableOpacity>
+              )}
+           
+            </View>
+          ))}
+              </View>
+          ))}
+          </View> */}
          </ScrollView>
     </View>
     </SafeAreaView>

@@ -15,7 +15,7 @@ const MyProfile = () => {
     const navigation=useNavigation()
     const route=useRoute()
     const {profileRes,getProfile}=route.params;
-    // console.log('profile res',profileRes)
+    console.log('profile res',profileRes)
       
      
     const[loading,setLoading]=useState(false)
@@ -28,16 +28,17 @@ const MyProfile = () => {
     const[fileName,setFileName]=useState('')
     const [fileUri, setFileUri] = useState(null);
    const[imageType,setImageType]=useState('')
-   
+ 
     const data=[
-      {value:'artist',label:'artist'},{value:'audience',label:'audience'}
+      {value:'artist',label:'artist'},{value:'audience',label:'audience'},{value:'both',label:'both'}
     ]
    const data1=[
-    {value:'singer',label:'singer'},
-    {value:'Dancer',label:'Dancer'},
-    {value:'StartUp Comedian',label:'StartUp Comedian'},
-    {value:'Reporter',label:'Reporter'},
-    {value:'Painter',label:'Painter'},
+    {value:'singer',label:'Singer'},
+    {value:'dancer',label:'Dancer'},
+    {value:'startUpComedian',label:'StandUp Comedian'},
+    {value:'reporter',label:'Reporter'},
+    {value:'painter',label:'Painter'},
+    {value:'mimicryArtist',label:'Mimicry Artist'},
    ]
 
    const launchNativeImageLibrary = () => {
@@ -64,13 +65,13 @@ const MyProfile = () => {
         setFileName(response.assets[0].fileName)
         setImageType(response.assets[0].type)
         setFileUri(response.assets[0].uri)
-        filesUpload()
+        filesUpload(response.assets)
       }
     });
 
   }
 
-  const filesUpload = async ()=>{
+  const filesUpload = async (imgArray)=>{
     const res = await getUserProfileInfo()
     console.log(res.accessToken)
     setLoading(true)
@@ -78,11 +79,13 @@ const MyProfile = () => {
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
 
     const formdata = new FormData();
-      formdata.append('file', {
-        uri: fileUri,
-        type: imageType,
-        name: fileName,
+    imgArray.forEach((image, index) => {
+      formdata.append('files', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName,
       });
+    });
 
 var requestOptions = {
   method: 'POST',
@@ -90,13 +93,13 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-console.log(myHeaders)
-fetch(`${API_BASE_URL}/api/fileUpload/upload`, requestOptions)
+console.log(formdata)
+fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(result)
+    console.log('image path',result)
     if(result && result.success == true){
-        setImagePath(result.data.url)
+        setImagePath(result.data[0].url)
      alert(result.message)
       setLoading(false)
     }
@@ -119,7 +122,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/upload`, requestOptions)
     var raw = JSON.stringify({
         "profileImage": `${imagepath}`,
         "userType": `${role}`,
-        "artistType": `${type}`,
+        "artistType":role == 'audience' ? '':`${type}`,
         "alias": `${alias}`,
         "phile":`${phile}`,
         "about": `${about}`,
@@ -164,13 +167,13 @@ fetch(`${API_BASE_URL}/api/fileUpload/upload`, requestOptions)
    },[])
 
   return (
-    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',}}>
-         <LinearGradient
+    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',backgroundColor:'white'}}>
+         {/* <LinearGradient
       colors={['#433D3D', '#ffffff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
       start={{ x: 0.6, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-    >
+    > */}
         <View>
         <Ionicons
             onPress={() => {
@@ -181,17 +184,17 @@ fetch(`${API_BASE_URL}/api/fileUpload/upload`, requestOptions)
             }}
             name={'arrow-back'}
             size={40}
-            color={'white'}
+            color={'black'}
           />
         </View>
     <ScrollView>
-        <View style={{backgroundColor:'white',width:'70%',alignSelf:'center',height:'30%',}}>
+        {/* <View style={{backgroundColor:'grey',width:'70%',alignSelf:'center',height:'20%',borderRadius:40}}> */}
         {/* <View style={{backgroundColor:'white',width:'50%',alignSelf:'center',height:'40%',flex:1}}>
             <Text>hh</Text>
          </View> */}
          
      {/* {fileUri != null ? (  */}
-        <TouchableOpacity style={{padding:20,alignSelf:'center',backgroundColor:'black',margin:10,width:'80%',height:'30%',flex:1,}}
+        <TouchableOpacity style={{padding:20,alignSelf:'center',margin:10,flex:1,backgroundColor:'grey',borderRadius:100,height:'10%'}}
          onPress={() => {
             launchNativeImageLibrary()
           }}>
@@ -224,26 +227,27 @@ fetch(`${API_BASE_URL}/api/fileUpload/upload`, requestOptions)
     
             )} 
           */}
-        </View>
+        {/* </View> */}
       <AppDropDown
                   label={''}
                   items={data ||[]}
                   value={role}
                   placeholder={'select'}
                   changeText={(text) => {
+                    // alert(text)
                     setRole(text)
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
-                    width:'60%',alignSelf:'center',
+                    width:'70%',alignSelf:'center',
                   }}
                   viewStyle={{
-                    borderRadius: Metrics.rfv(30),
+                    borderRadius: Metrics.rfv(10),
                     borderWidth:1,
-                    borderColor:'blue'
+                    borderColor:'black'
                   }}
                 />
-         { role != 'Audience' ?  (<AppDropDown
+         { role != 'audience' ?  (<AppDropDown
                   label={''}
                   items={data1 ||[]}
                   value={type}
@@ -253,61 +257,64 @@ fetch(`${API_BASE_URL}/api/fileUpload/upload`, requestOptions)
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
-                    width:'60%',alignSelf:'center',
+                    width:'70%',alignSelf:'center',
                   }}
                   viewStyle={{
-                    borderRadius: Metrics.rfv(30),
+                    borderRadius: Metrics.rfv(10),
                     borderWidth:1,
-                    borderColor:'blue'
+                    borderColor:'black'
                   }}
                 />):(null)}
-                <View style={{flexDirection:'row',margin:20,}}>
-                    <Text style={{marginLeft:Metrics.rfv(30),color:'white',fontWeight:'bold',fontSize:20}}>Alias : </Text>
+                <View style={{margin:10,}}>
+                    <Text style={{marginLeft:Metrics.rfv(10),color:'black',fontWeight:'bold',fontSize:20}}>Alias : </Text>
                  <TextInput
                    value={alias}
                    placeholder={'Enter Alias'}
                     // placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'50%',alignSelf:'center',fontSize:15,fontWeight:'bold', borderRadius: Metrics.rfv(10),
+                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold', 
+                    borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1
                    }}     
                      onChangeText={text => {
                       setAlias(text);
                      }}
                   /> 
                 </View>
-                <View style={{flexDirection:'row',margin:20,}}>
-                    <Text style={{marginLeft:Metrics.rfv(30),color:'white',fontWeight:'bold',fontSize:20}}>Phile : </Text>
+                <View style={{margin:10,}}>
+                    <Text style={{marginLeft:Metrics.rfv(10),color:'black',fontWeight:'bold',fontSize:20}}>Phile : </Text>
                  <TextInput
                    value={phile}
                    placeholder={'Enter Phile'}
                     // placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'50%',alignSelf:'center',fontSize:15,fontWeight:'bold', borderRadius: Metrics.rfv(10),
+                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold',
+                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1
                    }}     
                      onChangeText={text => {
                       setPhile(text);
                      }}
                   /> 
                 </View>
-                <View style={{flexDirection:'row',margin:20,}}>
-                    <Text style={{marginLeft:Metrics.rfv(10),color:'white',fontWeight:'bold',fontSize:20}}>Unique About : </Text>
+                <View style={{margin:10,}}>
+                    <Text style={{marginLeft:Metrics.rfv(10),color:'black',fontWeight:'bold',fontSize:20}}>Unique About : </Text>
                  <TextInput
                    value={about}
                    placeholder={'Enter About'}
                     // placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'50%',alignSelf:'center',fontSize:15,fontWeight:'bold', borderRadius: Metrics.rfv(10),
+                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold',
+                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1
                    }}     
                      onChangeText={text => {
                       setAbout(text);
                      }}
                   /> 
                 </View>
-                <TouchableOpacity style={{ alignSelf:'center',marginTop:20,backgroundColor:'black',padding:10,width:'40%',borderRadius: Metrics.rfv(30),marginBottom:80}}
+                <TouchableOpacity style={{ alignSelf:'center',marginTop:20,backgroundColor:'black',padding:10,width:'40%',borderRadius: Metrics.rfv(10),marginBottom:80}}
                       onPress={()=>{
                         Profile()
                      }}>
          <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>             
      </TouchableOpacity>
     </ScrollView>
-    </LinearGradient>
+    {/* </LinearGradient> */}
     </SafeAreaView>
   );
 }

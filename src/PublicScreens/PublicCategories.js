@@ -13,6 +13,7 @@ import Video from 'react-native-video';
 import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
+import VideoPlayer from 'react-native-video-player';
 
 
 
@@ -128,9 +129,9 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
          </View>
                ):(
         < View style={{margin:10,}}>
-              <Video  
-                source={{ uri: e.uri}}
-                style={{width:200,height:200}}
+              <VideoPlayer  
+                video={{ uri: e.uri}}
+                style={{width:250,height:150}}
                 // paused={true}
                 />
         </View>

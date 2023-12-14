@@ -4,6 +4,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Metrics from '../Constants/Metrics';
+import { useDispatch } from 'react-redux';
+import { saveUserProfileInfo, saveUserType } from '../utils/AsyncStorageHelper';
+import { logout } from '../Redux/reducer/User';
 
 
 const EditProfile = () => {
@@ -13,8 +16,18 @@ const[phoneNo,setPhoneNo]=useState('')
 const [dob,setDob]=useState('')
 const[bio,setBio]=useState('')
 const[artist,setArtist]=useState('')
+
+const dispatch = useDispatch()
+
+const onLogoutPress = async (props) => {
+   await saveUserType({})
+    await saveUserProfileInfo({})
+    dispatch(logout());
+    navigation.navigate('Login')
+};
+
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%'}}>
+    <SafeAreaView style={{width:'100%',backgroundColor:'black',flex:1}}>
      <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         
@@ -26,25 +39,25 @@ const[artist,setArtist]=useState('')
               paddingRight: 5
             }}
             name={'arrow-back'}
-            size={30}
-            color={'black'}
+            size={40}
+            color={'white'}
           />
-         <Text style={{paddingLeft:10,color:'black',fontWeight:'bold',marginTop:5,}}>{'Edit Profile'}</Text>
+         <Text style={{paddingLeft:10,color:'white',fontWeight:'bold',fontSize:30}}>{'Settings'}</Text>
          </View>
-         <View style={{bottom:10}}>
+         {/* <View style={{bottom:10}}>
                <Entypo
                   name="menu"
                    size={40}
                    style={{color:'black',}}
                   onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
                  /> 
-        </View>
+        </View> */}
     </View>
 
     <View>
     <ScrollView>
 
-      <View style={{alignSelf:'center',padding:10, width: '90%',}}>
+      {/* <View style={{alignSelf:'center',padding:10, width: '90%',}}>
         <View style={{}}>
         <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>User Name  : </Text>
              <TextInput
@@ -113,7 +126,27 @@ const[artist,setArtist]=useState('')
           }}>
       <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
      </TouchableOpacity>
-      </View>
+      </View> */}
+      <View style={{marginLeft:50,marginTop:30}}>
+      <TouchableOpacity onPress={()=>{navigation.navigate('About')}}>
+            <Text style={{color:'white',fontSize:25,fontWeight:'bold',margin:10}}>Privacy</Text>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{navigation.navigate('Support')}}>
+            <Text style={{color:'white',fontSize:25,fontWeight:'bold',margin:10}}>Help</Text>
+           </TouchableOpacity>
+       </View>
+       <View style={{alignSelf:'center',flex:1,marginTop: Metrics.rfv(300)}}>
+                   <TouchableOpacity onPress={()=>{
+                      Alert.alert("Logout", "Are you want Logout ?",
+                      [
+                        { text: "Cancel", onPress: () => { } },
+                        { text: "Ok", onPress: () => onLogoutPress() }
+                      ])
+                   }}
+                    style={{backgroundColor:'white',padding:10,borderRadius:5,width:150,}}>
+                        <Text style={{alignSelf:'center',color:'black'}}>Logout</Text>
+                   </TouchableOpacity>
+                   </View>
       </ScrollView>
     </View>
     </SafeAreaView>
