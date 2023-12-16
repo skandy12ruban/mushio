@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView } from 'react-native'
+import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import Metrics from '../Constants/Metrics'
 import Loader from '../Components/Loader'
@@ -12,6 +12,7 @@ import { ScrollView } from 'react-native'
 const Places = () => {
   const [loading,setLoading]=useState(false)
   const[placeArray,setPlaceArray]=useState([])
+  const theme = useColorScheme();
   const navigation=useNavigation()
   const data=[
     {id:1,image:require('../assets/images/place1.jpg')},
@@ -110,7 +111,7 @@ const Places = () => {
   
   
     return (
-      <SafeAreaView style={{width:'100%',alignSelf:'center',}}>
+      <SafeAreaView style={{width:'100%',alignSelf:'center',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
         <Loader loading={loading}></Loader>
         <ScrollView>
         < View style={{}}>

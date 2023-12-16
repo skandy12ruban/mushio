@@ -509,6 +509,7 @@ const PublicSearchScreen1 = () => {
                    style={{color:(isSelected && like) ? 'blue':'black',}}
                  onPress={()=>{
                   setSelectedItem(post._id)
+                  setLike(!like)
                    postLikes(Id2)
                   }} 
                  />

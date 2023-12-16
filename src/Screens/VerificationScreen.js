@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView,TextInput,TouchableOpacity,Image,Dimensions } from 'react-native'
+import { View, Text, SafeAreaView,TextInput,TouchableOpacity,Image,Dimensions,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import AppDropDown from '../Components/AppDropDown'
 import Metrics from '../Constants/Metrics'
@@ -22,6 +22,8 @@ const[country,setCountry]=useState('')
 const[countryList,setCountryList]=useState([])
 const [email,setEmail]=useState('')
 const[phoneNumber,setPhoneNumber]=useState('')
+const theme = useColorScheme();
+
 
   const getCountryList =async ()=>{
     var requestOptions = {
@@ -86,7 +88,7 @@ useEffect(()=>{
 },[])
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'black'}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
        {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
@@ -139,7 +141,7 @@ useEffect(()=>{
                    value={email}
                    placeholder={' email'}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1,}}     
                      onChangeText={text => {
                       setEmail(text);
@@ -149,14 +151,14 @@ useEffect(()=>{
                    value={phoneNumber}
                    placeholder={' phone number'}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1}}    
                     keyboardType='numeric' 
                      onChangeText={text => {
                       setPhoneNumber(text);
                      }}
                   /> 
-              <TouchableOpacity style={{ backgroundColor: 'white',
+              <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'black':'white',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -175,7 +177,7 @@ useEffect(()=>{
               sendOtp()
             }
             }}>
-       <Text style={{color: 'black',
+       <Text style={{color:theme === 'dark' ? 'white':'black',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

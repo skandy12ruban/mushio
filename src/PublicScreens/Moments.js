@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,ScrollView,StyleSheet} from 'react-native'
+import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,ScrollView,StyleSheet,useColorScheme} from 'react-native'
 import React,{useState,useEffect,useRef} from 'react'
 import Metrics from '../Constants/Metrics'
 import Loader from '../Components/Loader'
@@ -14,6 +14,7 @@ const Moments = () => {
   const videoPlayer = useRef(null);
   const [loading,setLoading]=useState(false)
   const isFocused=useIsFocused()
+  const theme = useColorScheme();
   const[momentsArray,setMomentsArray]=useState([]);
   const navigation=useNavigation()
   const data=[
@@ -117,7 +118,7 @@ const Item= ({item,index})=>{
 
 
   return (
-    <SafeAreaView style={{width:'100%',alignSelf:'center',}}>
+    <SafeAreaView style={{width:'100%',alignSelf:'center',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
       <Loader loading={loading}></Loader>
       <ScrollView>
       < View style={{}}>

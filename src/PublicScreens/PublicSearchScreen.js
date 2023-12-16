@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView,TouchableOpacity,Image,FlatList,ScrollView } from 'react-native'
+import { View, Text, SafeAreaView,TouchableOpacity,Image,FlatList,ScrollView,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import SearchView from '../Components/SearchView'
@@ -16,6 +16,7 @@ import { SearchBar } from 'react-native-elements'
 const PublicSearchScreen = () => {
   const navigation=useNavigation()
   const isFocused= useIsFocused()
+  const theme = useColorScheme();
   const[loading,setLoading]=useState(false)
   const [searchQuery, setSearchQuery] = React.useState('');
   const[serachArray,setSearchArray]=useState([])
@@ -207,7 +208,7 @@ const getSearchdata = async ()=>{
   },[isFocused])
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'white':'',}}>
     <Loader loading={loading}></Loader>
     {/* <SearchView/> */}
     <Searchbar

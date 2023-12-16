@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,Image,TouchableOpacity } from 'react-native'
+import { View, Text,SafeAreaView,Image,TouchableOpacity,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import {  Switch } from 'react-native-paper';
 import { MAIN_ROUTE } from '../routes/RouteConst';
@@ -17,6 +17,7 @@ const PublicProfile = () => {
 const navigation= useNavigation()
 const isFocused = useIsFocused()
 const dispatch=useDispatch()
+const theme = useColorScheme();
 const [isSwitchOn, setIsSwitchOn] = useState(false);
 const[loading,setLoading]=useState(false)
 const[artistArray,setArtistArray]=useState([])
@@ -132,7 +133,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
         },[isFocused])
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'white':'',}}>
          <Loader loading={loading}></Loader>
          
          <View style={{flexDirection:'row',justifyContent:'space-between'}}>

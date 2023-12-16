@@ -1,5 +1,5 @@
 import { View, Text,SafeAreaView,FlatList,Image,ScrollView,TouchableOpacity,TextInput,
-  PermissionsAndroid,Platform,ActivityIndicator,Button,StyleSheet,Alert } from 'react-native'
+  PermissionsAndroid,Platform,ActivityIndicator,Button,StyleSheet,Alert,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import { Card } from 'react-native-paper'
 import Metrics from '../Constants/Metrics'
@@ -36,7 +36,7 @@ const Category = () => {
   const [fileUri, setFileUri] = useState(null);
   const [fileUri1, setFileUri1] = useState(null);
    const[type,setType]=useState('')
-
+   const theme = useColorScheme();
    const [recordingActive, setRecordingActive] = useState(false);
    const [recordSecs, setRecordSecs] = useState(0);
    const [recordTime, setRecordTime] = useState(0);
@@ -486,7 +486,7 @@ setLoading(false)
          value={title}
          placeholder={'Title'}
          placeholderTextColor={'black'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,fontWeight:'bold'}}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}
          onChangeText={text => {
             setTitle( text);
           }}
@@ -495,7 +495,7 @@ setLoading(false)
          value={description}
          placeholder={'Description'}
          placeholderTextColor={'black'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,height:100,fontWeight:'bold'}}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,height:100,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}
          multiline={true}
          onChangeText={text => {
             setDescription( text);

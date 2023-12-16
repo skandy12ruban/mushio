@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   BackHandler,
+  useColorScheme,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
 import {withGlobalize} from 'react-native-globalize';
@@ -59,6 +60,7 @@ export const SignInFormValidator = props => {
 const Login = withGlobalize(
   memo(props => {
     const intl = IntlProvider(props);
+    const theme = useColorScheme();
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [logins, setLogins] = useState(true);
@@ -132,7 +134,7 @@ const Login = withGlobalize(
     //   start={{ x: 0, y: 0.5 }}
     //   end={{ x: 1, y: 0.5 }}
     // >
-    <View style={{backgroundColor:'black',flex:1}}>
+    <View style={{backgroundColor:theme === 'dark' ? 'white':'black',flex:1}}>
       <ScrollView
         style={{
           // backgroundColor: 'lightblue',
@@ -174,7 +176,7 @@ const Login = withGlobalize(
                    placeholder={' Email'}
                    placeholderTextColor={'grey'}
                    style={{padding:6,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold',
-                   borderRadius:10,borderColor:'blue',borderWidth:1}}
+                   borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':''}}
                    onChangeText={text => {
                    setFieldValue('email' ,text);
                    }}
@@ -201,12 +203,12 @@ const Login = withGlobalize(
                  
 
                   <View style={{backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
-                  justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1,height:45}}>
+                  justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1,height:45,}}>
                     <TextInput
                    value={values.password}
                    placeholder={' Password'}
                    placeholderTextColor={'grey'}
-                   style={{fontSize:20,fontWeight:'bold',marginLeft:5,}}
+                   style={{fontSize:20,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':''}}
                    onChangeText={text => {
                    setFieldValue('password' ,text);
                    }}
@@ -236,7 +238,7 @@ const Login = withGlobalize(
               </TouchableOpacity>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: 'white',
+                    backgroundColor: theme === 'dark' ?'black':'white',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -264,7 +266,11 @@ const Login = withGlobalize(
                     // }
                     handleSubmit();
                   }}>
-                  <Text style={styles.buttonTextStyle}>Login </Text>
+                  <Text style={{ color: theme === 'dark' ? 'white':'black',
+    paddingVertical: 5,
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',}}>Login </Text>
                   {/* <MaterialCommunityIcons
                      name="check-decagram"
                      color={'white'}

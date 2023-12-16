@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { View, Text,Image,TouchableOpacity,FlatList,StyleSheet,ActivityIndicator } from 'react-native';
 import VideoPlayer from 'react-native-video-player';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { SafeAreaView,useColorScheme } from 'react-native';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -18,6 +19,7 @@ const MyMoment = () => {
   const [currentDurationSec, setCurrentDurationSec] = useState(recordTime);
   const [playTime, setPlayTime] = useState(0);
   const [duration, setDuration] = useState(recordTime);
+  const theme = useColorScheme();
 
  const data=["http://res.cloudinary.com/mydatabase2413/image/upload/v1701524110/wcykrncliohmdlabeqiw.webp"]
  
@@ -133,6 +135,7 @@ const onStopPlay = async () => {
   }
 
   return (
+    <SafeAreaView style={{backgroundColor:theme === 'dark' ? 'white':'black',flex:1}}>
     <View>
      {item && item.imageUrls.length > 0 ? (
        <FlatList
@@ -140,7 +143,7 @@ const onStopPlay = async () => {
        renderItem={Item}
        keyExtractor={item => item}
       />
-     ):(null)} 
+     ):(<Text style={{color:theme === 'dark' ? 'black':'white',alignSelf:'center'}}>No Data</Text>)} 
       {item && item.videoUrls.length > 0 ? (
        <FlatList
        data={item.videoUrls || []}
@@ -157,6 +160,7 @@ const onStopPlay = async () => {
      ):(null)} 
      
     </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
