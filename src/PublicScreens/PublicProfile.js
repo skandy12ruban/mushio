@@ -192,12 +192,12 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
          <Text style={{color:'black',fontWeight:'bold'}}>{profileRes && profileRes.alias}</Text>
          <Text style={{color:'black'}}>{profileRes && profileRes.phile}</Text>
          <Text style={{color:'black'}}>{profileRes && profileRes.about}</Text>
-         <Text style={{color:'black'}}>{profileRes && profileRes.userType}</Text>
+         {/* <Text style={{color:'black'}}>{profileRes && profileRes.userType}</Text> */}
          <Text style={{color:'black'}}>{profileRes && profileRes.artistType}</Text>
       </View>
       <View style={{marginRight:Metrics.rfv(20),marginTop:10}}>
         <TouchableOpacity onPress={()=>{navigation.navigate('Cards')}}>
-            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>70</Text>
+            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>0</Text>
             <Text style={{color:'black',fontWeight:'bold'}}>Cards</Text>
             </TouchableOpacity>
         </View>

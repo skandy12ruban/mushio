@@ -1,5 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList,Alert, TextInput } from 'react-native'
+import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList,Alert, TextInput, useColorScheme } from 'react-native'
 import React,{useState,useEffect,useRef} from 'react'
 import Loader from '../Components/Loader'
 import Feather from 'react-native-vector-icons/Feather';
@@ -23,6 +23,7 @@ const Entertainment = () => {
     const[loading,setLoading]=useState(false)
     const [rating, setRating] = useState('');
     const route=useRoute()
+    const theme=useColorScheme()
     const[entertainmentArray,setEntertainmentArray]=useState([])
     const[coment,setComment]=useState('')
     const[comentId,setCommentId]=useState('')
@@ -559,7 +560,7 @@ const Entertainment = () => {
         </View>
         <View style={{marginLeft:10,marginTop:5}}>
         <Text style={{fontWeight:'bold',color:'black'}}>{name}</Text>
-        <Text>{item.text}</Text>
+        <Text style={{color:theme === 'dark' ?'black':'',}}>{item.text}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -703,7 +704,7 @@ const Entertainment = () => {
            placeholder='Add comments'
            value={coment}
            onChangeText={(text)=>{setComment(text)}}
-           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%'}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
            />
             {coment != '' ? (<TouchableOpacity style={{padding:5,backgroundColor:'blue',height:30,marginTop:20,borderRadius:10}}
                onPress={()=>{

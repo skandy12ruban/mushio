@@ -18,16 +18,16 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Share from 'react-native-share';
 
 
-const PublicSearchScreen1 = () => {
+const MyPosts = () => {
   const navigation=useNavigation()
   const route=useRoute()
   const refRBSheet = useRef();
   const isFocused=useIsFocused()
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState('');
-  const {selectedId,}=route.params;
-  console.log(selectedId)
-  const theme = useColorScheme();
+  const {selectedId,selectedType}=route.params;
+  console.log(selectedId,selectedType)
+  const theme= useColorScheme()
   const[loading,setLoading]=useState(false)
   const[coment,setComment]=useState('')
   const[comentId,setCommentId]=useState('')
@@ -80,7 +80,7 @@ const PublicSearchScreen1 = () => {
     )
   }
   
-  const selectSearchData=async()=>{
+  const selectItemData=async()=>{
     const res = await getUserProfileInfo()
     console.log(res.accessToken)
       setLoading(true)
@@ -91,13 +91,13 @@ const PublicSearchScreen1 = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(`${API_BASE_URL}/api/post/travel?postId=${selectedId}`)
-    fetch(`${API_BASE_URL}/api/post/travel?postId=${selectedId}`, requestOptions)
+    console.log(`${API_BASE_URL}/api/post/myPosts?postType=${selectedType}&postId=${selectedId}`)
+    fetch(`${API_BASE_URL}/api/post/myPosts?postType=${selectedType}&postId=${selectedId}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(' selecty rrsult',result.data.posts)
+        console.log(' selecty rrsult....',result.data.list)
         if(result && result.success == true){
-          let item =result.data.posts
+          let item =result.data.list
           setSearchArray(item)
         // setSearchQuery(text)
         setLoading(false)
@@ -133,7 +133,7 @@ const PublicSearchScreen1 = () => {
       .then(response => response.json())
       .then(result => {
         console.log(' request result',result.data)
-        selectSearchData()
+        selectItemData()
         if(result && result.success == true){
           // setRequestStatus(result)
          console.log(result.data)
@@ -170,7 +170,7 @@ const PublicSearchScreen1 = () => {
       .then(response => response.json())
       .then(result => {
         console.log(' disconnectUser result',result)
-        selectSearchData()
+        selectItemData()
         if(result && result.success == true){
         
          console.log(result)
@@ -208,7 +208,7 @@ const PublicSearchScreen1 = () => {
       .then(response => response.json())
       .then(result => {
         console.log(' reject result',result)
-        selectSearchData()
+        selectItemData()
         // if(result && result.success == true){
         
         //  console.log(result)
@@ -229,7 +229,7 @@ const PublicSearchScreen1 = () => {
 }
 
   useEffect(()=>{
-    selectSearchData()
+    selectItemData()
   },[isFocused])
 
   const sharePost = async () => {
@@ -264,9 +264,9 @@ const PublicSearchScreen1 = () => {
       .then(response => response.json())
       .then(result => {
         console.log('delete post res',result)
-        selectSearchData()
+        selectItemData()
         if(result && result.success == true){
-          selectSearchData()
+            selectItemData()
         setLoading(false)
         }
         setLoading(false)
@@ -293,7 +293,7 @@ const PublicSearchScreen1 = () => {
       .then(response => response.json())
       .then(result => {
         console.log(result)
-        selectSearchData()
+        selectItemData()
         setLoading(false)
       })
       .catch(error => {
@@ -319,7 +319,7 @@ const PublicSearchScreen1 = () => {
       .then(result => {
         console.log('getCommnets res',result.data.comments)
         setComments(result.data.comments)
-        selectSearchData()
+        selectItemData()
         setLoading(false)
       })
       .catch(error => {
@@ -352,7 +352,7 @@ const PublicSearchScreen1 = () => {
         console.log(result)
        setComment('') 
        getComments(comentId)
-       selectSearchData();
+       selectItemData();
         setLoading(false)
       })
       .catch(error => {
@@ -379,7 +379,7 @@ const PublicSearchScreen1 = () => {
       .then(result => {
         console.log('delete',result)
        getComments(comentId)
-       selectSearchData();
+       selectItemData();
         setLoading(false)
       })
       .catch(error => {
@@ -390,7 +390,7 @@ const PublicSearchScreen1 = () => {
 
 
   const renderPost = (post, index) => {
-// console.log('post',post)
+console.log('post',post)
     let name = post.createdBy.name;
     let type= post.createdBy.userType;
     let status =post.status
@@ -403,7 +403,7 @@ const PublicSearchScreen1 = () => {
      const isSelected = selectedItem === post._id;
     return(
     <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
-    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+    {/* <View style={{flexDirection:'row',justifyContent:'space-between'}}>
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
     <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:Metrics.rfv(30),}}
     onPress={()=>{
@@ -420,7 +420,7 @@ const PublicSearchScreen1 = () => {
      </View>
      <View>
       
-      {/* <Text style={{color:'black',fontWeight:'bold'}}>{date}</Text> */}
+      
      </View>
                { type != 'audience' ?( <View>
                           <Rating
@@ -469,7 +469,7 @@ const PublicSearchScreen1 = () => {
   
         />
      </TouchableOpacity>
-    </View>
+    </View> */}
         <View style={{width:'100%'}}>
                <FlatList
                horizontal
@@ -578,7 +578,7 @@ const PublicSearchScreen1 = () => {
             size={40}
             color={'white'}
           />
-         <Text style={{marginLeft:10,color:'white',fontWeight:'bold',marginTop:10,fontSize:30}}>{'Travel'}</Text>
+         <Text style={{marginLeft:10,color:'white',fontWeight:'bold',marginTop:10,fontSize:30}}>{selectedType}</Text>
          </View>
   
          <ScrollView style={{}}>
@@ -607,13 +607,18 @@ const PublicSearchScreen1 = () => {
             }}
            height={400}
           >
+            <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
+            
           {comments.length > 0 ?(
+            <View style={{marginTop:10,marginBottom:70}}>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+            </View>
            ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
+          
            <View style={{flexDirection:'row'}}>
            <TextInput
            placeholder='Add comments'
@@ -635,4 +640,4 @@ const PublicSearchScreen1 = () => {
   )
 }
 
-export default PublicSearchScreen1
+export default MyPosts

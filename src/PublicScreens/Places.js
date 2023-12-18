@@ -77,7 +77,7 @@ const Places = () => {
           <TouchableOpacity style={{    }}
           onPress={()=>{
             let id=item.userId
-            navigation.navigate('PublicSearchScreen1',{selectedId:id})
+            navigation.navigate('MyPosts',{selectedId:id,selectedType:'place'})
          
             }}>
             { item.type == 'video'  ? (

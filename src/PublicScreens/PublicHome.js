@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList, TextInput,Alert } from 'react-native'
+import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList, TextInput,Alert,useColorScheme } from 'react-native'
 import React,{useState,useEffect,useRef} from 'react'
 import Loader from '../Components/Loader'
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -22,10 +22,12 @@ import Popover from 'react-native-popover-view';
 const PublicHome = () => {
   const navigation=useNavigation()
   const refRBSheet = useRef();
+  const [userid,setUserid]=useState('')
   const [selectedItem, setSelectedItem] = useState(null);
   const[loading,setLoading]=useState(false)
   const[coment,setComment]=useState('')
   const[comentId,setCommentId]=useState('')
+  const theme = useColorScheme();
   const [comments,setComments]=useState([])
   const [showPopover, setShowPopover] = useState(false);
   const [like,setLike]=useState(false)
@@ -38,7 +40,11 @@ const PublicHome = () => {
     {id:4,image:require('../assets/images/place4.jpg')},
   ]
 
-
+const GetUserProfileInfo= async ()=>{
+  const res = await getUserProfileInfo()
+  setUserid(res._id)
+  console.log('profile res',res)
+}
 
 const Item= ({item,index})=>{
   // console.log(item)
@@ -139,7 +145,7 @@ const DeletePost = async (id)=>{
 
 const getHomedata = async ()=>{
   const res = await getUserProfileInfo()
-  console.log(res.accessToken)
+  console.log('res',res.accessToken)
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -167,6 +173,7 @@ const getHomedata = async ()=>{
 
 useEffect(()=>{
   getHomedata()
+  GetUserProfileInfo()
 },[isFocused])
 
   const postLikes = async (id)=>{
@@ -184,7 +191,11 @@ useEffect(()=>{
     fetch(`${API_BASE_URL}/api/post/toggleLike/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        if( result.message == 'Post unliked successfully' ){
+              //  alert(result.message)
+               setSelectedItem(null)
+        }
+        console.log('likes response',result)
         getHomedata()
         setLoading(false)
       })
@@ -288,6 +299,12 @@ const renderPost = (post, index) => {
   let profileImage = post.createdBy.profileImage
  let Id= post._id
  const isSelected = selectedItem === post._id;
+  const likes = post.likes.filter((e)=>{
+   if( e.user == userid) 
+    return e;
+  })
+ console.log('likes....',likes)
+ console.log("likessss...",likes[0] && likes[0].user == userid,isSelected,like)
   return(
   <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
   <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -370,7 +387,7 @@ const renderPost = (post, index) => {
                   <Feather
                   name="eye"
                    size={25}
-                   style={{color:(isSelected && like) ? 'blue':'black',}}
+                   style={{color:(isSelected && like) || (likes[0]&& likes[0].user == userid) ? 'blue':'black',}}
                  onPress={()=>{
                   setSelectedItem(post._id)
                    setLike(!like)
@@ -428,7 +445,7 @@ const CommentsItem =  ({item})=>{
       </View>
       <View style={{marginLeft:10,marginTop:5}}>
       <Text style={{fontWeight:'bold',color:'black'}}>{name}</Text>
-      <Text>{item.text}</Text>
+      <Text style={{color:theme === 'dark' ?'black':'',}}>{item.text}</Text>
       </View>
     </View>
     </TouchableOpacity>
@@ -510,7 +527,7 @@ const CommentsItem =  ({item})=>{
            placeholder='Add comments'
            value={coment}
            onChangeText={(text)=>{setComment(text)}}
-           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%'}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
            />
             {coment != '' ? (<TouchableOpacity style={{padding:5,backgroundColor:'blue',height:30,marginTop:20,borderRadius:10}}
                onPress={()=>{

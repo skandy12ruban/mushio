@@ -17,6 +17,7 @@ const Moments = () => {
   const theme = useColorScheme();
   const[momentsArray,setMomentsArray]=useState([]);
   const navigation=useNavigation()
+  console.log('moments...',momentsArray)
   const data=[
     {id:1,image:require('../assets/images/place1.jpg')},
     {id:2,image:require('../assets/images/place2.jpg')},
@@ -83,10 +84,10 @@ const Item= ({item,index})=>{
         <TouchableOpacity style={{    }}
         onPress={()=>{
           let id=item.userId
-          navigation.navigate('PublicSearchScreen1',{selectedId:id})
+          navigation.navigate('MyPosts',{selectedId:id,selectedType:'moments'})
           // selectSearchData(id)
        
-          }}>
+          }}>  
           { item.type == 'video'  ? (
                  < View style={{}}>
                    <VideoPlayer

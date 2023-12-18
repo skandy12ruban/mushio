@@ -124,7 +124,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
         < View style={{margin:10,}}>
            <Image
                 source={{uri:e.uri}}
-                style={{width:200,height:200}}
+                style={{width:300,height:250}}
                />
          </View>
                ):(
