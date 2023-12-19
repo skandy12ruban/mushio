@@ -516,11 +516,13 @@ const CommentsItem =  ({item})=>{
            height={400}
           >
           {comments.length > 0 ?(
+             <View style={{marginTop:10,marginBottom:100}}>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+           </View>
            ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
            <View style={{flexDirection:'row'}}>
            <TextInput

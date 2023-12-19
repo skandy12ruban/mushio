@@ -23,6 +23,7 @@ const Entertainment = () => {
     const[loading,setLoading]=useState(false)
     const [rating, setRating] = useState('');
     const route=useRoute()
+    const [userid,setUserid]=useState('')
     const theme=useColorScheme()
     const[entertainmentArray,setEntertainmentArray]=useState([])
     const[coment,setComment]=useState('')
@@ -78,7 +79,11 @@ const Entertainment = () => {
           </View>
         )
       }
-
+      const GetUserProfileInfo= async ()=>{
+        const res = await getUserProfileInfo()
+        setUserid(res._id)
+        console.log('profile res',res)
+      }
       const sendRequest=async(id)=>{
         const res = await getUserProfileInfo()
         console.log(res.accessToken)
@@ -203,6 +208,10 @@ const Entertainment = () => {
         let likeCount = post.likeCount;
         let commentsCount = post.commentCount
         const isSelected = selectedItem === post._id;
+        const likes = post.likes.filter((e)=>{
+          if( e.user == userid) 
+           return e;
+         })
         return( 
         <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -319,7 +328,7 @@ const Entertainment = () => {
                   <Feather
                   name="eye"
                    size={25}
-                   style={{color:(isSelected && like) ? 'blue':'black',}}
+                   style={{color:(isSelected && like)|| (likes[0]&& likes[0].user == userid) ? 'blue':'black',}}
                  onPress={()=>{
                   setSelectedItem(post._id)
                    setLike(!like)
@@ -368,6 +377,7 @@ const Entertainment = () => {
 
   useEffect(()=>{
    getEntertainments()
+   GetUserProfileInfo()
   },[])
 
   const sharePost = async () => {
@@ -430,6 +440,10 @@ const Entertainment = () => {
       .then(response => response.json())
       .then(result => {
         console.log(result)
+        if( result.message == 'Post unliked successfully' ){
+          //  alert(result.message)
+           setSelectedItem(null)
+    }
         getEntertainments()
         setLoading(false)
       })
@@ -693,11 +707,13 @@ const Entertainment = () => {
            height={400}
           >
           {comments.length > 0 ?(
+             <View style={{marginTop:10,marginBottom:100}}>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+           </View>
            ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
            <View style={{flexDirection:'row'}}>
            <TextInput

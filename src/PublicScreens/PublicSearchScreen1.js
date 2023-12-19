@@ -23,6 +23,7 @@ const PublicSearchScreen1 = () => {
   const route=useRoute()
   const refRBSheet = useRef();
   const isFocused=useIsFocused()
+  const [userid,setUserid]=useState('')
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState('');
   const {selectedId,}=route.params;
@@ -80,6 +81,11 @@ const PublicSearchScreen1 = () => {
     )
   }
   
+  const GetUserProfileInfo= async ()=>{
+    const res = await getUserProfileInfo()
+    setUserid(res._id)
+    console.log('profile res',res)
+  }
   const selectSearchData=async()=>{
     const res = await getUserProfileInfo()
     console.log(res.accessToken)
@@ -230,6 +236,7 @@ const PublicSearchScreen1 = () => {
 
   useEffect(()=>{
     selectSearchData()
+    GetUserProfileInfo()
   },[isFocused])
 
   const sharePost = async () => {
@@ -293,6 +300,10 @@ const PublicSearchScreen1 = () => {
       .then(response => response.json())
       .then(result => {
         console.log(result)
+        if( result.message == 'Post unliked successfully' ){
+          //  alert(result.message)
+           setSelectedItem(null)
+    }
         selectSearchData()
         setLoading(false)
       })
@@ -401,6 +412,10 @@ const PublicSearchScreen1 = () => {
      let likeCount = post.likeCount;
      let commentsCount = post.commentCount
      const isSelected = selectedItem === post._id;
+     const likes = post.likes.filter((e)=>{
+      if( e.user == userid) 
+       return e;
+     })
     return(
     <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -507,7 +522,7 @@ const PublicSearchScreen1 = () => {
                   <Feather
                   name="eye"
                    size={25}
-                   style={{color:(isSelected && like) ? 'blue':'black',}}
+                   style={{color:(isSelected && like)|| (likes[0]&& likes[0].user == userid)? 'blue':'black',}}
                  onPress={()=>{
                   setSelectedItem(post._id)
                   setLike(!like)
@@ -608,11 +623,13 @@ const PublicSearchScreen1 = () => {
            height={400}
           >
           {comments.length > 0 ?(
+            <View style={{marginTop:10,marginBottom:100}}>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+           </View>
            ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
            <View style={{flexDirection:'row'}}>
            <TextInput

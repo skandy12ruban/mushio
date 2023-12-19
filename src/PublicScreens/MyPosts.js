@@ -23,6 +23,7 @@ const MyPosts = () => {
   const route=useRoute()
   const refRBSheet = useRef();
   const isFocused=useIsFocused()
+  const [userid,setUserid]=useState('')
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState('');
   const {selectedId,selectedType}=route.params;
@@ -80,6 +81,11 @@ const MyPosts = () => {
     )
   }
   
+  const GetUserProfileInfo= async ()=>{
+    const res = await getUserProfileInfo()
+    setUserid(res._id)
+    console.log('profile res',res)
+  }
   const selectItemData=async()=>{
     const res = await getUserProfileInfo()
     console.log(res.accessToken)
@@ -230,6 +236,7 @@ const MyPosts = () => {
 
   useEffect(()=>{
     selectItemData()
+    GetUserProfileInfo()
   },[isFocused])
 
   const sharePost = async () => {
@@ -293,6 +300,10 @@ const MyPosts = () => {
       .then(response => response.json())
       .then(result => {
         console.log(result)
+        if( result.message == 'Post unliked successfully' ){
+          //  alert(result.message)
+           setSelectedItem(null)
+    }
         selectItemData()
         setLoading(false)
       })
@@ -401,6 +412,10 @@ console.log('post',post)
      let likeCount = post.likeCount;
      let commentsCount = post.commentCount
      const isSelected = selectedItem === post._id;
+     const likes = post.likes.filter((e)=>{
+      if( e.user == userid) 
+       return e;
+     })
     return(
     <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
     {/* <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -507,7 +522,7 @@ console.log('post',post)
                   <Feather
                   name="eye"
                    size={25}
-                   style={{color:(isSelected && like) ? 'blue':'black',}}
+                   style={{color:(isSelected && like)|| (likes[0]&& likes[0].user == userid) ? 'blue':'black',}}
                  onPress={()=>{
                   setSelectedItem(post._id)
                   setLike(!like)
@@ -610,7 +625,7 @@ console.log('post',post)
             <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
             
           {comments.length > 0 ?(
-            <View style={{marginTop:10,marginBottom:70}}>
+            <View style={{marginTop:10,marginBottom:100}}>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
