@@ -1,6 +1,6 @@
 
 import React,{ useState,useEffect } from 'react';
-import { View, Text, SafeAreaView, TextInput,TouchableOpacity,Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, TextInput,TouchableOpacity,Dimensions,useColorScheme } from 'react-native';
 import Loader from '../Components/Loader';
 import { API_BASE_URL } from '../api/ApiClient';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -15,6 +15,7 @@ const Reset = () => {
 const[loading,setLoading]=useState(false)
 const[password,setPassword]=useState('')
 const[confirmpassword,setConfirmPassword]=useState('')
+const theme = useColorScheme();
 
 const ResetPassword= async ()=>{
     setLoading(true)
@@ -58,7 +59,7 @@ const ResetPassword= async ()=>{
 
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'black',}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
           <Loader loading={loading}></Loader>
           <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
           <Ionicons
@@ -75,7 +76,7 @@ const ResetPassword= async ()=>{
                    value={password}
                    placeholder={''}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',
+                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1,alignSelf:'center'}}     
                      onChangeText={text => {
                       setPassword(text);
@@ -86,13 +87,13 @@ const ResetPassword= async ()=>{
                    value={confirmpassword}
                    placeholder={''}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',
+                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1,alignSelf:'center'}}     
                      onChangeText={text => {
                       setConfirmPassword(text);
                      }}
                   /> 
-                   <TouchableOpacity style={{ backgroundColor: 'white',
+                   <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'black':'white',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -107,7 +108,7 @@ const ResetPassword= async ()=>{
                 ResetPassword()
             }
             }}>
-       <Text style={{color: 'black',
+       <Text style={{color:theme === 'dark' ? 'white':'black',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

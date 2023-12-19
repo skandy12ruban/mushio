@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView,FlatList,TouchableOpacity,Image } from 'react-native'
+import { View, Text, SafeAreaView,FlatList,TouchableOpacity,Image,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 
 import Loader from '../Components/Loader'
@@ -15,6 +15,7 @@ const Friends = () => {
     const [loading,setLoading]=useState(false)
     const[requestArray,setRequestArray]=useState([])
     const isFocused=useIsFocused()
+    const theme = useColorScheme();
     const[artistArray,setArtistArray]=useState([])
     const data=[
         {id:1,image:require('../assets/images/profileImg.png'),name:'Satish',status:'connected'},
@@ -232,7 +233,7 @@ const Friends = () => {
       }
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%'}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
     <Header backIcon={true} name1={'Artists'}/>
 <Loader loading={loading}></Loader>
 <View>

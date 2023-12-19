@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView, TouchableOpacity,Image,ScrollView } from 'react-native'
+import { View, Text,SafeAreaView, TouchableOpacity,Image,ScrollView,useColorScheme } from 'react-native'
 import React,{useState} from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -23,7 +23,7 @@ const PublicCategories = () => {
    const[type,setType]=useState('')
   const[loading,setLoading]=useState(false)
    const[imgArray,setImagArray]=useState([])
-
+   const theme = useColorScheme();
 // console.log("imgArray res",imgArray)
 
   const launchNativeImageLibrary = () => {
@@ -96,7 +96,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
  
   // console.log('imgArray',imgArray)
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'white':'',}}>
       <Loader loading={loading}></Loader>
       <View style={{flexDirection:'row'}}>
        <Ionicons
@@ -124,7 +124,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
         < View style={{margin:10,}}>
            <Image
                 source={{uri:e.uri}}
-                style={{width:200,height:200}}
+                style={{width:300,height:250}}
                />
          </View>
                ):(

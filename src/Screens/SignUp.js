@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView,StyleSheet,TouchableOpacity,TextInput,Dimensions,Image} from 'react-native';
+import {View, Text, SafeAreaView,StyleSheet,TouchableOpacity,TextInput,Dimensions,Image,useColorScheme} from 'react-native';
 import React,{useState} from 'react';
 import { Formik } from 'formik';
 import Metrics from '../Constants/Metrics';
@@ -33,8 +33,10 @@ const SignUp = (props) => {
 const navigation=useNavigation()
 const [viewPassword, setViewPassword] = useState(true);
 const [viewPassword1, setViewPassword1] = useState(true);
+const theme = useColorScheme();
+
   return (
-    <SafeAreaView style={{ flex:1,backgroundColor:'black'}}>
+    <SafeAreaView style={{ flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
    {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
@@ -78,7 +80,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
          value={values.name}
          placeholder={'  Name'}
          placeholderTextColor={'black'}
-         style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',
+         style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
          borderRadius:10,borderColor:'blue',borderWidth:1}}
          onChangeText={text => {
             setFieldValue('name' ,text);
@@ -97,7 +99,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
                    value={values.password}
                    placeholder={'password'}
                    placeholderTextColor={'black'}
-                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,}}
+                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
                    setFieldValue('password' ,text);
                    }}
@@ -128,7 +130,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
                    value={values.confirmpassword}
                    placeholder={'confirm password'}
                    placeholderTextColor={'black'}
-                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,}}
+                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
                    setFieldValue('confirmpassword' ,text);
                    }}
@@ -154,7 +156,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
                   </Text>
                 )}
         <TouchableOpacity style={{ 
-            backgroundColor: 'white',
+           backgroundColor: theme === 'dark' ?'black':'white',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -169,7 +171,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
               alert('Password does not match')
             }
             }}>
-      <Text style={{color: 'black',
+      <Text style={{color:theme === 'dark' ? 'white':'black',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

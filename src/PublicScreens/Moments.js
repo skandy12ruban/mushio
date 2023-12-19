@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,ScrollView,StyleSheet} from 'react-native'
+import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,ScrollView,StyleSheet,useColorScheme} from 'react-native'
 import React,{useState,useEffect,useRef} from 'react'
 import Metrics from '../Constants/Metrics'
 import Loader from '../Components/Loader'
@@ -14,8 +14,10 @@ const Moments = () => {
   const videoPlayer = useRef(null);
   const [loading,setLoading]=useState(false)
   const isFocused=useIsFocused()
+  const theme = useColorScheme();
   const[momentsArray,setMomentsArray]=useState([]);
   const navigation=useNavigation()
+  console.log('moments...',momentsArray)
   const data=[
     {id:1,image:require('../assets/images/place1.jpg')},
     {id:2,image:require('../assets/images/place2.jpg')},
@@ -82,10 +84,10 @@ const Item= ({item,index})=>{
         <TouchableOpacity style={{    }}
         onPress={()=>{
           let id=item.userId
-          navigation.navigate('PublicSearchScreen1',{selectedId:id})
+          navigation.navigate('MyPosts',{selectedId:id,selectedType:'moments'})
           // selectSearchData(id)
        
-          }}>
+          }}>  
           { item.type == 'video'  ? (
                  < View style={{}}>
                    <VideoPlayer
@@ -117,7 +119,7 @@ const Item= ({item,index})=>{
 
 
   return (
-    <SafeAreaView style={{width:'100%',alignSelf:'center',}}>
+    <SafeAreaView style={{width:'100%',alignSelf:'center',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
       <Loader loading={loading}></Loader>
       <ScrollView>
       < View style={{}}>

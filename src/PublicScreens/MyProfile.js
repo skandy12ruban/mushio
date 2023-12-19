@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,TextInput,TouchableOpacity, ScrollView,Image,Alert } from 'react-native'
+import { View, Text,SafeAreaView,TextInput,TouchableOpacity, ScrollView,Image,Alert,useColorScheme } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -16,7 +16,7 @@ const MyProfile = () => {
     const route=useRoute()
     const {profileRes,getProfile}=route.params;
     console.log('profile res',profileRes)
-      
+    const theme = useColorScheme();
      
     const[loading,setLoading]=useState(false)
     const[alias,setAlias]=useState(profileRes && profileRes.alias ? profileRes.alias :'')
@@ -272,7 +272,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
                    placeholder={'Enter Alias'}
                     // placeholderTextColor={'black'}
                     style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold', 
-                    borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1
+                    borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1,color:theme === 'dark' ?'black':'',
                    }}     
                      onChangeText={text => {
                       setAlias(text);
@@ -286,7 +286,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
                    placeholder={'Enter Phile'}
                     // placeholderTextColor={'black'}
                     style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold',
-                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1
+                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1,color:theme === 'dark' ?'black':'',
                    }}     
                      onChangeText={text => {
                       setPhile(text);
@@ -300,7 +300,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
                    placeholder={'Enter About'}
                     // placeholderTextColor={'black'}
                     style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold',
-                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1
+                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1,color:theme === 'dark' ?'black':'',
                    }}     
                      onChangeText={text => {
                       setAbout(text);

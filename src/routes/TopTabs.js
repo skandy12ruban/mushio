@@ -12,7 +12,7 @@ const TopTabs = () => {
     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
       <Tab.Navigator
         screenOptions={{
-            // tabBarLabelStyle: {fontSize: 12, fontWeight: '500'}
+            tabBarLabelStyle: {fontSize: 12, fontWeight: '500',color:'black'},
             // tabBarActiveTintColor: 'black',
             // tabBarLabelStyle: { fontSize: 15 },
             // tabBarInactiveTintColor: 'black',
@@ -23,6 +23,10 @@ const TopTabs = () => {
             //   alignSelf: 'center',
             //   marginLeft: 30
             // }
+            tabBarStyle: {
+              backgroundColor: 'white',
+              
+            }
         }}
         >
         <Tab.Screen name="Moments" component={Moments} />

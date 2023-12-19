@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,TextInput,TouchableOpacity, ScrollView,Image } from 'react-native'
+import { View, Text,SafeAreaView,TextInput,TouchableOpacity, ScrollView,Image,useColorScheme } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppDropDown from '../Components/AppDropDown'
@@ -15,6 +15,7 @@ const NewPost = () => {
   const navigation = useNavigation()
   const[loading,setLoading]=useState(false)
   const route=useRoute()
+  const theme = useColorScheme();
   const {imgArray}=route.params
   const [category,setCategory]=useState('')
   const[locationName,setLocationName]=useState('')
@@ -71,7 +72,7 @@ const MyPost = async ()=>{
   }
 
   return (
-    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',}}>
+    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'white':'',}}>
       <Loader loading={loading}></Loader>
       <View style={{flexDirection:'row'}}>
        <Ionicons
@@ -145,7 +146,7 @@ const MyPost = async ()=>{
                    value={locationName}
                    placeholder={'Place'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
                    setLocationName(text);
                    }}
@@ -157,7 +158,7 @@ const MyPost = async ()=>{
                    value={tag}
                    placeholder={' @ Tag'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
                    setTag(text);
                    }}
@@ -169,7 +170,7 @@ const MyPost = async ()=>{
                    value={caption}
                    placeholder={'Write a head'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
                    setCaption(text);
                    }}
@@ -181,7 +182,7 @@ const MyPost = async ()=>{
                    value={dob}
                    placeholder={'Enter date'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),}}
+                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
                    setDob(text);
                    }}

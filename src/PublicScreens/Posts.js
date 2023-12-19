@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView,FlatList,TouchableOpacity,Image } from 'react-native'
+import { View, Text, SafeAreaView,FlatList,TouchableOpacity,Image,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
 
 import Loader from '../Components/Loader'
@@ -15,6 +15,7 @@ const Posts = () => {
   const {}=route.params
   const[audienceArray,setAudienceArray]=useState([])
   const isFocused=useIsFocused()
+  const theme = useColorScheme();
   const[requestArray,setRequestArray]=useState([])
 
   const getAudience = async ()=>{
@@ -225,7 +226,7 @@ const Posts = () => {
 
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%'}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
     <Header backIcon={true} name1={'Audience'}/>
       <Loader loading={loading}></Loader>
       <View>

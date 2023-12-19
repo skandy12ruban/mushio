@@ -1,6 +1,6 @@
 
 import React,{ useState,useEffect } from 'react';
-import { View, Text, SafeAreaView, TextInput,TouchableOpacity,Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, TextInput,TouchableOpacity,Dimensions,useColorScheme } from 'react-native';
 import Loader from '../Components/Loader';
 import { API_BASE_URL } from '../api/ApiClient';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -14,6 +14,7 @@ const VerifyForget = () => {
     const navigation=useNavigation()
 const[loading,setLoading]=useState(false)
 const[otp,setOtp]=useState('')
+const theme = useColorScheme();
 
 const VerifyforgetPassword= async ()=>{
     setLoading(true)
@@ -56,7 +57,7 @@ const VerifyforgetPassword= async ()=>{
 
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'black',}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
           <Loader loading={loading}></Loader>
           <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
           <Ionicons
@@ -73,13 +74,13 @@ const VerifyforgetPassword= async ()=>{
                    value={otp}
                    placeholder={''}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',
+                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1,alignSelf:'center'}}     
                      onChangeText={text => {
                       setOtp(text);
                      }}
                   /> 
-                   <TouchableOpacity style={{ backgroundColor: 'white',
+                   <TouchableOpacity style={{ backgroundColor: theme === 'dark' ?'black':'white',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -94,7 +95,7 @@ const VerifyforgetPassword= async ()=>{
                 VerifyforgetPassword()
             }
             }}>
-       <Text style={{color: 'black',
+       <Text style={{color:theme === 'dark' ? 'white':'black',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

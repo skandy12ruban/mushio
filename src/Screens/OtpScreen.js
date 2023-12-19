@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text,TouchableOpacity,StyleSheet, Dimensions,TextInput, SafeAreaView,Image,Alert } from 'react-native';
+import { View, Text,TouchableOpacity,StyleSheet, Dimensions,TextInput, SafeAreaView,Image,Alert,useColorScheme } from 'react-native';
 import { STANDARD_SCREEN_HEIGHT } from '../utils/AppConst';
 import { RFValue } from 'react-native-responsive-fontsize';
 import LinearGradient from 'react-native-linear-gradient'
@@ -23,7 +23,7 @@ const OtpScreen = () => {
     const [loading,setLoading] = useState(false)
    const[checked,setChecked]=useState(false)
     const[otp,setOtp]=useState('')
-  
+    const theme = useColorScheme();
 
     const SignUp = async ()=>{
       setLoading(true)
@@ -73,7 +73,7 @@ const OtpScreen = () => {
 
   
     return (
-        <SafeAreaView style={{ flex:1,backgroundColor:'black'}}>
+        <SafeAreaView style={{ flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
           <Loader loading={loading}></Loader>
            {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
@@ -106,7 +106,7 @@ const OtpScreen = () => {
                    placeholder={'enter otp'}
                     placeholderTextColor={'black'}
                     style={{padding:15,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
-                    borderRadius:10,borderColor:'blue',borderWidth:1}}  
+                    borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':'',}}  
                       onChangeText={text => {
                       setOtp(text);
                      }}
@@ -126,7 +126,7 @@ const OtpScreen = () => {
                   
                     
                   </View>
-              <TouchableOpacity style={{ backgroundColor: 'white',
+              <TouchableOpacity style={{ backgroundColor: theme === 'dark' ?'black':'white',
                     padding:4,
                     width: width * 0.5,
                     alignSelf: 'center',
@@ -145,7 +145,7 @@ const OtpScreen = () => {
                     }
                    
                     }}>
-               <Text style={{color: 'black',
+               <Text style={{color:theme === 'dark' ? 'white':'black',
     paddingVertical: 10,
     fontSize: 15,
     fontWeight: 'bold',
