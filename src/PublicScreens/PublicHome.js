@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList, TextInput,Alert,useColorScheme } from 'react-native'
+import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList,Button, TextInput,Alert,useColorScheme,Modal } from 'react-native'
 import React,{useState,useEffect,useRef} from 'react'
 import Loader from '../Components/Loader'
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -17,13 +17,14 @@ import VideoPlayer from 'react-native-video-player';
 import { BackHandler } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Share from 'react-native-share';
-import Popover from 'react-native-popover-view';
+import Popover,{PopoverPlacement} from 'react-native-popover-view';
 
-const PublicHome = () => {
+const PublicHome = (props) => {
   const navigation=useNavigation()
   const refRBSheet = useRef();
   const [userid,setUserid]=useState('')
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem1, setSelectedItem1] = useState(null);
   const[loading,setLoading]=useState(false)
   const[coment,setComment]=useState('')
   const[comentId,setCommentId]=useState('')
@@ -84,20 +85,25 @@ const Item= ({item,index})=>{
   )
 }
 
-const showPopOver= ()=>{
-  return (
-    <Popover
-    isVisible={showPopover}
-    onRequestClose={() => setShowPopover(false)}
-    from={(
-      <TouchableOpacity onPress={() => setShowPopover(true)}>
-        <Text>Press here to open popover!</Text>
-      </TouchableOpacity>
-    )}>
+// const showPopOver= ()=>{
+//   return (
+//     <View style={{backgroundColor:'red',height:100,width:100,flex:2}}>
+//     <Popover
+//     isVisible={showPopover}
+//     // placement={PopoverPlacement.RIGHT}
 
-  </Popover>
-  );
-}
+//     onRequestClose={() => setShowPopover(false)}
+//     // style={{backgroundColor:'red',height:100,width:100,flex:2}}
+//     from={(
+//       <TouchableOpacity onPress={() => setShowPopover(true)}>
+//         <Text>Press here to open popover!</Text>
+//       </TouchableOpacity>
+//     )}>
+
+//   </Popover>
+//   </View>
+//   );
+// }
 
 const sharePost = async () => {
   const shareOptions = {
@@ -299,6 +305,7 @@ const renderPost = (post, index) => {
   let profileImage = post.createdBy.profileImage
  let Id= post._id
  const isSelected = selectedItem === post._id;
+ const isSelected1 = selectedItem1 === post._id;
   const likes = post.likes.filter((e)=>{
    if( e.user == userid) 
     return e;
@@ -330,16 +337,16 @@ const renderPost = (post, index) => {
       <Text style={{color:'white',alignSelf:'center'}}>Connected</Text>
    </TouchableOpacity> */}
    <TouchableOpacity onPress={()=>{
-      
-      //  setShowPopover(true)
-      Alert.alert('Delete', 'Delete this post', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => { DeletePost(Id)}},
-      ]);
+    setSelectedItem1(post._id)
+       setShowPopover(true)
+      // Alert.alert('Delete', 'Delete this post', [
+      //   {
+      //     text: 'Cancel',
+      //     onPress: () => console.log('Cancel Pressed'),
+      //     style: 'cancel',
+      //   },
+      //   {text: 'OK', onPress: () => { DeletePost(Id)}},
+      // ]);
     }}> 
       <Entypo
        name='dots-three-vertical'
@@ -350,6 +357,28 @@ const renderPost = (post, index) => {
       />
    </TouchableOpacity>
   </View>
+       {isSelected1  ?( <Popover
+              popoverStyle={{
+                width: Metrics.rfp(30),
+                // height: Metrics.rfp(20),
+                borderRadius: Metrics.rfv(10),
+              }}
+              isVisible={showPopover}
+              onRequestClose={() => setShowPopover(false)}
+              from={(
+                <TouchableOpacity onPress={() =>
+                  setShowPopover(true)
+                }>
+                </TouchableOpacity>
+              )}
+            >
+             <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
+              <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Disconnect</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
+                <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Report</Text>
+              </TouchableOpacity>
+      </Popover>):(null)}
       <View style={{width:'100%'}}>
              <FlatList
              horizontal
@@ -397,7 +426,7 @@ const renderPost = (post, index) => {
                  <Text style={{fontSize:10,color:'black',marginTop:5}}>{likeCount} likes</Text>
                  </View>
           </View>
-          {/* {showPopOver()} */}
+      
  </Card>
   )
 };
@@ -496,7 +525,7 @@ const CommentsItem =  ({item})=>{
         ))}
         </View>
       </ScrollView>
-    
+
     </View>
     
             <RBSheet
@@ -516,11 +545,13 @@ const CommentsItem =  ({item})=>{
            height={400}
           >
           {comments.length > 0 ?(
+             <View style={{marginTop:10,marginBottom:100}}>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+           </View>
            ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
            <View style={{flexDirection:'row'}}>
            <TextInput
@@ -538,7 +569,7 @@ const CommentsItem =  ({item})=>{
            </View>
            
           </RBSheet>
-    
+
     </SafeAreaView>
   )
 }
