@@ -1,4 +1,4 @@
-import { useRoute } from '@react-navigation/native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
 import { View, Text,SafeAreaView,Image,TouchableOpacity, ScrollView, FlatList,Alert, TextInput, useColorScheme } from 'react-native'
 import React,{useState,useEffect,useRef} from 'react'
 import Loader from '../Components/Loader'
@@ -16,9 +16,11 @@ import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Share from 'react-native-share';
+import { DateHelper } from '../utils/DateHelper';
 
 const Entertainment = () => {
     const navigation=useNavigation()
+    const isFocused=useIsFocused()
     const refRBSheet = useRef();
     const[loading,setLoading]=useState(false)
     const [rating, setRating] = useState('');
@@ -197,7 +199,7 @@ const Entertainment = () => {
       }
 
       const renderPost = (post, index) => {
-          console.log(post)
+          console.log('entertaimnent post',post)
         let name = post.createdBy.name;
         let type= post.createdBy.userType;
         let profileImage = post.createdBy.profileImage
@@ -208,10 +210,11 @@ const Entertainment = () => {
         let likeCount = post.likeCount;
         let commentsCount = post.commentCount
         const isSelected = selectedItem === post._id;
-        const likes = post.likes.filter((e)=>{
+        const likes =( post.likes.filter((e)=>{
           if( e.user == userid) 
            return e;
-         })
+         }))
+        // const likes= [].
         return( 
         <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -229,10 +232,7 @@ const Entertainment = () => {
          </TouchableOpacity>
        <View>
        <Text style={{color:'black',fontWeight:'bold',fontSize:20,marginLeft:10}}>{name}</Text>
-       <View style={{flexDirection:'row',}}> 
-       <Text style={{color:'black',fontSize:15,marginLeft:10}}>{artist} ;</Text>
-       <Text style={{color:'black',fontSize:15,marginLeft:5}}>{alias}</Text>
-       </View>
+      
        </View>
        </View>
         
@@ -291,6 +291,10 @@ const Entertainment = () => {
         />
      </TouchableOpacity>
         </View>
+        <View style={{flexDirection:'row',marginLeft:40,marginTop:-20}}> 
+       <Text style={{color:'black',fontSize:15,marginLeft:10}}>{artist} ;</Text>
+       <Text style={{color:'black',fontSize:15,marginLeft:5}}>{alias}</Text>
+       </View>
             <View style={{width:'100%'}}>
                    <FlatList
                    horizontal
@@ -378,7 +382,7 @@ const Entertainment = () => {
   useEffect(()=>{
    getEntertainments()
    GetUserProfileInfo()
-  },[])
+  },[isFocused])
 
   const sharePost = async () => {
     const shareOptions = {
@@ -544,7 +548,7 @@ const Entertainment = () => {
     let profileImage = item.user.profileImage
     let name = item.user.name
     let id= item._id
-   
+    let date = DateHelper.formatToDateAMPM(item.createdAt)
     return(
       <TouchableOpacity onLongPress={()=>{
         Alert.alert('Delete', 'Delete this message', [
@@ -575,6 +579,7 @@ const Entertainment = () => {
         <View style={{marginLeft:10,marginTop:5}}>
         <Text style={{fontWeight:'bold',color:'black'}}>{name}</Text>
         <Text style={{color:theme === 'dark' ?'black':'',}}>{item.text}</Text>
+        <Text style={{color:theme === 'dark' ?'black':'',fontSize:10}}>{date}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -708,6 +713,7 @@ const Entertainment = () => {
           >
           {comments.length > 0 ?(
              <View style={{marginTop:10,marginBottom:100}}>
+               <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}

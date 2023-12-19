@@ -16,6 +16,7 @@ import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { useEffect } from 'react';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Share from 'react-native-share';
+import { DateHelper } from '../utils/DateHelper';
 
 
 const PublicSearchScreen1 = () => {
@@ -401,7 +402,7 @@ const PublicSearchScreen1 = () => {
 
 
   const renderPost = (post, index) => {
-console.log('post',post)
+console.log('post1',post)
     let name = post.createdBy.name;
     let type= post.createdBy.userType;
     let status =post.status
@@ -412,11 +413,11 @@ console.log('post',post)
      let likeCount = post.likeCount;
      let commentsCount = post.commentCount
      const isSelected = selectedItem === post._id;
-    //  const likes = post.likes.filter((e)=>{
-    //   if( e.user == userid) 
-    //    return e;
-    //  })
-     const likes= []
+     const likes = post.likes.filter((e)=>{
+      if( e.user == userid) 
+       return e;
+     })
+    //  const likes= []
     return(
     <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -541,7 +542,7 @@ console.log('post',post)
     let profileImage = item.user.profileImage
     let name = item.user.name
     let id= item._id
-   
+    let date = DateHelper.formatToDateAMPM(item.createdAt)
     return(
       <TouchableOpacity onLongPress={()=>{
         Alert.alert('Delete', 'Delete this message', [
@@ -572,6 +573,7 @@ console.log('post',post)
         <View style={{marginLeft:10,marginTop:5}}>
         <Text style={{fontWeight:'bold',color:'black'}}>{name}</Text>
         <Text style={{color:theme === 'dark' ?'black':'',}}>{item.text}</Text>
+        <Text style={{color:theme === 'dark' ?'black':'',fontSize:10}}>{date}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -625,6 +627,7 @@ console.log('post',post)
           >
           {comments.length > 0 ?(
             <View style={{marginTop:10,marginBottom:100}}>
+              <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}

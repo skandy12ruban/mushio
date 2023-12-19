@@ -10,6 +10,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Metrics from '../Constants/Metrics';
 import { Card } from 'react-native-paper';
 import { Badge } from 'react-native-elements';
+import {DateHelper} from '../utils/DateHelper'
 import Video from 'react-native-video';
 import { API_BASE_URL } from '../api/ApiClient';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
@@ -137,6 +138,39 @@ const DeletePost = async (id)=>{
     .then(response => response.json())
     .then(result => {
       console.log('delete post res',result)
+      if(result && result.success == true){
+        getHomedata()
+      setLoading(false)
+      }
+      setLoading(false)
+    })
+    .catch(error => {
+      console.log('error', error)
+      setLoading(false)
+    });
+}
+
+const DisconnectUser = async (id)=>{
+  const res = await getUserProfileInfo()
+  console.log(res.accessToken)
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    var raw = JSON.stringify({
+      "disconnectUserId": `${id}`
+    });
+    
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+  console.log(raw)
+  fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      console.log('disconnect user res',result)
       if(result && result.success == true){
         getHomedata()
       setLoading(false)
@@ -303,6 +337,7 @@ const renderPost = (post, index) => {
  let likeCount = post.likeCount;
  let commentsCount = post.commentCount
   let profileImage = post.createdBy.profileImage
+  let profileId = post.createdBy._id
  let Id= post._id
  const isSelected = selectedItem === post._id;
  const isSelected1 = selectedItem1 === post._id;
@@ -310,8 +345,8 @@ const renderPost = (post, index) => {
    if( e.user == userid) 
     return e;
   })
- console.log('likes....',likes)
- console.log("likessss...",likes[0] && likes[0].user == userid,isSelected,like)
+//  console.log('likes....',likes)
+//  console.log("likessss...",likes[0] && likes[0].user == userid,isSelected,like)
   return(
   <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
   <View style={{flexDirection:'row',justifyContent:'space-between'}}>
@@ -372,7 +407,7 @@ const renderPost = (post, index) => {
                 </TouchableOpacity>
               )}
             >
-             <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
+             <TouchableOpacity onPress={()=>{DisconnectUser(profileId)}} style={{padding:10}}>
               <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Disconnect</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
@@ -444,7 +479,7 @@ const CommentsItem =  ({item})=>{
   let profileImage = item.user.profileImage
   let name = item.user.name
   let id= item._id
- 
+ let date = DateHelper.formatToDateAMPM(item.createdAt)
   return(
     <TouchableOpacity onLongPress={()=>{
       Alert.alert('Delete', 'Delete this message', [
@@ -475,6 +510,7 @@ const CommentsItem =  ({item})=>{
       <View style={{marginLeft:10,marginTop:5}}>
       <Text style={{fontWeight:'bold',color:'black'}}>{name}</Text>
       <Text style={{color:theme === 'dark' ?'black':'',}}>{item.text}</Text>
+      <Text style={{color:theme === 'dark' ?'black':'',fontSize:10}}>{date}</Text>
       </View>
     </View>
     </TouchableOpacity>
@@ -544,8 +580,10 @@ const CommentsItem =  ({item})=>{
             }}
            height={400}
           >
+            
           {comments.length > 0 ?(
              <View style={{marginTop:10,marginBottom:100}}>
+              <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
