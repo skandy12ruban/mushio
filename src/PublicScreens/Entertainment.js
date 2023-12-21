@@ -23,6 +23,7 @@ const Entertainment = () => {
     const navigation=useNavigation()
     const isFocused=useIsFocused()
     const refRBSheet = useRef();
+    const refRBSheet1 = useRef();
     const[loading,setLoading]=useState(false)
     const [rating, setRating] = useState('');
     const route=useRoute()
@@ -34,7 +35,9 @@ const Entertainment = () => {
     const[comentId,setCommentId]=useState('')
     const [comments,setComments]=useState([])
     const [selectedItem, setSelectedItem] = useState(null);
-    const [showPopover, setShowPopover] = useState(false);
+    const[reportId,setReportId]=useState('')
+  const [showPopover, setShowPopover] = useState(false);
+  const [showPopover1, setShowPopover1] = useState(false);
     const [like,setLike]=useState(false)
     // const{name,category,role,tagline}=route.params;
     // console.log(name,category,role,tagline)
@@ -125,6 +128,43 @@ const Entertainment = () => {
           });
       }
 
+      const reportItem = async (text)=>{
+        const res = await getUserProfileInfo()
+        console.log(res.accessToken)
+          // setLoading(true)
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+          var raw = JSON.stringify({
+            "reportType" : "post",
+          "reportItemId" : `${reportId}`,
+          "reason" : `${text}`
+          });
+          
+          var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+          };
+          console.log(raw)
+           fetch(`${API_BASE_URL}/api/report`, requestOptions)
+            .then(response => response.json())
+            .then(async (result) => {
+              console.log('report res',result)
+              if( result.success == true ){
+                  alert('Thanks for letting us know')
+              }
+              refRBSheet1.current.close()
+              getEntertainments()
+              setLoading(false)
+            })
+            .catch(error => {
+              console.log('error', error)
+              setLoading(false)
+            });
+      }
+
       const disconnectUser=async(id)=>{
         const res = await getUserProfileInfo()
         console.log(res.accessToken)
@@ -166,6 +206,7 @@ const Entertainment = () => {
         console.log(res.accessToken)
           setLoading(true)
           var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
           var raw = JSON.stringify({
             "disconnectUserId": `${id}`
@@ -350,7 +391,13 @@ const Entertainment = () => {
             {status == 'Connected' ?( <TouchableOpacity onPress={()=>{DisconnectUser(profileId)}} style={{padding:10}}>
               <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Disconnect</Text>
               </TouchableOpacity>):(null)}
-              <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
+              <TouchableOpacity onPress={()=>{
+                 setShowPopover(false)
+                 setShowPopover1(true)
+                 setReportId(Id2)
+                 refRBSheet.current.close()
+                 refRBSheet1.current.open()
+              }} style={{padding:10}}>
                 <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Report</Text>
               </TouchableOpacity>
       </Popover>):(null)}
@@ -376,6 +423,7 @@ const Entertainment = () => {
                    onPress={()=>{
                     getComments(Id2)
                     setCommentId(Id2)
+                    refRBSheet1.current.close()
                     refRBSheet.current.open()
                     }}>
                    <FontAwesome
@@ -794,6 +842,73 @@ const Entertainment = () => {
               <Text style={{alignSelf:'center',color:'white'}}>post</Text>
             </TouchableOpacity>):(null)}
            </View>
+           
+          </RBSheet>
+          <RBSheet
+            ref={refRBSheet1}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "transparent",
+                // borderTopLeftRadius:50,
+                // borderTopRightRadius:5
+              },
+              draggableIcon: {
+                backgroundColor: "#000"
+              }
+            }}
+           height={400}
+          >
+          {showPopover1 ?( <ScrollView style={{}}>
+          <Text style={{fontSize:20,fontWeight:'bold',alignSelf:'center'}}>Report</Text>
+          <View style={{marginTop:10,margin:10}}>
+            <Text style={{fontWeight:'bold',}}>Why are you report this post ?</Text>
+            <Text style={{}}>
+              your report is anonyomus, expect if you're reporting an intellectual property infringement. If someone is in immediate danger,
+              call the local emergency service don't wait.
+            </Text>
+          </View>
+          <View style={{margin:10,width:'100%'}}>
+           <TouchableOpacity onPress={()=>{
+            let item = "I just don't like it"
+            reportItem(item)
+            }}>
+            <Text style={{fontSize:20,margin:10}}> I just don't like it</Text>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{
+             let item = "it's spam"
+             reportItem(item)
+           }}>
+            <Text style={{fontSize:20,margin:10}}> it's spam</Text>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{
+             let item = "Nudity or sexual activity"
+             reportItem(item)
+           }}>
+            <Text style={{fontSize:20,margin:10}}> Nudity or sexual activity</Text>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{
+             let item = "Violence or dangerous organizations"
+             reportItem(item)
+           }}>
+            <Text style={{fontSize:20,margin:10}}>Violence or dangerous organizations</Text>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{
+             let item = "scam or farud"
+             reportItem(item)
+           }}>
+            <Text style={{fontSize:20,margin:10}}> scam or farud</Text>
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{
+             let item = "false information"
+             reportItem(item)
+           }}>
+            <Text style={{fontSize:20,margin:10}}> false information</Text>
+           </TouchableOpacity>
+          </View>
+      
+           </ScrollView>):(null)}
            
           </RBSheet>
     </View>
