@@ -29,6 +29,7 @@ const PublicHome = (props) => {
   const[loading,setLoading]=useState(false)
   const[coment,setComment]=useState('')
   const[comentId,setCommentId]=useState('')
+  const[link,setLink]=useState('')
   const theme = useColorScheme();
   const [comments,setComments]=useState([])
   const [showPopover, setShowPopover] = useState(false);
@@ -85,41 +86,90 @@ const Item= ({item,index})=>{
     </View>
   )
 }
+ 
+const reportItem = async (id)=>{
+  const res = await getUserProfileInfo()
+  console.log(res.accessToken)
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    var raw = JSON.stringify({
+      "reportType" : "post",
+    "reportItemId" : `${id}`,
+    "reason" : "This is very abusive post"
+    });
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+     fetch(`${API_BASE_URL}/api/report`, requestOptions)
+      .then(response => response.json())
+      .then(async (result) => {
+        console.log('report res',result)
+        if( result.success == true ){
 
-// const showPopOver= ()=>{
-//   return (
-//     <View style={{backgroundColor:'red',height:100,width:100,flex:2}}>
-//     <Popover
-//     isVisible={showPopover}
-//     // placement={PopoverPlacement.RIGHT}
+        }
+        getHomedata()
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log('error', error)
+        setLoading(false)
+      });
+}
 
-//     onRequestClose={() => setShowPopover(false)}
-//     // style={{backgroundColor:'red',height:100,width:100,flex:2}}
-//     from={(
-//       <TouchableOpacity onPress={() => setShowPopover(true)}>
-//         <Text>Press here to open popover!</Text>
-//       </TouchableOpacity>
-//     )}>
 
-//   </Popover>
-//   </View>
-//   );
-// }
-
-const sharePost = async () => {
-  const shareOptions = {
-    title: 'Share via',
-    message: 'Check out this awesome post!',
-    url: 'https://your-post-url.com', // Replace with your actual post URL
-    social: Share.Social.ALL, // Share on all social media platforms
-  };
-
-  try {
-    const result = await Share.open(shareOptions);
-    console.log(result);
-  } catch (error) {
-    console.log(error);
-  }
+const sharePost = async (id) => {
+  const res = await getUserProfileInfo()
+  console.log(res.accessToken)
+    setLoading(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+    var raw = JSON.stringify({
+      "type": "profile",
+      "itemId": `${id}`
+    });
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+     fetch(`${API_BASE_URL}/api/share`, requestOptions)
+      .then(response => response.json())
+      .then(async (result) => {
+        console.log('share res',result)
+        if( result.success == true ){
+              //  alert(result.message)
+               setLink(result.data.link)
+               const shareOptions = {
+                title: 'Share via',
+                message: 'Check out this awesome post!',
+                url: `${result.data.link}`, // Replace with your actual post URL
+                social: Share.Social.ALL, // Share on all social media platforms
+              };
+            
+              try {
+                const result = await Share.open(shareOptions);
+                console.log(result);
+              } catch (error) {
+                console.log(error);
+              }
+        }
+        getHomedata()
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log('error', error)
+        setLoading(false)
+      });
+ 
 };
 
 const DeletePost = async (id)=>{
@@ -410,7 +460,7 @@ const renderPost = (post, index) => {
              <TouchableOpacity onPress={()=>{DisconnectUser(profileId)}} style={{padding:10}}>
               <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Disconnect</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
+              <TouchableOpacity onPress={()=>{reportItem(Id)}} style={{padding:10}}>
                 <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Report</Text>
               </TouchableOpacity>
       </Popover>):(null)}
@@ -424,7 +474,7 @@ const renderPost = (post, index) => {
       </View>
       <View style={{borderWidth:0.5,marginTop:10}}/>
       <View style={{flexDirection:'row',justifyContent:'space-around',margin:5,}}> 
-             <TouchableOpacity onPress={()=>{sharePost()}}>
+             <TouchableOpacity onPress={()=>{sharePost(Id)}}>
                 <EvilIcons
                   name="sc-telegram"
                    size={30}

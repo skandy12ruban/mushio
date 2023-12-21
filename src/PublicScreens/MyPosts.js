@@ -102,7 +102,7 @@ const MyPosts = () => {
     fetch(`${API_BASE_URL}/api/post/myPosts?postType=${selectedType}&postId=${selectedId}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(' selecty rrsult....',result.data.list)
+        console.log(' select post result....',result.data.list)
         if(result && result.success == true){
           let item =result.data.list
           setSearchArray(item)
@@ -402,7 +402,7 @@ const MyPosts = () => {
 
 
   const renderPost = (post, index) => {
-console.log('post',post)
+console.log('post/',post)
     let name = post.createdBy.name;
     let type= post.createdBy.userType;
     let status =post.status
@@ -419,7 +419,7 @@ console.log('post',post)
      })
     return(
     <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
-    {/* <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
     <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:Metrics.rfv(30),}}
     onPress={()=>{
@@ -434,7 +434,7 @@ console.log('post',post)
      </TouchableOpacity>
      <Text style={{color:'black',fontWeight:'bold',marginTop:10,fontSize:20,marginLeft:5}}>{name}</Text>
      </View>
-     <View>
+     {/* <View>
       
       
      </View>
@@ -451,7 +451,7 @@ console.log('post',post)
                                 style={{ marginTop:20,alignSelf:'center',marginRight:10 }}
                             />
          
-                  </View>):(null)}
+                  </View>):(null)} 
      <TouchableOpacity style={{backgroundColor:'black',padding:5,borderRadius:10,height:30,marginTop:10}}
      onPress={()=>{
          if(status == 'Connect'){
@@ -466,7 +466,7 @@ console.log('post',post)
      }}
      > 
         <Text style={{color:'white',alignSelf:'center'}}>{status}</Text>
-     </TouchableOpacity>
+     </TouchableOpacity>*/}
      <TouchableOpacity onPress={()=>{
          Alert.alert('Delete', 'Delete this post', [
           {
@@ -485,7 +485,7 @@ console.log('post',post)
   
         />
      </TouchableOpacity>
-    </View> */}
+    </View>
         <View style={{width:'100%'}}>
                <FlatList
                horizontal

@@ -17,6 +17,7 @@ import { API_BASE_URL } from '../api/ApiClient';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Share from 'react-native-share';
 import { DateHelper } from '../utils/DateHelper';
+import Popover,{PopoverPlacement} from 'react-native-popover-view';
 
 const Entertainment = () => {
     const navigation=useNavigation()
@@ -27,6 +28,7 @@ const Entertainment = () => {
     const route=useRoute()
     const [userid,setUserid]=useState('')
     const theme=useColorScheme()
+    const [selectedItem1, setSelectedItem1] = useState(null);
     const[entertainmentArray,setEntertainmentArray]=useState([])
     const[coment,setComment]=useState('')
     const[comentId,setCommentId]=useState('')
@@ -159,7 +161,38 @@ const Entertainment = () => {
             setLoading(false)
           });
       }
-    
+      const DisconnectUser = async (id)=>{
+        const res = await getUserProfileInfo()
+        console.log(res.accessToken)
+          setLoading(true)
+          var myHeaders = new Headers();
+          myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+          var raw = JSON.stringify({
+            "disconnectUserId": `${id}`
+          });
+          
+          var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+          };
+        console.log(raw)
+        fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
+          .then(response => response.json())
+          .then(result => {
+            console.log('disconnect user res',result)
+            if(result && result.success == true){
+              getEntertainments()
+            setLoading(false)
+            }
+            setLoading(false)
+          })
+          .catch(error => {
+            console.log('error', error)
+            setLoading(false)
+          });
+      }
       const RejectRequest=async(id)=>{
         const res = await getUserProfileInfo()
         console.log(res.accessToken)
@@ -199,17 +232,19 @@ const Entertainment = () => {
       }
 
       const renderPost = (post, index) => {
-          console.log('entertaimnent post',post)
+          // console.log('entertaimnent post',post)
         let name = post.createdBy.name;
         let type= post.createdBy.userType;
         let profileImage = post.createdBy.profileImage
         let artist = post.createdBy.artistType
         let alias = post.createdBy.alias
         let status=post.status
+        let profileId = post.createdBy._id
         let Id2=post._id
         let likeCount = post.likeCount;
         let commentsCount = post.commentCount
         const isSelected = selectedItem === post._id;
+        const isSelected1 = selectedItem1 === post._id;
         const likes =( post.likes.filter((e)=>{
           if( e.user == userid) 
            return e;
@@ -273,14 +308,16 @@ const Entertainment = () => {
             />
          </TouchableOpacity>
          <TouchableOpacity onPress={()=>{
-         Alert.alert('Delete', 'Delete this post', [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => { DeletePost(Id2)}},
-        ]);
+          setSelectedItem1(post._id)
+          setShowPopover(true)
+        //  Alert.alert('Delete', 'Delete this post', [
+        //   {
+        //     text: 'Cancel',
+        //     onPress: () => console.log('Cancel Pressed'),
+        //     style: 'cancel',
+        //   },
+        //   {text: 'OK', onPress: () => { DeletePost(Id2)}},
+        // ]);
      }}> 
         <Entypo
          name='dots-three-vertical'
@@ -295,6 +332,28 @@ const Entertainment = () => {
        <Text style={{color:'black',fontSize:15,marginLeft:10}}>{artist} ;</Text>
        <Text style={{color:'black',fontSize:15,marginLeft:5}}>{alias}</Text>
        </View>
+       {isSelected1  ?( <Popover
+              popoverStyle={{
+                width: Metrics.rfp(30),
+                // height: Metrics.rfp(20),
+                borderRadius: Metrics.rfv(10),
+              }}
+              isVisible={showPopover}
+              onRequestClose={() => setShowPopover(false)}
+              from={(
+                <TouchableOpacity onPress={() =>
+                  setShowPopover(true)
+                }>
+                </TouchableOpacity>
+              )}
+            >
+            {status == 'Connected' ?( <TouchableOpacity onPress={()=>{DisconnectUser(profileId)}} style={{padding:10}}>
+              <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Disconnect</Text>
+              </TouchableOpacity>):(null)}
+              <TouchableOpacity onPress={()=>{}} style={{padding:10}}>
+                <Text style={{alignSelf:'center',fontWeight:'bold',color:'black',fontSize:20}}>Report</Text>
+              </TouchableOpacity>
+      </Popover>):(null)}
             <View style={{width:'100%'}}>
                    <FlatList
                    horizontal
