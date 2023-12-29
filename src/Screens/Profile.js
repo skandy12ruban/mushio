@@ -112,7 +112,7 @@ const Profile = () => {
             <View style={{flexDirection:'row',padding:5,justifyContent:'space-around'}}>
               <View style={{}}>
               <Text style={{color:'#0058aa',fontSize:25,margin:5,alignSelf:'center',fontFamily:'Montserrat-Bold',marginLeft:30}}>Status</Text>
-              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:30}}>Dec scores you</Text>
+              <Text style={{color:'black',alignSelf:'center',fontWeight:'bold',marginLeft:30}}>Halo scores you</Text>
               <Text style={{color:'white',fontWeight:'bold',fontSize:25,alignSelf:'center',backgroundColor:'black',borderRadius:200,
               padding:10,marginTop:10,marginLeft:20}}>{scoreRes.averageMaxScore != undefined ? scoreRes.averageMaxScore : 0}</Text>
               </View>

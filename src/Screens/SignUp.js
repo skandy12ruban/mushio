@@ -36,7 +36,7 @@ const [viewPassword1, setViewPassword1] = useState(true);
 const theme = useColorScheme();
 
   return (
-    <SafeAreaView style={{ flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
+    <SafeAreaView style={{ flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
    {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
@@ -51,11 +51,11 @@ const theme = useColorScheme();
         }}>
           <Image
           style={{
-             width:120,height:120,margin:0,borderRadius:10,alignSelf:'center',marginTop:30,borderRadius:150,transform: [{ rotate: '40deg'}]
+             width:120,height:100,margin:0,borderRadius:0,alignSelf:'center',marginTop:30,marginLeft:20
             }}
-           source={require('../assets/images/Name1.jpg')}
+            source={theme === 'dark' ?require('../assets/images/login1.png'):require('../assets/images/login.png')}
          />
-            <Text style={{color:'#0058aa',alignSelf:'center',fontWeight:'bold',fontSize:35,fontFamily:'Arial',marginTop:Metrics.rfv(10)}}> Sign up </Text>
+            <Text style={{color:'#c6302c',alignSelf:'center',fontWeight:'bold',fontSize:35,fontFamily:'Arial',marginTop:Metrics.rfv(10)}}> Sign <Text  style={{color:theme === 'dark' ? 'white':'black',}}>up</Text> </Text>
         <Formik
           initialValues={SignUpFormInitialValues(props)}
           validationSchema={SignUpFormValidator(props)}
@@ -156,7 +156,7 @@ const theme = useColorScheme();
                   </Text>
                 )}
         <TouchableOpacity style={{ 
-           backgroundColor: theme === 'dark' ?'black':'white',
+           backgroundColor: theme === 'dark' ?'white':'black',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -171,7 +171,7 @@ const theme = useColorScheme();
               alert('Password does not match')
             }
             }}>
-      <Text style={{color:theme === 'dark' ? 'white':'black',
+      <Text style={{color:theme === 'dark' ? 'black':'white',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',
@@ -182,7 +182,7 @@ const theme = useColorScheme();
                       size={Metrics.rfv(50)}
                       /> */}
      </TouchableOpacity>
-     <Text style={{alignSelf:'center',color:'#2484c6',fontWeight:'bold',fontSize:30,margin:20,marginTop:30}}>OR</Text>
+     <Text style={{alignSelf:'center',color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:30,margin:20,marginTop:30}}>OR</Text>
      <TouchableOpacity onPress={()=>{ }}>
              <Feather
               name={'chrome'}
@@ -191,7 +191,7 @@ const theme = useColorScheme();
               size={Metrics.rfv(50)}
              />
      </TouchableOpacity>
-             <Text style={{alignSelf:'center',color:'#0058aa',fontWeight:'bold',fontSize:20,margin:20}}>Sign Up with Google</Text>
+             <Text style={{alignSelf:'center',color:'#c6302c',fontWeight:'bold',fontSize:20,margin:20}}>Sign Up with <Text style={{color:theme === 'dark' ? 'white':'black',}}>Google</Text> </Text>
        </View>
             </>
           )}

@@ -88,7 +88,7 @@ useEffect(()=>{
 },[])
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
        {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
@@ -100,7 +100,7 @@ useEffect(()=>{
         <Ionicons
         name='arrow-back'
         size={50}
-        color='#0058aa'
+        color={theme === 'dark' ? 'white':'black'}
         onPress={()=>{navigation.goBack()}}
         />
               {/* <Image
@@ -115,7 +115,7 @@ useEffect(()=>{
           width: '90%',marginTop:Metrics.rfv(50)
         }}>
 
-             <Text style={{color:'#0058aa',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Verification </Text> 
+             <Text style={{color:theme === 'dark' ? 'white':'black',alignSelf:'center',fontWeight:'bold',fontSize:30,fontFamily:'sans-serif-condensed'}}> Verification </Text> 
              {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',marginTop:20,fontWeight:'bold'}}>Country</Text>  */}
             <AppDropDown
                   label={''}
@@ -158,7 +158,7 @@ useEffect(()=>{
                       setPhoneNumber(text);
                      }}
                   /> 
-              <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'black':'white',
+              <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'white':'black',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -177,7 +177,7 @@ useEffect(()=>{
               sendOtp()
             }
             }}>
-       <Text style={{color:theme === 'dark' ? 'white':'black',
+       <Text style={{color:theme === 'dark' ? 'black':'white',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

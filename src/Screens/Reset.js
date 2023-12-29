@@ -59,19 +59,19 @@ const ResetPassword= async ()=>{
 
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
           <Loader loading={loading}></Loader>
           <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
           <Ionicons
         name='arrow-back'
         size={50}
-        color='#0058aa'
+        color={theme === 'dark' ? 'white':'black'}
         onPress={()=>{navigation.goBack()}}
         />
         </View>
-          <Text style={{fontSize:30,fontWeight:'bold',color:'#0058aa',margin:20,marginTop:50,alignSelf:'center'}}>Reset  Password</Text>
+          <Text style={{fontSize:30,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',margin:20,marginTop:50,alignSelf:'center'}}>Reset  Password</Text>
           <View style={{marginTop:50}}>
-            <Text style={{color:'white',marginLeft:60,fontWeight:'bold'}}> New password</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',marginLeft:60,fontWeight:'bold'}}> New password</Text>
           <TextInput
                    value={password}
                    placeholder={''}
@@ -82,7 +82,7 @@ const ResetPassword= async ()=>{
                       setPassword(text);
                      }}
                   /> 
-                    <Text style={{color:'white',marginLeft:60,fontWeight:'bold'}}> Confirm password</Text>
+                    <Text style={{color:theme === 'dark' ? 'white':'black',marginLeft:60,fontWeight:'bold'}}> Confirm password</Text>
           <TextInput
                    value={confirmpassword}
                    placeholder={''}
@@ -93,7 +93,7 @@ const ResetPassword= async ()=>{
                       setConfirmPassword(text);
                      }}
                   /> 
-                   <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'black':'white',
+                   <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'white':'black',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -108,7 +108,7 @@ const ResetPassword= async ()=>{
                 ResetPassword()
             }
             }}>
-       <Text style={{color:theme === 'dark' ? 'white':'black',
+       <Text style={{color:theme === 'dark' ? 'black':'white',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

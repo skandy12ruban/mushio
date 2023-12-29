@@ -54,19 +54,19 @@ const getforgetPassword= async ()=>{
 
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
           <Loader loading={loading}></Loader>
           <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
           <Ionicons
         name='arrow-back'
         size={50}
-        color='#0058aa'
+        color={theme === 'dark' ? 'white':'black'}
         onPress={()=>{navigation.goBack()}}
         />
         </View>
-          <Text style={{fontSize:30,fontWeight:'bold',color:'#0058aa',margin:20,marginTop:100,alignSelf:'center'}}>Forget Password</Text>
+          <Text style={{fontSize:30,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',margin:20,marginTop:100,alignSelf:'center'}}>Forget Password</Text>
           <View style={{marginTop:20}}>
-            <Text style={{color:'white',marginLeft:60,fontWeight:'bold'}}>Enter Email</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',marginLeft:60,fontWeight:'bold'}}>Enter Email</Text>
           <TextInput
                    value={email}
                    placeholder={''}
@@ -77,7 +77,7 @@ const getforgetPassword= async ()=>{
                       setEmail(text);
                      }}
                   /> 
-                   <TouchableOpacity style={{ backgroundColor: theme === 'dark' ?'black':'white',
+                   <TouchableOpacity style={{ backgroundColor: theme === 'dark' ?'white':'black',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -92,7 +92,7 @@ const getforgetPassword= async ()=>{
               getforgetPassword()
             }
             }}>
-       <Text style={{color: theme === 'dark' ? 'white':'black',
+       <Text style={{color: theme === 'dark' ? 'black':'white',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',

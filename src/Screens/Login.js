@@ -134,7 +134,7 @@ const Login = withGlobalize(
     //   start={{ x: 0, y: 0.5 }}
     //   end={{ x: 1, y: 0.5 }}
     // >
-    <View style={{backgroundColor:theme === 'dark' ? 'white':'black',flex:1}}>
+    <View style={{backgroundColor:theme === 'dark' ? 'black':'white',flex:1}}>
       <ScrollView
         style={{
           // backgroundColor: 'lightblue',
@@ -142,16 +142,16 @@ const Login = withGlobalize(
         <Loader loading={loading}></Loader>
         <Image
           style={{
-             width:120,height:120,margin:10,borderRadius:10,alignSelf:'center',marginTop:30,borderRadius:150,transform: [{ rotate: '40deg'}]
+             width:120,height:100,margin:10,alignSelf:'center',marginTop:40,marginLeft:30
             }}
-           source={require('../assets/images/Name1.jpg')}
+           source={theme === 'dark' ?require('../assets/images/login1.png'):require('../assets/images/login.png')}
          />
         <View
           style={{
             alignSelf: 'center',
             width: '90%',
           }}>
-          <Text style={{color:'#0058aa',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'Arial'}}> Sehalo</Text>
+          <Text style={{color:'#c6302c',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'Arial',marginTop:-10}}> Se<Text style={{color:theme === 'dark' ? 'white':'black',}}>halo</Text></Text>
           <Formik
             initialValues={SignInFormInitialValues(props)}
             validationSchema={SignInFormValidator(props)}
@@ -234,11 +234,11 @@ const Login = withGlobalize(
                   </Text>
                 )}
                 <TouchableOpacity onPress={()=>{navigation.navigate('Forget')}}>
-              <Text style={{color: '#00B0FF',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
+              <Text style={{color: theme === 'dark' ? 'white':'black',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
               </TouchableOpacity>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: theme === 'dark' ?'black':'white',
+                    backgroundColor: theme === 'dark' ?'white':'black',
                     padding:5,
                     width: width * 0.4,
                     alignSelf: 'center',
@@ -266,7 +266,7 @@ const Login = withGlobalize(
                     // }
                     handleSubmit();
                   }}>
-                  <Text style={{ color: theme === 'dark' ? 'white':'black',
+                  <Text style={{ color: theme === 'dark' ? 'black':'white',
     paddingVertical: 5,
     fontSize: 15,
     fontWeight: 'bold',
@@ -284,10 +284,10 @@ const Login = withGlobalize(
        
         <View style={{marginTop:80}}>
               <Text
-                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'#0058aa'}}>
+                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'#c6302c'}}>
                 Don't have an account ? {' '} 
                 {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
-                <Text style={{color: '#00B0FF',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
+                <Text style={{color: theme === 'dark' ? 'white':'black',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
                 {/* </TouchableOpacity> */}
                
               </Text>

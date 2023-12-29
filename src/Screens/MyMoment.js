@@ -11,7 +11,7 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 const MyMoment = () => {
   const route=useRoute()
   const {item}=route.params;
-  console.log('item',item)
+  console.log('item1',item)
   const [recordTime, setRecordTime] = useState(0);
   const [paused, setPaused] = useState(false);
   const [currentPositionSec, setCurrentPositionSec] = useState(0);
@@ -68,21 +68,21 @@ const onStopPlay = async () => {
         <Image
            key={index}
            source={{uri:item}}
-           style={{width:150,height:250,alignSelf:'center',}}
+           style={{width:110,height:200,alignSelf:'center',flex:1}}
           />
       </View>
     )
   }
   const Item1= ({item,index})=>{
-    console.log('video',item)
+    console.log('video url',item)
     return(
       <View style={{margin:10,alignSelf:'center',}}>
          <VideoPlayer
-            video={{ uri:"http://res.cloudinary.com/mydatabase2413/video/upload/v1701523859/xbkpraqidofjke0iwgeu.mp4" }}
+            video={{ uri:item }}
             //   videoWidth={3000}
             //  videoHeight={2000}
             //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-            style={{width:350,height:200,alignSelf:'center',}}
+            style={{width:350,height:200,alignSelf:'center',backgroundColor:theme === 'dark' ? 'white':'black'}}
          />
       </View>
     )
@@ -101,7 +101,7 @@ const onStopPlay = async () => {
               <FontAwesome
                name="pause"
                size={30}
-               color='black'
+               color={theme === 'dark' ? 'white':'black'}
             />
           </TouchableOpacity>
         ) : (
@@ -109,7 +109,7 @@ const onStopPlay = async () => {
           <FontAwesome
            name="play"
            size={30}
-           color='black'
+           color={theme === 'dark' ? 'white':'black'}
         />
       </TouchableOpacity>
         )}
@@ -125,8 +125,10 @@ const onStopPlay = async () => {
         </View>
           </View>
           <View style={styles.progressDetailsContainer}>
-        <Text style={styles.progressDetailsText}>Progress: {playTime}</Text>
-        <Text style={styles.progressDetailsText}>Duration: {duration}</Text>
+        <Text style={{paddingHorizontal: 5,
+    color:theme === 'dark' ? 'white': 'black',}}>Progress: {playTime}</Text>
+        <Text style={{paddingHorizontal: 5,
+    color:theme === 'dark' ? 'white': 'black',}}>Duration: {duration}</Text>
       </View>
      
      
@@ -135,7 +137,7 @@ const onStopPlay = async () => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor:theme === 'dark' ? 'white':'black',flex:1}}>
+    <SafeAreaView style={{backgroundColor:theme === 'dark' ? 'black':'white',flex:1}}>
     <View>
      {item && item.imageUrls.length > 0 ? (
        <FlatList
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
    
   },
   progressIndicatorContainer: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#e2e2e2',
     marginTop:10
   },

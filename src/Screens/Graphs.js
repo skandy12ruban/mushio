@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image,ScrollView,StyleSheet ,TouchableOpacity, SafeAreaView,Dimensions} from 'react-native'
+import { View, Text, FlatList, Image,ScrollView,StyleSheet ,TouchableOpacity, SafeAreaView,Dimensions, useColorScheme} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import { Card } from 'react-native-paper';
@@ -27,6 +27,7 @@ function* ylabel() {
 
 const Graphs = () => {
   const ylabeliterator = ylabel();
+  const theme=useColorScheme()
   const navigation = useNavigation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
@@ -115,10 +116,10 @@ const Item=({item})=>{
     return(
       <View style={{margin:2,}}>
 
-          <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,
-           backgroundColor: item == new Date().getFullYear() ? 'grey' :'#fefeff'}}
+          <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,borderColor:theme === 'dark' ? 'blue':'blue',
+           backgroundColor: theme === 'dark' ? (item == new Date().getFullYear() ? '#fefeff' :'black'):(item == new Date().getFullYear() ? 'grey' :'#fefeff')}}
            onPress={()=>{getYearlyAverageScore(item),setyear(!YEAR),setYearName(item)}}>
-      <Text style={{fontSize:10,color:item == new Date().getFullYear() ? 'white' : 'black' }}> {item}</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? (item == new Date().getFullYear() ? 'black' : 'white'):(item == new Date().getFullYear() ? 'white' : 'black') }}> {item}</Text>
      </TouchableOpacity>
         
         
@@ -264,7 +265,7 @@ const getWeeklyAverageScore =async (week)=>{
   // },[])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{backgroundColor:theme === 'dark' ? 'black':'#f6f6f6',flex:1}}>
          {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
@@ -276,13 +277,22 @@ const getWeeklyAverageScore =async (week)=>{
       <Ionicons
         name='arrow-back'
         size={50}
-        color='black'
+        color={theme === 'dark' ? 'white':'black'}
         onPress={()=>{setWeek(false),setWeekName(''),setMonth(false),setMonthName(''),setyear(false),setYearName('')}}
         />
       <ScrollView>
          <View style={{  alignSelf: 'center',  width: '60%',marginTop:Metrics.rfv(50)}}>
-      <TouchableOpacity style={styles.ButtonStyles} onPress={toggleDropdown}>
-        <Text style={styles.TextStyles}>{'Weekly stats'}</Text>
+      <TouchableOpacity style={{  backgroundColor: theme === 'dark' ? 'black':'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 50,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+   borderWidth:1,
+   borderColor:'blue',borderRadius:30,margin:5}} onPress={toggleDropdown}>
+        <Text style={{color: theme === 'dark' ? 'white':'black',
+    // opacity: 0.35,
+    fontWeight:'bold'}}>{'Weekly stats'}</Text>
         <MaterialIcons
           name="keyboard-arrow-down"
           color={'#333'}
@@ -311,31 +321,31 @@ const getWeeklyAverageScore =async (week)=>{
       <Text style={{fontSize:10,color:'black'}}> {weeklyscoreRes && weeklyscoreRes.averageMaxScore != 0 ? weeklyscoreRes && weeklyscoreRes.averageMaxScore: '--'}</Text>
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{weekname}</Text>
-            <Text style={{color: weeklyscoreRes && weeklyscoreRes.averageMaxScore  <= 25 ? '#FF7F7F': weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 50 ? '#67a596':
-            weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 75 ? '#00B0FF': weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 100 ? '#FFB6C1':'black',
+            <Text style={{color: weeklyscoreRes && weeklyscoreRes.averageMaxScore  <= 25 ? '#c6302c': weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 50 ? '#c6302c':
+            weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 75 ? 'green': weeklyscoreRes && weeklyscoreRes.averageMaxScore <= 100 ? 'green':'black',
             alignSelf:'center',fontSize:10}}>" { weeklyscoreRes && weeklyscoreRes.emoji} "</Text>
         </View>
         ):(
         <View>
-          <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
+          <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getWeeklyAverageScore(1), setWeek(!week),setWeekName('1st Week')}}>
-      <Text style={{fontSize:10,color:'black'}}> 1st Week</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 1st Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
      onPress={()=>{getWeeklyAverageScore(2),setWeek(!week),setWeekName('2nd Week')}}>
-      <Text style={{fontSize:10,color:'black'}}> 2nd Week</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 2nd Week</Text>
      </TouchableOpacity>
      </View>
-     <Text style={{color:'black',fontWeight:'bold',alignSelf:'center'}}>{month}</Text>
-     <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
+     <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',alignSelf:'center'}}>{month}</Text>
+     <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
      onPress={()=>{getWeeklyAverageScore(3),setWeek(!week),setWeekName('3rd Week')}}>
-      <Text style={{fontSize:10,color:'black'}}> 3rd Week</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 3rd Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
      onPress={()=>{getWeeklyAverageScore(4),setWeek(!week),setWeekName('4th Week')}}>
-      <Text style={{fontSize:10,color:'black' }}> 4th Week</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 4th Week</Text>
      </TouchableOpacity>
      </View>
           </View>)}
@@ -343,8 +353,17 @@ const getWeeklyAverageScore =async (week)=>{
         </View>
       )}
           <View style={{  alignSelf: 'center',  width: '60%',marginTop:Metrics.rfv(10)}}>
-       <TouchableOpacity style={styles.ButtonStyles} onPress={toggleDropdown1}>
-        <Text style={styles.TextStyles}>{'Monthly stats'}</Text>
+       <TouchableOpacity style={{ backgroundColor: theme === 'dark' ? 'black':'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 50,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+   borderWidth:1,
+   borderColor:'blue',borderRadius:30,margin:5}} onPress={toggleDropdown1}>
+        <Text style={{color: theme === 'dark' ? 'white':'black',
+    // opacity: 0.35,
+    fontWeight:'bold'}}>{'Monthly stats'}</Text>
         <MaterialIcons
           name="keyboard-arrow-down"
           color={'#333'}
@@ -375,74 +394,83 @@ const getWeeklyAverageScore =async (week)=>{
       <Text style={{fontSize:10,color:'black'}}> {monthlyscoreRes && monthlyscoreRes.averageMaxScore != 0 ? monthlyscoreRes && monthlyscoreRes.averageMaxScore : '--'}</Text>
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{monthName}</Text>
-            <Text style={{color: monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 25 ? '#FF7F7F': monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 50 ? '#67a596':
-            monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 75 ? '#00B0FF':'#FFB6C1',
+            <Text style={{color: monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 25 ? '#c6302c': monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 50 ? '#c6302c':
+            monthlyscoreRes && monthlyscoreRes.averageMaxScore <= 75 ? 'green':'green',
             fontWeight:'bold',alignSelf:'center',}}>" { monthlyscoreRes && monthlyscoreRes.emoji} "</Text>
         </View>):(<View>
 
         <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
      onPress={()=>{ getMonthlyAverageScore('01'),setMonth(!Month),setMonthName('January')}}>
-      <Text style={{fontSize:10,color:'black'}}> Jan</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Jan</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('02'),setMonth(!Month),setMonthName('February')}}>
-      <Text style={{fontSize:10,color:'black'}}> Feb</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Feb</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('03'),setMonth(!Month),setMonthName('March')}}>
-      <Text style={{fontSize:10,color:'black'}}> Mar</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Mar</Text>
      </TouchableOpacity>
      </View>
  
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('04'),setMonth(!Month),setMonthName('April')}}>
-      <Text style={{fontSize:10,color:'black'}}> April</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> April</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('05'),setMonth(!Month),setMonthName('January')}}>
-      <Text style={{fontSize:10,color:'black' }}> May</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> May</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('06'),setMonth(!Month),setMonthName('June')}}>
-      <Text style={{fontSize:10,color:'black' }}> June</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> June</Text>
      </TouchableOpacity>
      </View>
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('07'),setMonth(!Month),setMonthName('July')}}>
-      <Text style={{fontSize:10,color:'black'}}> July</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> July</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('08'),setMonth(!Month),setMonthName('August')}}>
-      <Text style={{fontSize:10,color:'black'}}> Aug</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Aug</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('09'),setMonth(!Month),setMonthName('September')}}>
-      <Text style={{fontSize:10,color:'black'}}> Sep</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Sep</Text>
      </TouchableOpacity>
      </View>
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('10'),setMonth(!Month),setMonthName('October')}}>
-      <Text style={{fontSize:10,color:'black' }}> Oct</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> Oct</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('11'),setMonth(!Month),setMonthName('November')}}>
-      <Text style={{fontSize:10,color:'black' }}> Nov</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> Nov</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:'#fefeff'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
       onPress={()=>{getMonthlyAverageScore('12'),setMonth(!Month),setMonthName('December')}}>
-      <Text style={{fontSize:10,color:'black' }}> Dec</Text>
+      <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> Dec</Text>
      </TouchableOpacity>
      </View>
      </View>)}
         </View>
       )}
           <View style={{  alignSelf: 'center',  width: '60%',marginTop:Metrics.rfv(10)}}>
-       <TouchableOpacity style={styles.ButtonStyles} onPress={toggleDropdown2}>
-        <Text style={styles.TextStyles}>{'Yearly stats'}</Text>
+       <TouchableOpacity style={{ backgroundColor: theme === 'dark' ? 'black':'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 50,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+   borderWidth:1,
+   borderColor:'blue',borderRadius:30,margin:5}} onPress={toggleDropdown2}>
+        <Text style={{color: theme === 'dark' ? 'white':'black',
+    // opacity: 0.35,
+    fontWeight:'bold'}}>{'Yearly stats'}</Text>
         <MaterialIcons
           name="keyboard-arrow-down"
           color={'#333'}
@@ -470,8 +498,8 @@ const getWeeklyAverageScore =async (week)=>{
       <Text style={{fontSize:10,color:'black'}}> {yearlyscoreRes && yearlyscoreRes.averageMaxScore != 0 ? yearlyscoreRes && yearlyscoreRes.averageMaxScore : '--'}</Text>
        </TouchableOpacity>
             <Text style={{color:'black',fontWeight:'bold',alignSelf:'center',fontSize:10}}>{yearname}</Text>
-            <Text style={{color: yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 25 ? '#FF7F7F': yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 50 ? '#67a596':
-            yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 75 ? '#00B0FF':'#FFB6C1',
+            <Text style={{color: yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 25 ? '#c6302c': yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 50 ? '#c6302c':
+            yearlyscoreRes && yearlyscoreRes.averageMaxScore <= 75 ? 'green':'green',fontSize:10,
             fontWeight:'bold',alignSelf:'center',}}>" { yearlyscoreRes && yearlyscoreRes.emoji} "</Text>
         </View>):(<View style={{marginRight:10,}}>
      <FlatList
@@ -496,7 +524,7 @@ const styles = StyleSheet.create({
   // width:'100%'
   },
   ButtonStyles: {
-    backgroundColor: '#FFF',
+    backgroundColor: 'black',
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 50,

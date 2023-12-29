@@ -288,9 +288,9 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
 
     VidArray.forEach((video, index) => {
       formdata.append('files', {
-        uri: video.uri,
-        type: video.type,
-        name: video.fileName,
+        uri: `${video.uri}`,
+        type: `${video.type}`,
+        name: `${video.fileName}`,
       });
     });
 
@@ -300,7 +300,7 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-// console.log(requestOptions) 
+console.log(requestOptions) 
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
@@ -368,7 +368,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
           style: 'cancel',
         },
         {text: 'OK', onPress: () =>  {
-          navigation.navigate('Home')
+          // navigation.navigate('Home')
         }},
       ]);
       setLoading(false)
@@ -480,7 +480,7 @@ setLoading(false)
            source={item.image}
          />
       </View>
-       <Text style={{color:'black',alignSelf: 'center',marginTop:Metrics.rfv(10),fontWeight:'bold'}}>Tell Dec about your day</Text>
+       <Text style={{color:'black',alignSelf: 'center',marginTop:Metrics.rfv(10),fontWeight:'bold'}}>Tell halo about your day</Text>
        <View style={{alignSelf:'center',width:'90%'}}>
         <TextInput
          value={title}

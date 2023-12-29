@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image,ScrollView,StyleSheet ,TouchableOpacity,SafeAreaView} from 'react-native'
+import { View, Text, FlatList, Image,ScrollView,StyleSheet ,TouchableOpacity,SafeAreaView,Alert,useColorScheme} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import {DateHelper} from '../utils/DateHelper'
@@ -15,6 +15,7 @@ import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 const Home = (props) => {
   const navigation = useNavigation();
   const isFocused=useIsFocused()
+  const theme= useColorScheme()
   const[loading,setLoading]=useState(false)
   const[momentsArray,setMomentsArray]=useState([])
   const[userInfo,setUserInfo]=useState({})
@@ -73,6 +74,33 @@ const getAllMoments = async (Date)=>{
     });
 }
 
+const deleteMomentum = async (id)=>{
+  const res= await getUserProfileInfo()
+  // console.log(res.accessToken)
+ setLoading(true)
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+  var requestOptions = {
+    method: 'DELETE',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+    fetch(`${API_BASE_URL}/api/private/moment/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      console.log('delete',result.data)
+      if(result && result.success == true){
+        getAllMoments()
+        setLoading(false)
+      }
+      setLoading(false)
+    })
+    .catch(error => {
+      console.log('error', error)
+      setLoading(false)
+    });
+}
+
 useEffect(()=>{
   getAllMoments()
   UserProfileInfo()
@@ -111,13 +139,13 @@ const getGreetingText = () => {
   const currentHour = currentTime.getHours();
 
   if (currentHour >= 0 && currentHour < 12) {
-    return ' Dec greets you Good morning!';
+    return ' halo greets you Good morning!';
   } else if (currentHour >= 12 && currentHour < 16) {
-    return ' Dec greets you Good afternoon!';
+    return ' halo greets you Good afternoon!';
   } else if (currentHour >= 16 && currentHour < 19) {
-    return ' Dec greets you Good evening!';
+    return ' halo greets you Good evening!';
   } else {
-    return ' Dec greets you Good night!';
+    return ' halo greets you Good night!';
   }
 };
 
@@ -127,29 +155,29 @@ const handleMonthChanged = (start, end) => {
 };
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'#fefeff',}}>
+    <SafeAreaView style={{flex:1,backgroundColor:theme === 'dark' ? 'black':'#f6f6f6',}}>
         <Loader loading={loading}></Loader>
       {/* <Header name={'Home '} Language={''} bellIcon={false} /> */}
       <View>
-      <TouchableOpacity style={{ width:60,height:60,borderRadius:10,marginTop:15,marginLeft:5}}
+      <TouchableOpacity style={{marginTop:10 }}
         onPress={()=>{
           // setselectedItem(item)
           }} >
       <Image
           style={{
-             width:50,height:50,margin:10,borderRadius:10,
+             width:70,height:60,margin:5,borderRadius:10,marginLeft:10
             }}
-           source={require('../assets/images/image3.jpg')}
+            source={theme === 'dark' ?require('../assets/images/login1.png'):require('../assets/images/login.png')}
          />
          </TouchableOpacity>
       </View>
-     <Text style={{fontSize:25,marginLeft:Metrics.rfv(20),color:'black',fontFamily:'Montserrat-Bold',marginTop:20}}>Halo, <Text style={{color:'#00B0FF',fontStyle:'Montserrat-Bold',}}>{ userInfo && userInfo.name}</Text></Text>
-     <Text style={{marginLeft:Metrics.rfv(20),color:'black',fontFamily:'Roboto-Regular'}}>{getGreetingText()}</Text>
+     <Text style={{fontSize:25,marginLeft:Metrics.rfv(20),color:theme === 'dark' ? 'white':'black',fontFamily:'Montserrat-Bold',marginTop:10}}>Halo, <Text style={{color:theme === 'dark' ? '#474242':'#00B0FF',fontStyle:'Montserrat-Bold',}}>{ userInfo && userInfo.name}</Text></Text>
+     <Text style={{marginLeft:Metrics.rfv(20),color:theme === 'dark' ? 'white':'black',fontFamily:'Roboto-Regular'}}>{getGreetingText()}</Text>
      
       <View style={{marginTop:10}}>
       <CalendarStrip
       scrollable
-      style={{height:100, paddingTop: 20, paddingBottom: 10,backgroundColor:'skyblue',}}
+      style={{height:80, paddingTop: 10, paddingBottom: 10,backgroundColor:theme === 'dark' ? '#474242':'#00B0FF',}}
       calendarColor={'black'}
       calendarHeaderStyle={{color: 'black'}}
       dateNumberStyle={{color: 'black'}}
@@ -166,21 +194,39 @@ const handleMonthChanged = (start, end) => {
       }}
     />
       </View>
-      <ScrollView style={{backgroundColor:'#fefeff'}}>
+      <ScrollView style={{backgroundColor:theme === 'dark' ? 'black':'#f6f6f6'}}>
         <View style={{flex:2,}}>
           {momentsArray.length > 0 ? momentsArray.map((item)=>{
             const date= item.createdAt.slice(11,16)
             var time12 = convertTo12HourFormat(date);
-
+            let Id= item._id
           //  console.log(item)
             return(
               <View style={{margin:10,flex:1}}>
-              <Card style={{backgroundColor:'white',}} onPress={()=>{navigation.navigate('MyMoment',{item:item})}}>
+              <Card style={{backgroundColor:theme === 'dark' ? '#474242':'#ffffff',}} 
+              onPress={()=>{
+                if(item.audioUrls.length || item.imageUrls.length || item.videoUrls.length > 0){
+                  navigation.navigate('MyMoment',{item:item})
+                }else{
+                  // alert('you have no momentums')
+                }
+              
+              }}
+              onLongPress={()=>{
+                Alert.alert('Delete', 'delete moment ?', [
+                  {
+                    text: 'No',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'yes', onPress: () =>  deleteMomentum(Id)},
+                ]);
+                }} >
               
                  <View style={{flexDirection:'row',justifyContent:'space-between',padding:10,}}>
                    <View style={{width:'70%'}}>
-                   <Text style={{fontWeight:'bold',color:'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,alignSelf:'flex-start',}}>{item.title}</Text>
-                  <Text style={{padding:5,color:'black',marginTop:5,}}>{item.description} </Text>
+                   <Text style={{fontWeight:'bold',color:theme === 'dark' ? 'white':'#00B0FF',backgroundColor:'black',padding:5,borderRadius:10,alignSelf:'flex-start',}}>{item.title}</Text>
+                  <Text style={{padding:5,color:theme === 'dark' ? 'white':'black',marginTop:5,}}>{item.description} </Text>
                   <FlatList
                     // horizontal
                     numColumns={3}
@@ -189,8 +235,8 @@ const handleMonthChanged = (start, end) => {
                     renderItem={(e)=>{
                       // console.log(e)
                       return(
-                        <View style={{paddingLeft:10,backgroundColor:'#00B0FF',margin:5,borderRadius:10,}}>
-                        <Text style={{alignSelf:'center',padding:2,color:'black',marginRight:5}}>{e.item}</Text>
+                        <View style={{paddingLeft:10,backgroundColor:theme === 'dark' ? 'black':'#00B0FF',margin:5,borderRadius:10,}}>
+                        <Text style={{alignSelf:'center',padding:2,color:theme === 'dark' ? 'white':'black',marginRight:5}}>{e.item}</Text>
                         </View>
                       )
                     }}
@@ -221,7 +267,7 @@ const handleMonthChanged = (start, end) => {
                         }
                     }}
                     />
-                    <Text style={{alignSelf:'flex-end',marginRight:20,color:'black',marginTop:5}}>{time12}</Text> 
+                    <Text style={{alignSelf:'flex-end',marginRight:20,color:theme === 'dark' ? 'white':'black',marginTop:5}}>{time12}</Text> 
                     </View>
                  </View>
                 

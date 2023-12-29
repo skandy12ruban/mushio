@@ -10,14 +10,16 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Metrics from '../Constants/Metrics';
 import { Categories, Home,  Profile, Graphs } from '../Screens';
 import { HOME, GRAPHS } from './RouteConst';
+import { useColorScheme } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = (props) => {
+const theme= useColorScheme()
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{ flex: 1, backgroundColor:theme === 'dark'? 'black': '#f6f6f6' }}>
       <Tab.Navigator
         initialRouteName={HOME}
         screenOptions={{
@@ -27,7 +29,7 @@ const BottomTabs = (props) => {
             borderRadius: 200,
           },
           tabBarStyle: {
-            backgroundColor: 'white',
+            backgroundColor:theme === 'dark'? 'black': '#f6f6f6',
             borderRadius: 5,
             margin:10,
             height: 54,

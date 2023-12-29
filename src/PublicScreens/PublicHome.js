@@ -387,6 +387,36 @@ useEffect(()=>{
       });
   }
 
+  const userProfile = async (id)=>{
+    const res = await getUserProfileInfo()
+    console.log(res.accessToken)
+      setLoading(true)
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+      
+      const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    fetch(`${API_BASE_URL}/api/user/profile/${id}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log('get userprofile response',result.data)
+        if(result && result.success == true){
+          console.log(result.data.accessToken)
+             navigation.navigate('PublicProfile1',{Token:result.data.accessToken,userProfile:true})
+              setLoading(false)
+        }
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log('error', error)
+        setLoading(false)
+      });
+  }
+
 const renderPost = (post, index) => {
 // console.log('post',post)
   let name = post.createdBy.name;
@@ -409,7 +439,7 @@ const renderPost = (post, index) => {
     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
   <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:Metrics.rfv(30),}}
   onPress={()=>{
-  //   setProfileImg()
+    userProfile(profileId)
     }}>
     <Image
     style={{

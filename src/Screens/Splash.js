@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions,useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LOGIN,  MAIN_ROUTE, SIGNIN } from '../routes/RouteConst';
 import { STANDARD_SCREEN_HEIGHT } from '../utils/AppConst';
@@ -15,6 +15,7 @@ const { width, height } = Dimensions.get('window');
 
 const SplashPage = () => {
     const navigation = useNavigation()
+    const theme = useColorScheme();
 
     const navigationStep = async () => {
         const userObject = await getUserProfileInfo();
@@ -51,7 +52,7 @@ const SplashPage = () => {
                 style={{
                     width:"100%",height:"101%",
                 }}
-                source={require('../assets/images/splashImg.jpg')}
+                source={theme === 'dark' ? require('../assets/images/splashImage.png'): require('../assets/images/splashImage1.png')}
             >
             </BackgroundImage>
                     

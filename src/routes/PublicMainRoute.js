@@ -10,7 +10,7 @@ import { setuser } from '../Redux/reducer/User';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-import { ADD_CARDS, APP_DRAWER, ARTIST_MESSAGE, CARDS, CHAT_SCREEN, ENTERTAINMENT, FRIENDS, FRIENS_MESSAGE, MY_POSTS, MY_PROFILE, NEW_POST, PEOPLE, POSTS, PUBLIC_BOTTOM_TABS, PUBLIC_SERACH_SCREEN1, TOP_TABS } from './PublicRouteConts';
+import { ADD_CARDS, APP_DRAWER, ARTIST_MESSAGE, CARDS, CHAT_SCREEN, ENTERTAINMENT, FRIENDS, FRIENS_MESSAGE, MY_POSTS, MY_PROFILE, NEW_POST, PEOPLE, POSTS, PUBLIC_BOTTOM_TABS, PUBLIC_PROFILE1, PUBLIC_SERACH_SCREEN1, TOP_TABS, USER_ARTIST, USER_AUDIENCE, USER_TOP_TABS } from './PublicRouteConts';
 import PublicBottomTabs from './PublicBottomTabs';
 import MainRoute from './MainRoute';
 import People from '../PublicScreens/People';
@@ -27,6 +27,10 @@ import AddCards from '../PublicScreens/AddCards';
 import NewPost from '../PublicScreens/NewPost';
 import MyProfile from '../PublicScreens/MyProfile';
 import MyPosts from '../PublicScreens/MyPosts';
+import PublicProfile1 from '../PublicScreens/PublicProfile1';
+import UserTopTabs from './UserTopTabs';
+import UserArtist from '../PublicScreens/UserArtist';
+import UserAudience from '../PublicScreens/UserAudience';
 
 const MainStack = createStackNavigator();
 
@@ -55,13 +59,17 @@ const PublicMainRoute = () => {
                 <>
                      <MainStack.Screen name={PUBLIC_BOTTOM_TABS} component={PublicBottomTabs} />
                      <MainStack.Screen name={TOP_TABS} component={TopTabs} />
+                     <MainStack.Screen name={USER_TOP_TABS} component={UserTopTabs} />
                      <MainStack.Screen name={APP_DRAWER} component={AppDrawer} />
                      <MainStack.Screen name={MAIN_ROUTE} component={MainRoute} />
                      {/* <MainStack.Screen name={PEOPLE} component={People} /> */}
                      <MainStack.Screen name={POSTS} component={Posts} />
+                     <MainStack.Screen name={USER_ARTIST} component={UserArtist} />
+                     <MainStack.Screen name={USER_AUDIENCE} component={UserAudience} />
                      <MainStack.Screen name={FRIENDS} component={Friends} />
                      <MainStack.Screen name={CARDS} component={Cards} />
                      <MainStack.Screen name={PUBLIC_SERACH_SCREEN1} component={PublicSearchScreen1} />
+                     <MainStack.Screen name={PUBLIC_PROFILE1} component={PublicProfile1} />
                      <MainStack.Screen name={CHAT_SCREEN} component={ChatScreen} />
                      <MainStack.Screen name={FRIENS_MESSAGE} component={FriendsMessage} />
                      <MainStack.Screen name={ARTIST_MESSAGE} component={ArtistMessage} />

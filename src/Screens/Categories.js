@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,FlatList,Image,ScrollView,TouchableOpacity } from 'react-native'
+import { View, Text,SafeAreaView,FlatList,Image,ScrollView,TouchableOpacity,useColorScheme } from 'react-native'
 import React,{useState} from 'react'
 import { Card } from 'react-native-paper'
 import Metrics from '../Constants/Metrics'
@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Categories = () => {
 const navigation = useNavigation()
+const theme=useColorScheme()
 const [selectedItem,setselectedItem]=useState('')
 const[value,setvalues]=useState(false)
 const data=[
@@ -67,7 +68,7 @@ const Item1=({item})=>{
   const isSelected = selectedHastags.filter((i) => i === id).length > 0;
   return(
     <View style={{flex:1,marginTop:10}}>
-     <TouchableOpacity style={{backgroundColor:(isSelected == true ) ? 'grey' :'white', borderRadius:30,padding:5,alignSelf:'center'}} 
+     <TouchableOpacity style={{backgroundColor:theme ==='dark' ? ((isSelected == true ) ? 'white' :'grey'):((isSelected == true ) ? 'grey' :'white'), borderRadius:30,padding:5,alignSelf:'center'}} 
       onPress={()=>{
         
           if(isSelected){
@@ -77,26 +78,26 @@ const Item1=({item})=>{
           }
          
       }}>
-     <Text style={{alignSelf:'center',color:'black',fontWeight:'bold'}}>{item.name}</Text>
+     <Text style={{alignSelf:'center',color:theme ==='dark' ?'black':'black',fontWeight:'bold'}}>{item.name}</Text>
      </TouchableOpacity>
           
     </View>
   )
 }
   return (
-    <SafeAreaView style={{backgroundColor:'white',flex:1}}>
+    <SafeAreaView style={{backgroundColor:theme === 'dark' ? 'black':'white',flex:1}}>
       <ScrollView>
     <View style={{marginTop:Metrics.rfv(10),margin:10}}>
-     <Card style={{padding:20,backgroundColor:'white'}}>
+     <Card style={{padding:20,backgroundColor:theme === 'dark' ? 'grey':'white'}}>
       <View style={{ alignSelf: 'flex-end',}}>
          <Entypo
            name="cross"
-           color={'black'}
+           color={theme === 'dark' ? 'white':'black'}
            size={30}
             />
       </View>
       <View style={{alignSelf: 'center',}}>
-      <Text style={{fontSize:Metrics.rfv(22),fontWeight:'bold',color:'black',alignSelf:'center',marginTop:10}}>How are you feeling Today ?</Text>
+      <Text style={{fontSize:Metrics.rfv(22),fontWeight:'bold',color:theme === 'dark' ? 'white':'black',alignSelf:'center',marginTop:10}}>How are you feeling Today ?</Text>
       </View>
       <View style={{marginTop:20,}}>
       <FlatList
@@ -106,7 +107,7 @@ const Item1=({item})=>{
         keyExtractor={item =>item.id}
         />
       </View>
-      <Text style={{alignSelf: 'center',color:'black',fontSize:Metrics.rfv(20),marginTop:10,}}>What made you feel like that ?</Text>
+      <Text style={{alignSelf: 'center',color:theme === 'dark' ? 'white':'black',fontSize:Metrics.rfv(20),marginTop:10,}}>What made you feel like that ?</Text>
       <View style={{marginTop:10,}}>
       <FlatList
         numColumns={3}
@@ -116,7 +117,7 @@ const Item1=({item})=>{
         />
       </View>
      </Card>
-     <TouchableOpacity style={{backgroundColor:'black',width:'40%',padding:10,
+     <TouchableOpacity style={{backgroundColor:theme === 'dark' ? 'white':'black',width:'40%',padding:10,
           alignSelf:'center',marginTop:20,borderRadius:15}}
        onPress={()=>{
         if(selectedItem != '' && selectedHastags.length > 0){
@@ -130,7 +131,7 @@ const Item1=({item})=>{
              alert('Please select any one emoji')
         }
         }}>
-      <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
+      <Text style={{alignSelf:'center',color:theme === 'dark' ? 'black':'white'}}>Submit</Text>
      </TouchableOpacity>
     </View>
     </ScrollView>

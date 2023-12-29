@@ -73,7 +73,7 @@ const OtpScreen = () => {
 
   
     return (
-        <SafeAreaView style={{ flex:1,backgroundColor:theme === 'dark' ? 'white':'black',}}>
+        <SafeAreaView style={{ flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
           <Loader loading={loading}></Loader>
            {/* <LinearGradient
       colors={['#cdffd8', '#94b9ff' ]}
@@ -85,7 +85,7 @@ const OtpScreen = () => {
         <Ionicons
         name='arrow-back'
         size={50}
-        color='#0058aa'
+        color={theme === 'dark' ? 'white':'black'}
         onPress={()=>{navigation.goBack()}}
         />
               {/* <Image
@@ -99,7 +99,7 @@ const OtpScreen = () => {
           alignSelf: 'center',
           width: '90%',marginTop:Metrics.rfv(100)
         }}>
-          <Text style={{color:'#0058aa',fontSize:20,fontWeight:'bold',alignSelf:'center',fontFamily:'sans-serif-condensed'}}>
+          <Text style={{color:theme === 'dark' ? 'white':'black',fontSize:20,fontWeight:'bold',alignSelf:'center',fontFamily:'sans-serif-condensed'}}>
             OTP has been sent to your Phone number (or) Email </Text>
                <TextInput
                    value={otp}
@@ -120,13 +120,13 @@ const OtpScreen = () => {
                       //  style={{borderColor:'white'}}
                   />
                   <View>
-                  <Text style={{color:'#2484c6',fontWeight:'bold',}}>I heredby consent to our privacy policy  and agree to its terms and conditions.</Text>
-                  <Text style={{fontWeight:'bold',color:'#00B0FF',marginLeft:150}} onPress={()=> {navigation.navigate('Agreement')}}> Read more</Text>
+                  <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',}}>I heredby consent to our privacy policy  and agree to its terms and conditions.</Text>
+                  <Text style={{fontWeight:'bold',color:'#c6302c',marginLeft:150}} onPress={()=> {navigation.navigate('Agreement')}}> Read more</Text>
                   </View>
                   
                     
                   </View>
-              <TouchableOpacity style={{ backgroundColor: theme === 'dark' ?'black':'white',
+              <TouchableOpacity style={{ backgroundColor: theme === 'dark' ?'white':'black',
                     padding:4,
                     width: width * 0.5,
                     alignSelf: 'center',
@@ -145,11 +145,11 @@ const OtpScreen = () => {
                     }
                    
                     }}>
-               <Text style={{color:theme === 'dark' ? 'white':'black',
+               <Text style={{color:theme === 'dark' ? 'black':'white',
     paddingVertical: 10,
     fontSize: 15,
     fontWeight: 'bold',
-    alignSelf: 'center',}}>Register</Text>
+    alignSelf: 'center',}}>Sign Up</Text>
               {/* <MaterialCommunityIcons
                      name="check-decagram"
                      color={'white'}
