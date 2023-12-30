@@ -116,7 +116,7 @@ const Item=({item})=>{
     return(
       <View style={{margin:2,}}>
 
-          <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,borderColor:theme === 'dark' ? 'blue':'blue',
+          <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,borderColor:theme === 'dark' ? '#0C569B':'#0C569B',
            backgroundColor: theme === 'dark' ? (item == new Date().getFullYear() ? '#fefeff' :'black'):(item == new Date().getFullYear() ? 'grey' :'#fefeff')}}
            onPress={()=>{getYearlyAverageScore(item),setyear(!YEAR),setYearName(item)}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? (item == new Date().getFullYear() ? 'black' : 'white'):(item == new Date().getFullYear() ? 'white' : 'black') }}> {item}</Text>
@@ -289,7 +289,7 @@ const getWeeklyAverageScore =async (week)=>{
     alignItems: 'center',
     paddingHorizontal: 15,
    borderWidth:1,
-   borderColor:'blue',borderRadius:30,margin:5}} onPress={toggleDropdown}>
+   borderColor:'#0C569B',borderRadius:30,margin:5}} onPress={toggleDropdown}>
         <Text style={{color: theme === 'dark' ? 'white':'black',
     // opacity: 0.35,
     fontWeight:'bold'}}>{'Weekly stats'}</Text>
@@ -328,22 +328,22 @@ const getWeeklyAverageScore =async (week)=>{
         ):(
         <View>
           <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getWeeklyAverageScore(1), setWeek(!week),setWeekName('1st Week')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 1st Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
      onPress={()=>{getWeeklyAverageScore(2),setWeek(!week),setWeekName('2nd Week')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 2nd Week</Text>
      </TouchableOpacity>
      </View>
      <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',alignSelf:'center'}}>{month}</Text>
      <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
      onPress={()=>{getWeeklyAverageScore(3),setWeek(!week),setWeekName('3rd Week')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 3rd Week</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{padding:20,borderWidth:1,borderRadius:50,width:'20%',marginRight:10,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
      onPress={()=>{getWeeklyAverageScore(4),setWeek(!week),setWeekName('4th Week')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> 4th Week</Text>
      </TouchableOpacity>
@@ -360,7 +360,7 @@ const getWeeklyAverageScore =async (week)=>{
     alignItems: 'center',
     paddingHorizontal: 15,
    borderWidth:1,
-   borderColor:'blue',borderRadius:30,margin:5}} onPress={toggleDropdown1}>
+   borderColor:'#0C569B',borderRadius:30,margin:5}} onPress={toggleDropdown1}>
         <Text style={{color: theme === 'dark' ? 'white':'black',
     // opacity: 0.35,
     fontWeight:'bold'}}>{'Monthly stats'}</Text>
@@ -400,58 +400,58 @@ const getWeeklyAverageScore =async (week)=>{
         </View>):(<View>
 
         <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
      onPress={()=>{ getMonthlyAverageScore('01'),setMonth(!Month),setMonthName('January')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Jan</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('02'),setMonth(!Month),setMonthName('February')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Feb</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('03'),setMonth(!Month),setMonthName('March')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Mar</Text>
      </TouchableOpacity>
      </View>
  
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('04'),setMonth(!Month),setMonthName('April')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> April</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('05'),setMonth(!Month),setMonthName('January')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> May</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('06'),setMonth(!Month),setMonthName('June')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> June</Text>
      </TouchableOpacity>
      </View>
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('07'),setMonth(!Month),setMonthName('July')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> July</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('08'),setMonth(!Month),setMonthName('August')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Aug</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('09'),setMonth(!Month),setMonthName('September')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black'}}> Sep</Text>
      </TouchableOpacity>
      </View>
      <View style={{flexDirection:'row',justifyContent:'space-around',margin:5}}>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('10'),setMonth(!Month),setMonthName('October')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> Oct</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('11'),setMonth(!Month),setMonthName('November')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> Nov</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? 'blue':'blue'}}
+     <TouchableOpacity style={{borderWidth:1,borderRadius:100,alignSelf: 'center',padding:15,backgroundColor:theme === 'dark' ? 'black':'#fefeff',borderColor:theme === 'dark' ? '#0C569B':'#0C569B'}}
       onPress={()=>{getMonthlyAverageScore('12'),setMonth(!Month),setMonthName('December')}}>
       <Text style={{fontSize:10,color:theme === 'dark' ? '#fefeff':'black' }}> Dec</Text>
      </TouchableOpacity>
@@ -467,7 +467,7 @@ const getWeeklyAverageScore =async (week)=>{
     alignItems: 'center',
     paddingHorizontal: 15,
    borderWidth:1,
-   borderColor:'blue',borderRadius:30,margin:5}} onPress={toggleDropdown2}>
+   borderColor:'#0C569B',borderRadius:30,margin:5}} onPress={toggleDropdown2}>
         <Text style={{color: theme === 'dark' ? 'white':'black',
     // opacity: 0.35,
     fontWeight:'bold'}}>{'Yearly stats'}</Text>
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
    borderWidth:1,
-   borderColor:'blue',borderRadius:30,margin:5
+   borderColor:'#0C569B',borderRadius:30,margin:5
   },
 
   TextStyles: {

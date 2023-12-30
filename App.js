@@ -34,7 +34,7 @@ const AppStatusBar = ({ backgroundColor, ...props }) => {
 };
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() ;
    const dispatch = useDispatch()
   const [locale, setLocale] = useState();
 
@@ -103,7 +103,7 @@ const App = () => {
     <>
       <SafeAreaView style={styles.topSafeArea} />
       <SafeAreaView style={[{ flex: 1 }, { ...styles.bottomSafeArea }]}>
-        <AppStatusBar backgroundColor={"#00B0FF"} barStyle="light-content" />
+        <AppStatusBar backgroundColor={isDarkMode === 'dark' ?"black":'black'} barStyle="light-content" />
         <FormattedProvider
           locale={locale}
           currency={metadata.currency()}

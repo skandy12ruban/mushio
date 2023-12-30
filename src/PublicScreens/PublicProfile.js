@@ -17,6 +17,7 @@ const PublicProfile = () => {
 const navigation= useNavigation()
 const isFocused = useIsFocused()
 const dispatch=useDispatch()
+const [Name,setName]=useState('')
 const theme = useColorScheme();
 const [isSwitchOn, setIsSwitchOn] = useState(false);
 const[loading,setLoading]=useState(false)
@@ -35,6 +36,12 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
             routes: [{name: MAIN_ROUTE}],
           });
         }
+     }
+
+     const getUserResponse =async()=>{
+      const res = await getUserProfileInfo()
+      console.log('res...',res)
+      setName(res.name)
      }
 
      const getArtists = async ()=>{
@@ -130,26 +137,29 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
           getArtists()
           getAudience()
           getProfile()
+          getUserResponse()
         },[isFocused])
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'white':'',}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
          <Loader loading={loading}></Loader>
          
          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
           <View>
-        <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(60),height:Metrics.rfv(60),borderRadius:Metrics.rfv(10),}}
+        <TouchableOpacity style={{}}
         onPress={()=>{
 
           }}>
           <Image
           style={{
-             width:Metrics.rfv(60),height:Metrics.rfv(60),margin:Metrics.rfv(10),borderRadius:Metrics.rfv(10),
+             width:85,height:70,margin:10,alignSelf:'center',marginTop:20,marginLeft:10
             }}
-           source={require('../assets/images/image3.jpg')}
+           source={theme === 'dark' ?require('../assets/images/login1.png'):require('../assets/images/login.png')}
          />
          </TouchableOpacity>
+         
       </View>
+      <Text style={{color:theme === 'dark' ?'white':'black',marginTop:25,fontSize:30,marginRight:20,fontFamily:'Montserrat-Bold'}}>{Name}</Text>
           <View style={{marginTop:Metrics.rfv(10)}}>
           <Switch
               style={{
@@ -162,7 +172,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                <Entypo
                   name="menu"
                    size={40}
-                   style={{color:'black'}}
+                   style={{color:theme === 'dark' ? 'white':'black'}}
                  onPress={()=>{ navigation.navigate('AppDrawer')}} 
                   // onPress={()=>{ navigation.dispatch(DrawerActions.openDrawer());}}
                  /> 
@@ -189,29 +199,29 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
          />)}
 
          </TouchableOpacity>
-         <Text style={{color:'black',fontWeight:'bold'}}>{profileRes && profileRes.alias}</Text>
-         <Text style={{color:'black'}}>{profileRes && profileRes.phile}</Text>
-         <Text style={{color:'black'}}>{profileRes && profileRes.about}</Text>
+         <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold'}}>{profileRes && profileRes.alias}</Text>
+         <Text style={{color:theme === 'dark' ? 'white':'black'}}>{profileRes && profileRes.phile}</Text>
+         <Text style={{color:theme === 'dark' ? 'white':'black'}}>{profileRes && profileRes.about}</Text>
          {/* <Text style={{color:'black'}}>{profileRes && profileRes.userType}</Text> */}
-         <Text style={{color:'black'}}>{profileRes && profileRes.artistType}</Text>
+         <Text style={{color:theme === 'dark' ? 'white':'black'}}>{profileRes && profileRes.artistType}</Text>
       </View>
       <View style={{marginRight:Metrics.rfv(20),marginTop:10}}>
         <TouchableOpacity onPress={()=>{navigation.navigate('Cards')}}>
-            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>0</Text>
-            <Text style={{color:'black',fontWeight:'bold'}}>Cards</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20}}>0</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold'}}>Cards</Text>
             </TouchableOpacity>
         </View>
         
         <View style={{marginTop:10}}>
         <TouchableOpacity onPress={()=>{navigation.navigate('Friends',{artistArray:artistArray,getArtists:getArtists})}}>
-            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}> {artistArray.length}</Text>
-            <Text style={{color:'black',fontWeight:'bold'}}>Artists</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20}}> {artistArray.length}</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold'}}>Artists</Text>
             </TouchableOpacity>
         </View>
         <View style={{marginTop:10,marginRight:10}}>          
           <TouchableOpacity onPress={()=>{navigation.navigate('Posts',{audienceArray:audienceArray,getAudience:getAudience})}}>
-            <Text style={{color:'black',fontWeight:'bold',fontSize:20}}>{audienceArray.length}</Text>
-            <Text style={{color:'black',fontWeight:'bold'}}>Audience</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20}}>{audienceArray.length}</Text>
+            <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold'}}>Audience</Text>
            </TouchableOpacity>
         </View>
       </View>

@@ -19,7 +19,8 @@ const { width, height } = Dimensions.get('window');
 const OtpScreen = () => {
     const navigation=useNavigation()
     const route=useRoute();
-    const {values,country,email,phoneNumber}=route.params;
+    const {values,country,email,phoneNumber,dob,gender}=route.params;
+    console.log(phoneNumber)
     const [loading,setLoading] = useState(false)
    const[checked,setChecked]=useState(false)
     const[otp,setOtp]=useState('')
@@ -35,7 +36,9 @@ const OtpScreen = () => {
         "email": `${email}`,
         "country": `${country}`,
         "otp": `${otp}`,
-        "phoneNumber": `${phoneNumber}`
+        "phoneNumber": `${phoneNumber}`,
+        "gender":`${gender}`,
+        "dob":`${dob}`,
       });
       console.log(payload)
       let requestOptions = {

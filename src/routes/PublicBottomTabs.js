@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, useColorScheme } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -23,9 +23,9 @@ const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
 const PublicBottomTabs = (props) => {
-
+const theme = useColorScheme()
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{ flex: 1, backgroundColor:theme === 'dark'? 'black': '#f6f6f6' }}>
       <Tab.Navigator
         // initialRouteName={PUBLIC_HOME}
         screenOptions={{
@@ -35,7 +35,7 @@ const PublicBottomTabs = (props) => {
             borderRadius: 200,
           },
           tabBarStyle: {
-            backgroundColor: 'white',
+            backgroundColor:theme === 'dark'? 'black': '#f6f6f6',
             borderRadius: 5,
             margin:10,
             height: 54,
@@ -78,7 +78,7 @@ const PublicBottomTabs = (props) => {
                     <Ionicons
                       name="home"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray', },
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black',borderRadius: 44,padding:5  },
                         focused && { fontSize: Metrics.rfv(30), color: 'white', },
                       ]}
                     />
@@ -120,7 +120,7 @@ const PublicBottomTabs = (props) => {
                     <Ionicons
                       name="search"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray', },
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black',borderRadius: 44,padding:5 },
                         focused && { fontSize: Metrics.rfv(30), color: 'white', },
                       ]}
                     />
@@ -162,7 +162,7 @@ const PublicBottomTabs = (props) => {
                     <AntDesign
                       name="pluscircleo"
                       style={[
-                        { fontSize: Metrics.rfv(30), color: 'gray' },
+                        { fontSize: Metrics.rfv(30), color: 'white',backgroundColor:'black',borderRadius: 44,padding:5 },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />
@@ -204,7 +204,7 @@ const PublicBottomTabs = (props) => {
                     <MaterialIcons
                       name="headset-mic"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray',marginTop:0 ,},
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black',borderRadius: 44,padding:5},
                         focused && { fontSize: Metrics.rfv(25), color: 'white' },
                       ]}
                     />
@@ -251,7 +251,7 @@ const PublicBottomTabs = (props) => {
                       user-circle
                       name="user-circle"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'gray' },
+                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black',borderRadius: 44,padding:5 },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />

@@ -87,7 +87,7 @@ const Places = () => {
                       //  videoWidth={3000}
                       //  videoHeight={2000}
                       //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-                       style={{width:110,height:100,alignSelf:'center',}}
+                       style={{width:110,height:100,alignSelf:'center',backgroundColor:theme === 'dark' ? 'white':'black'}}
                      />
               </View>
                    ) : item.type == 'image'  ?(
@@ -111,17 +111,18 @@ const Places = () => {
   
   
     return (
-      <SafeAreaView style={{width:'100%',alignSelf:'center',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
+      <SafeAreaView style={{width:'100%',alignSelf:'center',backgroundColor:theme === 'dark' ? 'black':'white',flex:1}}>
         <Loader loading={loading}></Loader>
         <ScrollView>
         < View style={{}}>
-              <FlatList
+        {placeArray.length > 0 ? ( <FlatList
                 numColumns={3}
                 // horizontal
                 data={placeArray || []}
                 renderItem={Item}
                 keyExtractor={item =>item._id}
-                />
+                />):(<Text style={{fontSize:20,fontWeight:'bold',alignSelf:'center',
+                marginTop:30,color:theme === 'dark'?'white':'black'}}>No Posts</Text>)}
                </View>
            
                 {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>

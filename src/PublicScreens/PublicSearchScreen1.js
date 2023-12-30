@@ -51,7 +51,7 @@ const PublicSearchScreen1 = () => {
   const Item= ({item,index})=>{
     // console.log(item)
     return(
-      <View style={{margin:10,alignSelf:'center',}}>
+      <View style={{margin:5,alignSelf:'center',}}>
           
         <View>
           <TouchableOpacity style={{    }}
@@ -65,7 +65,7 @@ const PublicSearchScreen1 = () => {
                       //  videoWidth={3000}
                       //  videoHeight={2000}
                       //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-                       style={{width:300,height:250,alignSelf:'center',}}
+                       style={{width:300,height:250,alignSelf:'center',backgroundColor:theme === 'dark' ? 'black':'white'}}
                      />
               </View>
                    ) : item.type == 'image'  ?(
@@ -379,6 +379,35 @@ const PublicSearchScreen1 = () => {
         setLoading(false)
       });
   }
+  const userProfile = async (id,name)=>{
+    const res = await getUserProfileInfo()
+    console.log(res.accessToken)
+      setLoading(true)
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+      
+      const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    fetch(`${API_BASE_URL}/api/user/profile/${id}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log('get userprofile response',result.data)
+        if(result && result.success == true){
+          console.log(result.data.accessToken)
+             navigation.navigate('PublicProfile1',{Token:result.data.accessToken,userProfile:true,name:name})
+              setLoading(false)
+        }
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log('error', error)
+        setLoading(false)
+      });
+  }
 
   const AddComment = async ()=>{
     const res = await getUserProfileInfo()
@@ -474,10 +503,11 @@ const PublicSearchScreen1 = () => {
 
 
   const renderPost = (post, index) => {
-console.log('post1',post)
+// console.log('post1',post)
     let name = post.createdBy.name;
     let type= post.createdBy.userType;
     let status =post.status
+    let head= post.head
     let profileImage = post.createdBy.profileImage
     let Id=post.createdBy._id
     let Id1= post.connectionRequestId
@@ -493,12 +523,12 @@ console.log('post1',post)
      })
     //  const likes= []
     return(
-    <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
+    <Card style={{padding:5,margin:5,width:'90%',alignSelf:'center',backgroundColor:theme === 'dark'?'white':'black'}}>
     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
     <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:Metrics.rfv(30),}}
     onPress={()=>{
-    //   setProfileImg()
+      userProfile(profileId,name)
       }}>
       <Image
       style={{
@@ -507,7 +537,7 @@ console.log('post1',post)
        source={{uri:profileImage}}
      />
      </TouchableOpacity>
-     <Text style={{color:'black',fontWeight:'bold',marginTop:10,fontSize:20,marginLeft:5}}>{name}</Text>
+     <Text style={{color:theme === 'dark' ?'black':'white',fontWeight:'bold',marginTop:10,fontSize:20,marginLeft:10}}>{name}</Text>
      </View>
      <View>
       
@@ -523,11 +553,11 @@ console.log('post1',post)
                                 startingValue={rating}
                                 // showRating
                                 onFinishRating={ratingCompleted}
-                                style={{ marginTop:20,alignSelf:'center',marginRight:10 }}
+                                style={{ marginTop:20,alignSelf:'center',marginRight:10,backgroundColor:'red' }}
                             />
          
                   </View>):(null)}
-     <TouchableOpacity style={{backgroundColor:'black',padding:5,borderRadius:10,height:30,marginTop:10}}
+     <TouchableOpacity style={{backgroundColor:theme ==='dark'?'black':'white',padding:5,borderRadius:10,height:30,marginTop:10,}}
      onPress={()=>{
          if(status == 'Connect'){
           sendRequest(Id)
@@ -540,7 +570,7 @@ console.log('post1',post)
          }
      }}
      > 
-        <Text style={{color:'white',alignSelf:'center'}}>{status}</Text>
+        <Text style={{color:theme ==='dark'?'white':'black',alignSelf:'center',}}>{status}</Text>
      </TouchableOpacity>
      <TouchableOpacity onPress={()=>{
         setSelectedItem1(post._id)
@@ -556,7 +586,7 @@ console.log('post1',post)
      }}> 
         <Entypo
          name='dots-three-vertical'
-         color={'black'}
+         color={theme === 'dark' ?'black':'white'}
          size={20}
          style={{borderRadius:100,borderRadius:10,alignSelf:'center',padding:2,marginTop:10}}
   
@@ -599,15 +629,20 @@ console.log('post1',post)
                   keyExtractor={(item,index) =>item._id}
                   />
         </View>
-        <View style={{borderWidth:0.5,marginTop:10}}/>
+        {/* <View style={{borderWidth:0.5,marginTop:10}}/> */}
+        <Text style={{color:theme === 'dark' ?'black':'white',fontWeight:'bold',}}>{name}</Text>
+      <Text style={{color:theme === 'dark' ?'black':'white',marginLeft:0}}>{head}</Text>
         <View style={{flexDirection:'row',justifyContent:'space-around',margin:5,}}> 
+        <View>
              <TouchableOpacity onPress={()=>{sharePost()}}>
                 <EvilIcons
                   name="sc-telegram"
                    size={30}
-                   style={{color:'black'}}
+                   style={{color:theme === 'dark' ?'black':'white',marginRight:10}}
                  />
               </TouchableOpacity>
+              <Text style={{fontSize:10,color:theme === 'dark' ?'black':'white',marginTop:5,marginLeft:10}}>{'0'} </Text>
+              </View>
                  <View>
                   <TouchableOpacity
                    onPress={()=>{
@@ -619,24 +654,24 @@ console.log('post1',post)
                    <FontAwesome
                   name="comment-o"
                    size={25}
-                   style={{color:'black'}}
+                   style={{color:theme === 'dark' ?'black':'white',marginRight:10}}
                  
                  />
                  </TouchableOpacity>
-                 <Text style={{fontSize:10,color:'black',marginTop:5}}>{commentsCount} comments</Text>
+                 <Text style={{fontSize:10,color:theme === 'dark' ?'black':'white',marginTop:5,marginLeft:10}}>{commentsCount} </Text>
                  </View>
                 <View>
                   <Feather
                   name="eye"
                    size={25}
-                   style={{color:(isSelected && like)|| (likes[0]&& likes[0].user == userid)? 'blue':'black',}}
+                   style={{color:(isSelected && like) || (likes[0]&& likes[0].user == userid) ? 'blue':(theme === 'dark' ?'black':'white'),marginLeft:10}}
                  onPress={()=>{
                   setSelectedItem(post._id)
                   setLike(!like)
                    postLikes(Id2)
                   }} 
                  />
-                 <Text style={{fontSize:10,color:'black',marginTop:5}}>{likeCount} likes</Text>
+                  <Text style={{fontSize:10,color:theme === 'dark' ?'black':'white',marginTop:5,marginLeft:10}}>{likeCount} likes</Text>
                  </View>
           </View>
    </Card>
@@ -685,7 +720,7 @@ console.log('post1',post)
     ) 
   }
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:'black'}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark'?'black':'white'}}>
     <Loader loading={loading}></Loader>
     <View style={{flexDirection:'row',}}>
         
@@ -699,9 +734,9 @@ console.log('post1',post)
             }}
             name={'arrow-back'}
             size={40}
-            color={'white'}
+            color={theme === 'dark'?'white':'black'}
           />
-         <Text style={{marginLeft:10,color:'white',fontWeight:'bold',marginTop:10,fontSize:30}}>{'Travel'}</Text>
+         <Text style={{marginLeft:10,color:theme === 'dark'?'white':'black',fontWeight:'bold',marginTop:10,fontSize:30}}>{'Travel'}</Text>
          </View>
   
          <ScrollView style={{}}>
@@ -730,17 +765,51 @@ console.log('post1',post)
             }}
            height={400}
           >
-          {comments.length > 0 ?(
-            <View style={{marginTop:10,marginBottom:100}}>
+  {comments.length > 0 ?(
+             <View style={{marginTop:10,marginBottom:110,}}>
               <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+           <View style={{flexDirection:'row',}}>
+           <TextInput
+           placeholder='Add comments'
+           placeholderTextColor={'black'}
+           value={coment}
+           onChangeText={(text)=>{setComment(text)}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           />
+            {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
+               onPress={()=>{
+                AddComment()
+               }}>
+              <Text style={{alignSelf:'center',color:'white'}}>post</Text>
+            </TouchableOpacity>):(null)}
            </View>
-           ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
-           <View style={{flexDirection:'row'}}>
+           </View>
+           ):(
+            <View>
+            <Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}>No comments</Text>
+            <View style={{flexDirection:'row',}}>
+           <TextInput
+           placeholder='Add comments'
+           placeholderTextColor={'black'}
+           value={coment}
+           onChangeText={(text)=>{setComment(text)}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           />
+            {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
+               onPress={()=>{
+                AddComment()
+               }}>
+              <Text style={{alignSelf:'center',color:'white'}}>post</Text>
+            </TouchableOpacity>):(null)}
+           </View>
+            </View>
+           )}
+           {/* <View style={{flexDirection:'row'}}>
            <TextInput
            placeholder='Add comments'
            value={coment}
@@ -753,9 +822,12 @@ console.log('post1',post)
                }}>
               <Text style={{alignSelf:'center',color:'white'}}>post</Text>
             </TouchableOpacity>):(null)}
-           </View>
+           </View> */}
            
           </RBSheet>
+
+
+
           <RBSheet
             ref={refRBSheet1}
             closeOnDragDown={true}

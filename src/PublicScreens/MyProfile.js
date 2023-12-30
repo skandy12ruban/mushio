@@ -167,7 +167,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
    },[])
 
   return (
-    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',backgroundColor:'white'}}>
+    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'black':'white'}}>
          {/* <LinearGradient
       colors={['#433D3D', '#ffffff' ]}
       style={{flex:1,width:"100%",height:'100%'}}
@@ -184,7 +184,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
             }}
             name={'arrow-back'}
             size={40}
-            color={'black'}
+            color={theme === 'dark' ? 'white':'black'}
           />
         </View>
     <ScrollView>
@@ -228,6 +228,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
             )} 
           */}
         {/* </View> */}
+        <View style={{}}>
       <AppDropDown
                   label={''}
                   items={data ||[]}
@@ -239,12 +240,12 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
-                    width:'70%',alignSelf:'center',
+                    width:'70%',alignSelf:'center',marginRight:100
                   }}
                   viewStyle={{
                     borderRadius: Metrics.rfv(10),
                     borderWidth:1,
-                    borderColor:'black'
+                    borderColor:'black',
                   }}
                 />
          { role != 'audience' ?  (<AppDropDown
@@ -257,7 +258,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
-                    width:'70%',alignSelf:'center',
+                    width:'70%',alignSelf:'center',marginRight:100
                   }}
                   viewStyle={{
                     borderRadius: Metrics.rfv(10),
@@ -265,53 +266,51 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
                     borderColor:'black'
                   }}
                 />):(null)}
+                </View>
                 <View style={{margin:10,}}>
-                    <Text style={{marginLeft:Metrics.rfv(10),color:'black',fontWeight:'bold',fontSize:20}}>Alias : </Text>
+                    <Text style={{marginLeft:Metrics.rfv(10),color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20}}>Alias : </Text>
                  <TextInput
                    value={alias}
                    placeholder={'Enter Alias'}
                     // placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold', 
-                    borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1,color:theme === 'dark' ?'black':'',
-                   }}     
+                    style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                   color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}    
                      onChangeText={text => {
                       setAlias(text);
                      }}
                   /> 
                 </View>
                 <View style={{margin:10,}}>
-                    <Text style={{marginLeft:Metrics.rfv(10),color:'black',fontWeight:'bold',fontSize:20}}>Phile : </Text>
+                    <Text style={{marginLeft:Metrics.rfv(10),color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20}}>Phile : </Text>
                  <TextInput
                    value={phile}
                    placeholder={'Enter Phile'}
                     // placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold',
-                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1,color:theme === 'dark' ?'black':'',
-                   }}     
+                    style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                    color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}   
                      onChangeText={text => {
                       setPhile(text);
                      }}
                   /> 
                 </View>
                 <View style={{margin:10,}}>
-                    <Text style={{marginLeft:Metrics.rfv(10),color:'black',fontWeight:'bold',fontSize:20}}>Unique About : </Text>
+                    <Text style={{marginLeft:Metrics.rfv(10),color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20}}>Unique About : </Text>
                  <TextInput
                    value={about}
                    placeholder={'Enter About'}
                     // placeholderTextColor={'black'}
-                    style={{padding:10,backgroundColor:'white',width:'70%',alignSelf:'center',fontSize:15,fontWeight:'bold',
-                     borderRadius: Metrics.rfv(10),borderColor:'black',borderWidth:1,color:theme === 'dark' ?'black':'',
-                   }}     
+                    style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                   color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}    
                      onChangeText={text => {
                       setAbout(text);
                      }}
                   /> 
                 </View>
-                <TouchableOpacity style={{ alignSelf:'center',marginTop:20,backgroundColor:'black',padding:10,width:'40%',borderRadius: Metrics.rfv(10),marginBottom:80}}
+                <TouchableOpacity style={{ alignSelf:'center',marginTop:20,backgroundColor:theme === 'dark' ? 'white':'black',padding:10,width:'40%',borderRadius: Metrics.rfv(10),marginBottom:80}}
                       onPress={()=>{
                         Profile()
                      }}>
-         <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>             
+         <Text style={{alignSelf:'center',color:theme === 'dark' ? 'black':'white'}}>Submit</Text>             
      </TouchableOpacity>
     </ScrollView>
     {/* </LinearGradient> */}

@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,TouchableOpacity,Alert,TextInput,ScrollView } from 'react-native'
+import { View, Text,SafeAreaView,TouchableOpacity,Alert,TextInput,ScrollView, useColorScheme } from 'react-native'
 import React,{useState} from 'react'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import { logout } from '../Redux/reducer/User';
 
 const EditProfile = () => {
   const navigation=useNavigation()
+  const theme = useColorScheme()
 const[name,setName]=useState('')
 const[phoneNo,setPhoneNo]=useState('')
 const [dob,setDob]=useState('')
@@ -27,7 +28,7 @@ const onLogoutPress = async (props) => {
 };
 
   return (
-    <SafeAreaView style={{width:'100%',backgroundColor:'black',flex:1}}>
+    <SafeAreaView style={{width:'100%',backgroundColor:theme ==='dark'?'black':'white',flex:1}}>
      <View style={{margin:10,flexDirection:'row',justifyContent:'space-between'}}>
      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         
@@ -40,9 +41,9 @@ const onLogoutPress = async (props) => {
             }}
             name={'arrow-back'}
             size={40}
-            color={'white'}
+            color={theme ==='dark'?'white':'black'}
           />
-         <Text style={{paddingLeft:10,color:'white',fontWeight:'bold',fontSize:30}}>{'Settings'}</Text>
+         <Text style={{paddingLeft:10,color:theme ==='dark'?'white':'black',fontWeight:'bold',fontSize:30}}>{'Settings'}</Text>
          </View>
          {/* <View style={{bottom:10}}>
                <Entypo
@@ -129,10 +130,10 @@ const onLogoutPress = async (props) => {
       </View> */}
       <View style={{marginLeft:50,marginTop:30}}>
       <TouchableOpacity onPress={()=>{navigation.navigate('About')}}>
-            <Text style={{color:'white',fontSize:25,fontWeight:'bold',margin:10}}>Privacy</Text>
+            <Text style={{color:theme ==='dark'?'white':'black',fontSize:25,fontWeight:'bold',margin:10}}>Privacy</Text>
            </TouchableOpacity>
            <TouchableOpacity onPress={()=>{navigation.navigate('Support')}}>
-            <Text style={{color:'white',fontSize:25,fontWeight:'bold',margin:10}}>Help</Text>
+            <Text style={{color:theme ==='dark'?'white':'black',fontSize:25,fontWeight:'bold',margin:10}}>Help</Text>
            </TouchableOpacity>
        </View>
        <View style={{alignSelf:'center',flex:1,marginTop: Metrics.rfv(300)}}>
@@ -143,8 +144,8 @@ const onLogoutPress = async (props) => {
                         { text: "Ok", onPress: () => onLogoutPress() }
                       ])
                    }}
-                    style={{backgroundColor:'white',padding:10,borderRadius:5,width:150,}}>
-                        <Text style={{alignSelf:'center',color:'black'}}>Logout</Text>
+                    style={{backgroundColor:theme ==='dark'?'white':'black',padding:10,borderRadius:5,width:150,}}>
+                        <Text style={{alignSelf:'center',color:theme ==='dark'?'black':'white'}}>Logout</Text>
                    </TouchableOpacity>
                    </View>
       </ScrollView>

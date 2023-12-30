@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView,TextInput,TouchableOpacity, ScrollView,Image,useColorScheme } from 'react-native'
+import { View, Text,SafeAreaView,TextInput,TouchableOpacity, ScrollView,Image,useColorScheme,Alert } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppDropDown from '../Components/AppDropDown'
@@ -24,7 +24,7 @@ const NewPost = () => {
   const[dob,setDob]=useState(DateHelper.formatToDateYMD(new Date()))
 console.log(category)
   const data=[
-    {value:'place',label:'place'},{value:'people',label:'people'},{value:'moments',label:'moments'}
+    {value:'place',label:'place'},{value:'people',label:'people'},{value:'moments',label:'moment'}
   ]
 
    
@@ -59,8 +59,18 @@ const MyPost = async ()=>{
     console.log(result)
     if(result && result.success == true){
         // setImagePath(result.data.url)
-     alert(result.message)
-     navigation.navigate('PublicHome');
+    //  alert(result.message)
+    Alert.alert('Post', result.message, [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () =>  {
+        navigation.navigate('PublicHome')
+      }},
+    ]);
+  
       setLoading(false)
     }
     setLoading(false)
@@ -72,7 +82,7 @@ const MyPost = async ()=>{
   }
 
   return (
-    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'white':'',}}>
+    <SafeAreaView style={{flex:1,alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'black':'white',}}>
       <Loader loading={loading}></Loader>
       <View style={{flexDirection:'row'}}>
        <Ionicons
@@ -84,14 +94,14 @@ const MyPost = async ()=>{
             }}
             name={'arrow-back'}
             size={30}
-            color={'black'}
+            color={theme === 'dark' ? 'white':'black'}
           />
-     <Text style={{color:'black', marginLeft:20,marginTop:10,fontSize:20,fontWeight:'bold'}}> New Post</Text>
+     <Text style={{color:theme === 'dark' ? 'white':'black', marginLeft:20,marginTop:10,fontSize:20,fontWeight:'bold'}}> New Post</Text>
       </View>
       <View style={{borderWidth:0.5,marginTop:10}}/>
       <ScrollView>
     <View style={{marginBottom:50}}>
-      <View style={{alignSelf:'center',marginTop:20,flex:1}}>
+      <View style={{alignSelf:'center',marginTop:0,flex:1}}>
    
       <ScrollView horizontal style={{flexDirection:'row'}}>
       {imgArray.map((e)=>{
@@ -102,14 +112,14 @@ const MyPost = async ()=>{
         < View style={{margin:10,}}>
            <Image
                 source={{uri:e.url}}
-                style={{width:200,height:200}}
+                style={{width:250,height:250}}
                />
          </View>
                ):(
         < View style={{margin:10,}}>
               <VideoPlayer  
                 video={{ uri: e.uri}}
-                style={{width:250,height:150}}
+                style={{width:300,height:200,backgroundColor:theme === 'dark' ? 'white':'black'}}
                 // paused={true}
                 />
         </View>
@@ -122,7 +132,7 @@ const MyPost = async ()=>{
       </View>
       <View style={{borderWidth:0.5,marginTop:10}}/>
       <View style={{marginTop:20}}>
-      <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>Type : </Text>
+      <Text style={{fontSize:15,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',marginLeft:20}}>Type : </Text>
         <AppDropDown
                   label={''}
                   items={data ||[]}
@@ -133,63 +143,69 @@ const MyPost = async ()=>{
                   }}
                   containerStyle={{
                     padding: Metrics.rfv(20),
+                   
                   }}
                   viewStyle={{
                     borderRadius: Metrics.rfv(5),
-                    
+                    backgroundColor:theme === 'dark' ? '#666666':'white',
+                    // color:theme === 'dark' ?'red':'white'
                   }}
                 />
           </View>
          {category == 'place' ? ( <View style={{}}>
-        <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>{ 'Location'} </Text>
+        <Text style={{fontSize:15,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',marginLeft:20}}>{ 'Location'} </Text>
              <TextInput
                    value={locationName}
                    placeholder={'Place'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
+                   style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                   color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}
                    onChangeText={text => {
                    setLocationName(text);
                    }}
                  />
         </View>):category == 'people' ?(
         <View style={{}}>
-        <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>{'Mention'} </Text>
+        <Text style={{fontSize:15,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',marginLeft:20}}>{'Mention'} </Text>
              <TextInput
                    value={tag}
                    placeholder={' @ Tag'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
+                   style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                   color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}
                    onChangeText={text => {
                    setTag(text);
                    }}
                  />
         </View>):(null)}
         <View style={{}}>
-        <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>Head  : </Text>
+        <Text style={{fontSize:15,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',marginLeft:20}}>Head  : </Text>
              <TextInput
                    value={caption}
                    placeholder={'Write a head'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
+                   style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                   color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}
                    onChangeText={text => {
                    setCaption(text);
                    }}
                  />
         </View>
         <View style={{}}>
-        <Text style={{fontSize:15,fontWeight:'bold',color:'black',marginLeft:20}}>Date  : </Text>
+        <Text style={{fontSize:15,fontWeight:'bold',color:theme === 'dark' ? 'white':'black',marginLeft:20}}>Date  : </Text>
              <TextInput
                    value={dob}
                    placeholder={'Enter date'}
                    placeholderTextColor={'grey'}
-                   style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),color:theme === 'dark' ?'black':'',}}
+                   style={{padding:10,backgroundColor:theme === 'dark' ? 'black':'white',borderRadius:5,margin:10,width:'90%',marginLeft: Metrics.rfv(20),
+                   color:theme === 'dark' ?'white':'black',borderColor:theme === 'dark' ?'white':'',borderWidth:1}}
                    onChangeText={text => {
                    setDob(text);
                    }}
                  />
         </View>
            <View>
-           <TouchableOpacity style={{backgroundColor:'black',width:200,padding:10,
+           <TouchableOpacity style={{backgroundColor:theme === 'dark' ? 'white':'black',width:200,padding:10,
           alignSelf:'center',marginTop:20,borderRadius:5}}
           onPress={()=>{
             if(caption != ''){
@@ -200,7 +216,7 @@ const MyPost = async ()=>{
           
             
           }}>
-      <Text style={{alignSelf:'center',color:'white'}}>Submit</Text>
+      <Text style={{alignSelf:'center',color:theme === 'dark' ? 'black':'white'}}>Submit</Text>
      </TouchableOpacity>
            </View>
     </View>

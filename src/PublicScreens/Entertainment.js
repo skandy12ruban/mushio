@@ -66,7 +66,7 @@ const Entertainment = () => {
                           //  videoWidth={3000}
                           //  videoHeight={2000}
                           //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-                           style={{width:300,height:250,alignSelf:'center',}}
+                           style={{width:300,height:250,alignSelf:'center',backgroundColor:theme === 'dark' ? 'black':'white'}}
                          />
                   </View>
                        ) : item.type == 'image'  ?(
@@ -164,7 +164,35 @@ const Entertainment = () => {
               setLoading(false)
             });
       }
-
+      const userProfile = async (id,name)=>{
+        const res = await getUserProfileInfo()
+        console.log(res.accessToken)
+          setLoading(true)
+          var myHeaders = new Headers();
+          myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
+          
+          const requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+        // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+        fetch(`${API_BASE_URL}/api/user/profile/${id}`, requestOptions)
+          .then(response => response.json())
+          .then(result => {
+            console.log('get userprofile response',result.data)
+            if(result && result.success == true){
+              console.log(result.data.accessToken)
+                 navigation.navigate('PublicProfile1',{Token:result.data.accessToken,userProfile:true,name:name})
+                  setLoading(false)
+            }
+            setLoading(false)
+          })
+          .catch(error => {
+            console.log('error', error)
+            setLoading(false)
+          });
+      }
       const disconnectUser=async(id)=>{
         const res = await getUserProfileInfo()
         console.log(res.accessToken)
@@ -276,6 +304,7 @@ const Entertainment = () => {
           // console.log('entertaimnent post',post)
         let name = post.createdBy.name;
         let type= post.createdBy.userType;
+        let head= post.head
         let profileImage = post.createdBy.profileImage
         let artist = post.createdBy.artistType
         let alias = post.createdBy.alias
@@ -292,12 +321,13 @@ const Entertainment = () => {
          }))
         // const likes= [].
         return( 
-        <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',}}>
+        <Card style={{padding:10,margin:10,width:'90%',alignSelf:'center',backgroundColor:theme === 'dark'?'white':'black'}}>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
           <View style={{flexDirection:'row',}}>
         <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:Metrics.rfv(30),}}
         onPress={()=>{
         //   setProfileImg()
+        userProfile(profileId,name)
           }}>
           <Image
           style={{
@@ -307,28 +337,15 @@ const Entertainment = () => {
          />
          </TouchableOpacity>
        <View>
-       <Text style={{color:'black',fontWeight:'bold',fontSize:20,marginLeft:10}}>{name}</Text>
+       <Text style={{color:theme === 'dark' ?'black':'white',fontWeight:'bold',fontSize:15,marginLeft:10,marginTop:5}}>{name}</Text>
       
        </View>
        </View>
         
         
-        { type != 'audience' ?( <View>
-                          <Rating
-                                count={5}
-                                type='star'
-                                ratingColor='#3498db'
-                                ratingBackgroundColor={'black'}
-                                imageSize={15}
-                                startingValue={rating}
-                                // showRating
-                                onFinishRating={ratingCompleted}
-                                style={{ marginTop:10,alignSelf:'center', }}
-                            />
+       
          
-         </View>):(null)}
-         
-         <TouchableOpacity onPress={()=>{
+         {/* <TouchableOpacity onPress={()=>{
         
           if(status == 'Connect'){
             sendRequest(post._id)
@@ -347,7 +364,23 @@ const Entertainment = () => {
              style={{borderRadius:100,borderRadius:10,alignSelf:'center',padding:2,marginTop:10}}
       
             />
-         </TouchableOpacity>
+         </TouchableOpacity> */}
+                <TouchableOpacity style={{backgroundColor:theme ==='dark'?'black':'white',padding:2,borderRadius:5,height:25,marginTop:10,marginLeft:100}}
+     onPress={()=>{
+         if(status == 'Connect'){
+          sendRequest(post._id)
+         }else if(status == 'Connected'){
+          disconnectUser(post._id)
+         }else if(status == 'Requested'){
+          RejectRequest(post.connectionRequestId)
+         }else{
+
+         }
+     }}
+     > 
+        <Text style={{color:theme ==='dark'?'white':'black',alignSelf:'center',}}>{status}</Text>
+     </TouchableOpacity>
+
          <TouchableOpacity onPress={()=>{
           setSelectedItem1(post._id)
           setShowPopover(true)
@@ -362,7 +395,7 @@ const Entertainment = () => {
      }}> 
         <Entypo
          name='dots-three-vertical'
-         color={'black'}
+         color={theme === 'dark' ?'black':'white'}
          size={20}
          style={{borderRadius:100,borderRadius:10,alignSelf:'center',padding:2,marginTop:10}}
   
@@ -370,8 +403,8 @@ const Entertainment = () => {
      </TouchableOpacity>
         </View>
         <View style={{flexDirection:'row',marginLeft:40,marginTop:-20}}> 
-       <Text style={{color:'black',fontSize:15,marginLeft:10}}>{artist} ;</Text>
-       <Text style={{color:'black',fontSize:15,marginLeft:5}}>{alias}</Text>
+       <Text style={{color:theme === 'dark' ?'black':'white',fontSize:15,marginLeft:10}}>{artist} ;</Text>
+       <Text style={{color:theme === 'dark' ?'black':'white',fontSize:15,marginLeft:5}}>{alias}</Text>
        </View>
        {isSelected1  ?( <Popover
               popoverStyle={{
@@ -409,15 +442,37 @@ const Entertainment = () => {
                       keyExtractor={(item,index) =>item._id}
                       />
             </View>
-            <View style={{borderWidth:0.5,marginTop:10}}/>
-            <View style={{flexDirection:'row',justifyContent:'space-around',margin:5,}}> 
+            {/* <View style={{borderWidth:0.5,marginTop:10}}/> */}
+            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{color:theme === 'dark' ?'black':'white',fontWeight:'bold',}}>{name}</Text>
+            { type != 'audience' ?( <View>
+                          <Rating
+                                count={5}
+                                type='star'
+                                ratingColor='#3498db'
+                                ratingBackgroundColor={'black'}
+                                imageSize={10}
+                                startingValue={rating}
+                                // showRating
+                                onFinishRating={ratingCompleted}
+                                style={{ marginTop:10,alignSelf:'center',marginRight:10 }}
+                            />
+         
+         </View>):(null)}
+
+         </View>
+      <Text style={{color:theme === 'dark' ?'black':'white',marginLeft:0}}>{head}</Text>
+        <View style={{flexDirection:'row',justifyContent:'space-around',margin:5,}}> 
+        <View>
              <TouchableOpacity onPress={()=>{sharePost()}}>
                 <EvilIcons
                   name="sc-telegram"
                    size={30}
-                   style={{color:'black'}}
+                   style={{color:theme === 'dark' ?'black':'white',marginRight:10}}
                  />
               </TouchableOpacity>
+              <Text style={{fontSize:10,color:theme === 'dark' ?'black':'white',marginTop:5,marginLeft:10}}>{'0'} </Text>
+              </View>
                  <View>
                   <TouchableOpacity
                    onPress={()=>{
@@ -429,24 +484,24 @@ const Entertainment = () => {
                    <FontAwesome
                   name="comment-o"
                    size={25}
-                   style={{color:'black'}}
+                   style={{color:theme === 'dark' ?'black':'white',marginRight:10}}
                  
                  />
                  </TouchableOpacity>
-                 <Text style={{fontSize:10,color:'black',marginTop:5}}>{commentsCount} comments</Text>
+                 <Text style={{fontSize:10,color:theme === 'dark' ?'black':'white',marginTop:5,marginLeft:10}}>{commentsCount} </Text>
                  </View>
                 <View>
                   <Feather
                   name="eye"
                    size={25}
-                   style={{color:(isSelected && like)|| (likes[0]&& likes[0].user == userid) ? 'blue':'black',}}
+                   style={{color:(isSelected && like) || (likes[0]&& likes[0].user == userid) ? 'blue':(theme === 'dark' ?'black':'white'),marginLeft:10}}
                  onPress={()=>{
                   setSelectedItem(post._id)
                    setLike(!like)
                    postLikes(Id2)
                   }} 
                  />
-                 <Text style={{fontSize:10,color:'black',marginTop:5}}>{likeCount} likes</Text>
+                 <Text style={{fontSize:10,color:theme === 'dark' ?'black':'white',marginTop:5,marginLeft:10}}>{likeCount} likes</Text>
                  </View>
           </View>
        </Card>
@@ -674,6 +729,7 @@ const Entertainment = () => {
         <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(50),height:Metrics.rfv(50),borderRadius:Metrics.rfv(30),}}
             onPress={()=>{
     //   setProfileImg()
+    
           }}>
       <Image
       style={{
@@ -693,7 +749,7 @@ const Entertainment = () => {
     ) 
   }
   return (
-    <SafeAreaView style={{width:'100%',flex:1,backgroundColor:'black'}}>
+    <SafeAreaView style={{width:'100%',flex:1,backgroundColor:theme === 'dark'?'black':'white'}}>
     <Loader loading={loading}></Loader>
     <View>
   
@@ -789,8 +845,15 @@ const Entertainment = () => {
              </View>
            </ScrollView>
       </View> */}
-      <View>
-      <Text style={{fontSize:30,fontFamily:'Montserrat-Bold',color:'white',margin:10,marginLeft:30}}>Se<Text style={{color:'#4b4c4c'}}>halo</Text></Text>
+     
+      <View style={{flexDirection:'row'}}>
+      <Image
+          style={{
+             width:75,height:60,margin:0,alignSelf:'center',marginTop:10,marginLeft:10,transform:[{rotate:'2deg'}]
+            }}
+           source={theme === 'dark' ?require('../assets/images/login1.png'):require('../assets/images/login.png')}
+         />
+      <Text style={{fontSize:25,fontFamily:'Montserrat-Bold',color:theme === 'dark'?'white':'black',marginLeft:-5,marginTop:20}}>Se<Text style={{color:'#4b4c4c'}}>halo</Text></Text>
       </View>
       
       <ScrollView style={{}}>
@@ -818,17 +881,51 @@ const Entertainment = () => {
             }}
            height={400}
           >
-          {comments.length > 0 ?(
-             <View style={{marginTop:10,marginBottom:100}}>
-               <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
+           {comments.length > 0 ?(
+             <View style={{marginTop:10,marginBottom:110,}}>
+              <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
             keyExtractor={item =>item._id}
            />
+           <View style={{flexDirection:'row',}}>
+           <TextInput
+           placeholder='Add comments'
+           placeholderTextColor={'black'}
+           value={coment}
+           onChangeText={(text)=>{setComment(text)}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           />
+            {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
+               onPress={()=>{
+                AddComment()
+               }}>
+              <Text style={{alignSelf:'center',color:'white'}}>post</Text>
+            </TouchableOpacity>):(null)}
            </View>
-           ):(<Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold'}}>No comments</Text>)}
-           <View style={{flexDirection:'row'}}>
+           </View>
+           ):(
+            <View>
+            <Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}>No comments</Text>
+            <View style={{flexDirection:'row',}}>
+           <TextInput
+           placeholder='Add Review'
+           placeholderTextColor={'black'}
+           value={coment}
+           onChangeText={(text)=>{setComment(text)}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           />
+            {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
+               onPress={()=>{
+                AddComment()
+               }}>
+              <Text style={{alignSelf:'center',color:'white'}}>post</Text>
+            </TouchableOpacity>):(null)}
+           </View>
+            </View>
+           )}
+           {/* <View style={{flexDirection:'row'}}>
            <TextInput
            placeholder='Add comments'
            value={coment}
@@ -841,7 +938,7 @@ const Entertainment = () => {
                }}>
               <Text style={{alignSelf:'center',color:'white'}}>post</Text>
             </TouchableOpacity>):(null)}
-           </View>
+           </View> */}
            
           </RBSheet>
           <RBSheet

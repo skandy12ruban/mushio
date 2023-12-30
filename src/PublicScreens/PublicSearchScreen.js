@@ -50,7 +50,7 @@ const Item= ({item,index})=>{
                     //  videoWidth={3000}
                     //  videoHeight={2000}
                     //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-                     style={{width:110,height:100,alignSelf:'center',borderRadius:10}}
+                     style={{width:110,height:100,alignSelf:'center',borderRadius:10,backgroundColor:theme === 'dark' ? 'white':'black'}}
                    />
             </View>
                  ) : item.type == 'image'  ?(
@@ -208,7 +208,7 @@ const getSearchdata = async ()=>{
   },[isFocused])
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'white':'',}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
     <Loader loading={loading}></Loader>
     {/* <SearchView/> */}
     <Searchbar

@@ -97,7 +97,7 @@ const theme = useColorScheme();
                   justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1,}}>
                     <TextInput
                    value={values.password}
-                   placeholder={'password'}
+                   placeholder={'Password'}
                    placeholderTextColor={'black'}
                    style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {
@@ -128,7 +128,7 @@ const theme = useColorScheme();
                   justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1}}>
                     <TextInput
                    value={values.confirmpassword}
-                   placeholder={'confirm password'}
+                   placeholder={'Confirm Password'}
                    placeholderTextColor={'black'}
                    style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'',}}
                    onChangeText={text => {

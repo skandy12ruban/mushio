@@ -17,14 +17,22 @@ const VerificationScreen = () => {
   const route=useRoute();
   const{values}=route.params;
   const navigation=useNavigation()
+  const[gender,setGender]=useState('')
+  const[countryCode,setCountryCode]=useState('')
   const[loading,setLoading]=useState(false)
+  const[dob,setDob]=useState('')
 const[country,setCountry]=useState('')
 const[countryList,setCountryList]=useState([])
 const [email,setEmail]=useState('')
 const[phoneNumber,setPhoneNumber]=useState('')
 const theme = useColorScheme();
 
-
+const data=[
+  {label:'Male',value:'male'},
+  {label:'Female',value:'female'},
+  {label:'Others',value:'others'},
+  {label:'Prefer not to say',value:'preferNotToSay'},
+]
   const getCountryList =async ()=>{
     var requestOptions = {
       method: 'GET',
@@ -36,8 +44,8 @@ const theme = useColorScheme();
       .then(result =>{
          const country=result.data.map(e=>({
              ...e,
-             label: e.name,
-             value:e.code
+             label:e.name + ' '+'(' +e.countryCode +')',
+             value:e.countryCode,
          }))
          setCountryList(country)
          console.log('country res',country)
@@ -67,7 +75,9 @@ fetch(`${API_BASE_URL}/api/userAuth/sendOtp`, requestOptions)
   .then(result => {
     console.log(result)
     if(result && result.success == true){
-      navigation.navigate('OtpScreen',{values:values,country:country,email:email,phoneNumber:phoneNumber})
+      let phone= country +' ' +phoneNumber
+      console.log(phone)
+      navigation.navigate('OtpScreen',{values:values,country:country,email:email,phoneNumber:phone,dob:dob,gender:gender})
       setLoading(false)
     }else{
       alert(result.message)
@@ -121,9 +131,10 @@ useEffect(()=>{
                   label={''}
                   items={countryList ||[]}
                   value={country}
-                  placeholder={'select country'}
+                  placeholder={'Select country'}
                   placeholderTextColor={'black'}
                   changeText={(text) => {
+                    console.log(text)
                     setCountry( text)
                   }}
                   containerStyle={{
@@ -137,9 +148,33 @@ useEffect(()=>{
                   }}
                 />
                 {/* <Text style={{marginLeft:Metrics.rfv(30),color:'black',fontWeight:'bold'}}>Phone number / email</Text> */}
-                 <TextInput
+              <View style={{flexDirection:'row',marginLeft:40}}>
+                <TextInput
+                   value={ country}
+                   placeholder={''}
+                    placeholderTextColor={'black'}
+                    style={{padding:5,backgroundColor:'white',width:'15%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    borderRadius:10,borderColor:'blue',borderWidth:1}}    
+                    keyboardType='numeric' 
+                     onChangeText={text => {
+                      // setCountryCode(text);
+                     }}
+                  /> 
+                    <TextInput
+                   value={ phoneNumber}
+                   placeholder={' Phone number'}
+                    placeholderTextColor={'black'}
+                    style={{padding:5,backgroundColor:'white',width:'55%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    borderRadius:10,borderColor:'blue',borderWidth:1,}}    
+                    keyboardType='numeric' 
+                     onChangeText={text => {
+                      setPhoneNumber(text);
+                     }}
+                  /> 
+                  </View>
+                     <TextInput
                    value={email}
-                   placeholder={' email'}
+                   placeholder={' Email'}
                     placeholderTextColor={'black'}
                     style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1,}}     
@@ -147,17 +182,36 @@ useEffect(()=>{
                       setEmail(text);
                      }}
                   /> 
-                    <TextInput
-                   value={phoneNumber}
-                   placeholder={' phone number'}
+                     <TextInput
+                   value={dob}
+                   placeholder={' Dob'}
                     placeholderTextColor={'black'}
                     style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
                     borderRadius:10,borderColor:'blue',borderWidth:1}}    
                     keyboardType='numeric' 
                      onChangeText={text => {
-                      setPhoneNumber(text);
+                      setDob(text);
                      }}
-                  /> 
+                  />
+                   <AppDropDown
+                  label={''}
+                  items={data ||[]}
+                  value={gender}
+                  placeholder={'Select gender'}
+                  placeholderTextColor={'black'}
+                  changeText={(text) => {
+                    setGender( text)
+                  }}
+                  containerStyle={{
+                    padding: Metrics.rfv(0),
+                    width:'70%',alignSelf:'center',margin:0
+                  }}
+                  viewStyle={{
+                    borderRadius: Metrics.rfv(10),
+                    borderWidth:1,
+                    borderColor:'blue',marginTop:10
+                  }}
+                />
               <TouchableOpacity style={{  backgroundColor: theme === 'dark' ?'white':'black',
                     padding:5,
                     width: width * 0.4,
@@ -173,6 +227,8 @@ useEffect(()=>{
                    alert('please enter email')
             }else if(phoneNumber == ''){
               alert('please enter phoneNumber')
+             }else if(dob == ''){
+              alert('please enter Date of Birth')
              }else{
               sendOtp()
             }

@@ -1,16 +1,17 @@
 import { View, Text, SafeAreaView,FlatList,TouchableOpacity,Image,useColorScheme } from 'react-native'
 import React,{useState,useEffect} from 'react'
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../Components/Loader'
 import { Card } from 'react-native-paper'
 import Metrics from '../Constants/Metrics'
 import Header from '../Components/Header'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
 import { API_BASE_URL } from '../api/ApiClient'
-import { useIsFocused, useRoute } from '@react-navigation/native'
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 
 const UserAudience = () => {
   const route=useRoute()
+  const navigation=useNavigation()
   const[loading,setLoading]=useState(false)
   const {Token,userProfile}=route.params
   console.log("Token,userProfile",Token,userProfile)
@@ -51,7 +52,7 @@ const UserAudience = () => {
   const Item= ({item})=>{
     return(
       <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',borderWidth:1,
-      borderColor:'black',borderRadius:5,padding:5}}>
+      borderColor:theme === 'dark' ? 'white':'black',borderRadius:5,padding:5}}>
        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
        <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(35),height:Metrics.rfv(35),borderRadius:Metrics.rfv(30),}}
       onPress={()=>{
@@ -64,11 +65,11 @@ const UserAudience = () => {
          source={{uri:item.profileImage}}
        />
        </TouchableOpacity>
-       <Text style={{paddingLeft:20,color:'black',fontWeight:'bold',marginTop:5,fontSize:20}}>{item.name}</Text>
+       <Text style={{paddingLeft:20,color:theme === 'dark' ? 'white':'black',fontWeight:'bold',marginTop:5,fontSize:20}}>{item.name}</Text>
        </View>
        <View>
-       <TouchableOpacity style={{padding:10,backgroundColor:'black',borderRadius:10,width:130}}>
-       <Text style={{color:'white',alignSelf:'center'}}>{'connected'}</Text>
+       <TouchableOpacity style={{padding:10,backgroundColor:theme === 'dark' ? 'white':'black',borderRadius:10,width:130}}>
+       <Text style={{color:theme === 'dark' ? 'black':'white',alignSelf:'center'}}>{'connected'}</Text>
        </TouchableOpacity>
        </View>
        
@@ -78,8 +79,8 @@ const UserAudience = () => {
   }
   const Item1= ({item})=>{
     return(
-      <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',
-      borderColor:'black',borderRadius:5,padding:5}}>
+      <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',borderWidth:1,
+      borderColor:theme === 'dark' ? 'white':'black',borderRadius:5,padding:5}}>
        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
        <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(35),height:Metrics.rfv(35),borderRadius:Metrics.rfv(30),}}
       onPress={()=>{
@@ -92,7 +93,7 @@ const UserAudience = () => {
          source={{uri:item.profileImage}}
        />
        </TouchableOpacity>
-       <Text style={{paddingLeft:20,color:'black',fontWeight:'bold',marginTop:5,fontSize:20}}>{item.name}</Text>
+       <Text style={{paddingLeft:20,color:theme === 'dark' ? 'black':'white',fontWeight:'bold',marginTop:5,fontSize:20}}>{item.name}</Text>
        </View>
        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
        <TouchableOpacity style={{padding:5,backgroundColor:'blue',borderRadius:10,width:70}}
@@ -102,12 +103,12 @@ const UserAudience = () => {
        >
        <Text style={{color:'white',alignSelf:'center'}}>{'Accept'}</Text>
        </TouchableOpacity>
-       <TouchableOpacity style={{padding:5,backgroundColor:'black',borderRadius:10,marginLeft:10,width:70}}
+       <TouchableOpacity style={{padding:5,backgroundColor:theme === 'dark' ? 'white':'black',borderRadius:10,marginLeft:10,width:70}}
        onPress={()=>{
         RejectRequest(item.connectionRequestId)
        }}
        >
-       <Text style={{color:'white',alignSelf:'center'}}>{'Reject'}</Text>
+       <Text style={{color:theme === 'dark' ? 'black':'white',alignSelf:'center'}}>{'Reject'}</Text>
        </TouchableOpacity>
        </View>
        
@@ -227,11 +228,26 @@ const UserAudience = () => {
 
 
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'white':'',flex:1}}>
-    <Header backIcon={true} name1={'Audience'}/>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',backgroundColor:theme === 'dark' ? 'black':'white',flex:1}}>
+    {/* <Header backIcon={true} name1={'Audience'}/> */}
       <Loader loading={loading}></Loader>
+      <View style={{flexDirection:'row'}}>
+   <Ionicons
+            onPress={() => {
+               navigation.goBack()
+            }}
+            style={{
+             
+              margin:5
+            }}
+            name={'arrow-back'}
+            size={35}
+            color={theme === 'dark' ? 'white':'black'}
+          />
+          <Text style={{color:theme === 'dark' ? 'white':'black',fontWeight:'bold',fontSize:20,marginTop:10,marginLeft:10}}>{'Audience'}</Text>
+</View>
       <View>
-<Text style={{fontWeight:'bold',fontSize:20,color:'black',margin:5,marginLeft:40}}> Connection Requests ({requestArray.length})</Text>
+<Text style={{fontWeight:'bold',fontSize:20,color:theme === 'dark' ? 'white':'black',margin:5,marginLeft:40}}> Connection Requests ({requestArray.length})</Text>
  <FlatList
  data={requestArray}
  renderItem={Item1}
@@ -242,7 +258,7 @@ const UserAudience = () => {
   <Text style={{color:'blue'}}>See all ({requestArray.length})</Text>
  </View>
 <View>
-<Text style={{fontWeight:'bold',fontSize:20,color:'black',margin:5,marginLeft:40}}> All Audience ({audienceArray.length})</Text>
+<Text style={{fontWeight:'bold',fontSize:20,color:theme === 'dark' ? 'white':'black',margin:5,marginLeft:40}}> All Audience ({audienceArray.length})</Text>
  <FlatList
  data={audienceArray}
  renderItem={Item}

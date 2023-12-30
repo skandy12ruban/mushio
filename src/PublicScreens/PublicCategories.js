@@ -96,7 +96,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
  
   // console.log('imgArray',imgArray)
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'white':'',}}>
+    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
       <Loader loading={loading}></Loader>
       <View style={{flexDirection:'row'}}>
        <Ionicons
@@ -108,12 +108,12 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
             }}
             name={'arrow-back'}
             size={30}
-            color={'black'}
+            color={theme === 'dark' ? 'white':'black'}
           />
-     <Text style={{color:'black', marginLeft:20,marginTop:10,fontSize:20,fontWeight:'bold'}}> Add Post</Text>
+     <Text style={{color:theme === 'dark' ? 'white':'black', marginLeft:20,marginTop:10,fontSize:20,fontWeight:'bold'}}> Add Post</Text>
       </View>
       <View style={{borderWidth:0.5,marginTop:10}}/>
-    <View style={{backgroundColor:'lightgrey',alignItems:'center',padding:10,}}>
+    <View style={{backgroundColor:'lightgrey',alignItems:'center',padding:10,height:300}}>
     <ScrollView   horizontal style={{flexDirection:'row'}}>
        {/* {fileUri != null ?(*/}
     {imgArray.map((e)=>{
@@ -162,7 +162,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
       launchNativeImageLibrary()
      
       }} style={{alignSelf:'center',}}>
-      <Text style={{fontSize:20,alignSelf:'center',}}>Add </Text>
+      <Text style={{fontSize:20,alignSelf:'center',color:'#fefeff'}}>Add </Text>
       <Text style={{alignSelf:'center',color:'#00B0FF',}}>Image (or) Video</Text>
       </TouchableOpacity>  
       </View>
@@ -174,8 +174,8 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
       filesUpload()
       // navigation.navigate('NewPost',{imgArray:imgArray})
     }} 
-    style={{backgroundColor:'black',padding:10,width:150,borderRadius:5,marginTop:Metrics.rfv(30),alignSelf:'center',}}>
-      <Text style={{alignSelf:'center',color:'white'}}>Next</Text>
+    style={{backgroundColor:theme === 'dark' ? 'white':'black',padding:10,width:150,borderRadius:5,marginTop:Metrics.rfv(30),alignSelf:'center',}}>
+      <Text style={{alignSelf:'center',color:theme === 'dark' ? 'black':'white'}}>Next</Text>
     </TouchableOpacity>
   </SafeAreaView>
   )
