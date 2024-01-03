@@ -25,7 +25,7 @@ const PublicTopTabs = () => {
             // }
         }}
         >
-        <Tab.Screen name="Friends1" component={Friends1} />  
+        <Tab.Screen name="Audience" component={Friends1} />  
         <Tab.Screen name="Artist" component={Artist} />
       </Tab.Navigator>
     </View>

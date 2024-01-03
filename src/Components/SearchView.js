@@ -21,7 +21,7 @@ import Feather from 'react-native-vector-icons/Feather';
 const SearchView = props => {
   const {
     textHeader,
-    searchPlaceholder = 'Search Anything..',
+    searchPlaceholder = 'Search Artist or Friends...',
     onPress = () => {},
   } = props;
   const [searchText, setSearchText] = useState('');

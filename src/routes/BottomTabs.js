@@ -8,7 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Metrics from '../Constants/Metrics';
-import { Categories, Home,  Profile, Graphs } from '../Screens';
+import { Categories, Home, Profile, Graphs } from '../Screens';
 import { HOME, GRAPHS } from './RouteConst';
 import { useColorScheme } from 'react-native';
 
@@ -16,10 +16,50 @@ const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = (props) => {
-const theme= useColorScheme()
+  const theme = useColorScheme()
+
+  const tabIcon = (icon, focused) => {
+
+    return (
+      <View style={{
+        backgroundColor: '#FFFFFF',
+        height: 50,
+        width: 50,
+        borderRadius: 50,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: focused ? 10 : 0,
+        shadowColor: '#00B0FF',
+        elevation: focused ? 6 : 0,
+        shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
+      }}>
+        <View
+          style={{
+            bottom: focused ? 0 : 0,
+            height: 44,
+            width: 44,
+            borderRadius: 44,
+            backgroundColor: focused ? '#00B0FF' : 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Ionicons
+            name={{ icon }}
+            style={[
+              { fontSize: Metrics.rfv(25), color: 'white', backgroundColor: 'black', borderRadius: 44, padding: 5 },
+              focused && { fontSize: Metrics.rfv(30), color: 'white', },
+            ]}
+          />
+        </View>
+      </View>
+    )
+
+  }
+
 
   return (
-    <View style={{ flex: 1, backgroundColor:theme === 'dark'? 'black': '#f6f6f6' }}>
+    <View style={{ flex: 1, backgroundColor: theme === 'dark' ? 'black' : '#f6f6f6' }}>
       <Tab.Navigator
         initialRouteName={HOME}
         screenOptions={{
@@ -29,99 +69,25 @@ const theme= useColorScheme()
             borderRadius: 200,
           },
           tabBarStyle: {
-            backgroundColor:theme === 'dark'? 'black': '#f6f6f6',
+            backgroundColor: theme === 'dark' ? 'black' : '#f6f6f6',
             borderRadius: 5,
-            margin:10,
+            marginHorizontal: 10,
             height: 54,
           },
           tabBarActiveTintColor: '#000000',
-
-          // tabBarLabelStyle: { fontSize: 10 },
-          // tabBarInactiveTintColor: 'black',
-          // tabBarActiveBackgroundColor: 'orange',
         }}>
         <Tab.Screen
           name="Home"
           component={Home}
           options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={{
-                  backgroundColor: '#FFFFFF',
-                  height: 50,
-                  width: 50,
-                  borderRadius: 50,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  bottom: focused ? 10 : 0,
-                  shadowColor: '#00B0FF',
-                  elevation: focused ? 6 : 0,
-                  shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
-                }}>
-                  <View
-                    style={{
-                      bottom: focused ? 0 : 0,
-                      height: 44,
-                      width: 44,
-                      borderRadius: 44,
-                      backgroundColor: focused ? '#00B0FF' : 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Ionicons
-                      name="home"
-                      style={[
-                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black', borderRadius: 44,padding:5 },
-                        focused && { fontSize: Metrics.rfv(30), color: 'white', },
-                      ]}
-                    />
-                  </View>
-                </View>
-              );
-            },
+            tabBarIcon: ({ focused }) => tabIcon('home', focused),
           }}
         />
         <Tab.Screen
           name="Categories"
           component={Categories}
           options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={{
-                  backgroundColor: '#FFFFFF',
-                  height: 50,
-                  width: 50,
-                  borderRadius: 50,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  bottom: focused ? 10 : 0,
-                  shadowColor: '#00B0FF',
-                  elevation: focused ? 6 : 0,
-                  shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
-                }}>
-                  <View
-                    style={{
-                      bottom: focused ? 0 : 0,
-                      height: 44,
-                      width: 44,
-                      borderRadius: 44,
-                      backgroundColor: focused ? '#00B0FF' : 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <AntDesign
-                      name="pluscircleo"
-                      style={[
-                        { fontSize: Metrics.rfv(30),color: 'white',backgroundColor:'black', borderRadius: 44,padding:5  },
-                        focused && { fontSize: Metrics.rfv(30), color: 'white' },
-                      ]}
-                    />
-                  </View>
-                </View>
-              );
-            },
+            tabBarIcon: ({ focused }) => tabIcon('pluscircleo', focused)
           }}
         />
         <Tab.Screen
@@ -156,7 +122,7 @@ const theme= useColorScheme()
                     <Octicons
                       name="graph"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black', borderRadius: 44,padding:5 },
+                        { fontSize: Metrics.rfv(25), color: 'white', backgroundColor: 'black', borderRadius: 44, padding: 5 },
                         focused && { fontSize: Metrics.rfv(25), color: 'white' },
                       ]}
                     />
@@ -166,7 +132,7 @@ const theme= useColorScheme()
             },
           }}
         />
-      
+
         <Tab.Screen
           name="Profile"
           component={Profile}
@@ -200,7 +166,7 @@ const theme= useColorScheme()
                       user-circle
                       name="user-circle"
                       style={[
-                        { fontSize: Metrics.rfv(25), color: 'white',backgroundColor:'black', borderRadius: 44,padding:5 },
+                        { fontSize: Metrics.rfv(25), color: 'white', backgroundColor: 'black', borderRadius: 44, padding: 5 },
                         focused && { fontSize: Metrics.rfv(30), color: 'white' },
                       ]}
                     />

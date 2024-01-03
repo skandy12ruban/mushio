@@ -8,12 +8,10 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { AppOkAlert } from '../utils/AlertHelper';
 import Metrics from '../Constants/Metrics';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
-import Video from 'react-native-video';
 import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-video';
 
 
 
@@ -129,8 +127,8 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
          </View>
                ):(
         < View style={{margin:10,}}>
-              <VideoPlayer  
-                video={{ uri: e.uri}}
+              <Video  
+                source={{ uri: e.uri}}
                 style={{width:250,height:150}}
                 // paused={true}
                 />

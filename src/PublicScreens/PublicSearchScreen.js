@@ -6,9 +6,8 @@ import Loader from '../Components/Loader'
 import Metrics from '../Constants/Metrics'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
-import Video from 'react-native-video';
 import { Card } from 'react-native-paper';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-video';
 import { Searchbar } from 'react-native-paper';
 import { SearchBar } from 'react-native-elements'
 
@@ -45,8 +44,8 @@ const Item= ({item,index})=>{
        > */}
           { item.type == 'video'  ? (
                  < View style={{}}>
-                   <VideoPlayer
-                     video={{ uri:`${item.url}` }}
+                   <Video
+                     source={{ uri:`${item.url}` }}
                     //  videoWidth={3000}
                     //  videoHeight={2000}
                     //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
@@ -273,8 +272,8 @@ const getSearchdata = async ()=>{
                  onPress={()=>{
                       //   setProfileImg()
                 }}>
-                  <VideoPlayer
-                  video={{ uri: file.url }}
+                  <Video
+                  source={{ uri: file.url }}
                   style={{ width: '100%', height: 100, resizeMode: 'cover' }}
                 />
                    </TouchableOpacity>

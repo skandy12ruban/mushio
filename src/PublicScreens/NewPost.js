@@ -9,7 +9,6 @@ import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import { DateHelper } from '../utils/DateHelper';
 import Loader from '../Components/Loader';
-import VideoPlayer from 'react-native-video-player';
 
 const NewPost = () => {
   const navigation = useNavigation()
@@ -117,8 +116,8 @@ const MyPost = async ()=>{
          </View>
                ):(
         < View style={{margin:10,}}>
-              <VideoPlayer  
-                video={{ uri: e.uri}}
+              <Video  
+                source={{ uri: e.uri}}
                 style={{width:300,height:200,backgroundColor:theme === 'dark' ? 'white':'black'}}
                 // paused={true}
                 />

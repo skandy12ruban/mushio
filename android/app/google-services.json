@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381415506444",
+    "project_id": "mushio-79f06",
+    "storage_bucket": "mushio-79f06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381415506444:android:61cd7d54dbc91bf933a429",
+        "android_client_info": {
+          "package_name": "com.mushio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1J5Drc0d3RwY56cKQy6Jlja0bJBFPoho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

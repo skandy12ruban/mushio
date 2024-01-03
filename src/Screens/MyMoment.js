@@ -2,7 +2,7 @@ import { useRoute } from '@react-navigation/native';
 import React,{useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { View, Text,Image,TouchableOpacity,FlatList,StyleSheet,ActivityIndicator } from 'react-native';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-video';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { SafeAreaView,useColorScheme } from 'react-native';
 
@@ -77,8 +77,8 @@ const onStopPlay = async () => {
     console.log('video url',item)
     return(
       <View style={{margin:10,alignSelf:'center',}}>
-         <VideoPlayer
-            video={{ uri:item }}
+         <Video
+            source={{ uri:item }}
             //   videoWidth={3000}
             //  videoHeight={2000}
             //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}

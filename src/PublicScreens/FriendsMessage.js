@@ -18,9 +18,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-interface File extends IMessage {
-  url?: string;
-}
 
 const FriendsMessage = () => {
   const navigation=useNavigation()

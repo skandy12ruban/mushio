@@ -11,7 +11,7 @@ import Metrics from '../Constants/Metrics';
 import { Card } from 'react-native-paper';
 import { Badge,Rating } from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-video';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { API_BASE_URL } from '../api/ApiClient';
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -61,8 +61,8 @@ const Entertainment = () => {
                  }}>
                 { item.type == 'video'  ? (
                        < View style={{}}>
-                         <VideoPlayer
-                           video={{ uri:`${item.url}` }}
+                         <Video
+                           source={{ uri:`${item.url}` }}
                           //  videoWidth={3000}
                           //  videoHeight={2000}
                           //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}

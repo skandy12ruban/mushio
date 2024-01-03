@@ -10,6 +10,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AuthRoute from './src/routes/AuthRoute';
 import { FormattedProvider, GlobalizeProvider } from 'react-native-globalize';
@@ -19,6 +20,7 @@ import { getUserProfileInfo, getUserType } from './src/utils/AsyncStorageHelper'
 import { setuser } from './src/Redux/reducer/User';
 import { useDispatch } from 'react-redux';
 import { setusertype } from './src/Redux/reducer/userType';
+import messaging from '@react-native-firebase/messaging';
 
 const AppStatusBar = ({ backgroundColor, ...props }) => {
   if (Platform.OS == "ios") {
@@ -42,6 +44,28 @@ const App = () => {
     const locale = await metadata.locale();
     setLocale(locale)
   }
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      // User has authorized
+      let fcmToken = await messaging().getToken();
+      let deviceId = DeviceInfo.getUniqueId();
+      let deviceType = Platform.OS;
+      console.log('FCM Token:', fcmToken);
+      return {
+        'deviceId': deviceId,
+        'deviceToken': fcmToken,
+        'deviceType': Platform.OS
+      }
+    }
+  };
+
+  
   const checkUser = async () => {
     let account = await getUserProfileInfo()
     let user = await getUserType()
@@ -49,6 +73,8 @@ const App = () => {
     if (account) {
       console.log("account", account);
       // console.log("account");
+      let deviceInfo = requestUserPermission();
+      
       dispatch(setuser(account))
       dispatch(setusertype(user))
     } else {

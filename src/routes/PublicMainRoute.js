@@ -12,7 +12,6 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { ADD_CARDS, APP_DRAWER, ARTIST_MESSAGE, CARDS, CHAT_SCREEN, ENTERTAINMENT, FRIENDS, FRIENS_MESSAGE, MY_POSTS, MY_PROFILE, NEW_POST, PEOPLE, POSTS, PUBLIC_BOTTOM_TABS, PUBLIC_PROFILE1, PUBLIC_SERACH_SCREEN1, TOP_TABS, USER_ARTIST, USER_AUDIENCE, USER_TOP_TABS } from './PublicRouteConts';
 import PublicBottomTabs from './PublicBottomTabs';
-import MainRoute from './MainRoute';
 import People from '../PublicScreens/People';
 import TopTabs from './TopTabs';
 import Posts from '../PublicScreens/Posts';
@@ -61,7 +60,7 @@ const PublicMainRoute = () => {
                      <MainStack.Screen name={TOP_TABS} component={TopTabs} />
                      <MainStack.Screen name={USER_TOP_TABS} component={UserTopTabs} />
                      <MainStack.Screen name={APP_DRAWER} component={AppDrawer} />
-                     <MainStack.Screen name={MAIN_ROUTE} component={MainRoute} />
+                     {/* <MainStack.Screen name={MAIN_ROUTE} component={MainRoute} /> */}
                      {/* <MainStack.Screen name={PEOPLE} component={People} /> */}
                      <MainStack.Screen name={POSTS} component={Posts} />
                      <MainStack.Screen name={USER_ARTIST} component={UserArtist} />

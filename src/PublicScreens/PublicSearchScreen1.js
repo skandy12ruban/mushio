@@ -10,7 +10,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Loader from '../Components/Loader'
 import Metrics from '../Constants/Metrics'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import VideoPlayer from 'react-native-video-player';
 import { API_BASE_URL } from '../api/ApiClient';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { useEffect } from 'react';
@@ -60,8 +59,8 @@ const PublicSearchScreen1 = () => {
              }}>
             { item.type == 'video'  ? (
                    < View style={{}}>
-                     <VideoPlayer
-                       video={{ uri:`${item.url}` }}
+                     <Video
+                       source={{ uri:`${item.url}` }}
                       //  videoWidth={3000}
                       //  videoHeight={2000}
                       //  thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
