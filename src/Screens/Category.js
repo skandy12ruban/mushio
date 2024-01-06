@@ -486,7 +486,7 @@ setLoading(false)
          value={title}
          placeholder={'Title'}
          placeholderTextColor={'black'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,fontWeight:'bold',color:theme === 'dark' ?'black':'black',}}
          onChangeText={text => {
             setTitle( text);
           }}
@@ -495,7 +495,7 @@ setLoading(false)
          value={description}
          placeholder={'Description'}
          placeholderTextColor={'black'}
-         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,height:100,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}
+         style={{padding:10,backgroundColor:'white',borderRadius:5,margin:10,height:100,fontWeight:'bold',color:theme === 'dark' ?'black':'black',}}
          multiline={true}
          onChangeText={text => {
             setDescription( text);

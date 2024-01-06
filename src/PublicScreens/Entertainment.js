@@ -741,8 +741,8 @@ const Entertainment = () => {
         </View>
         <View style={{marginLeft:10,marginTop:5}}>
         <Text style={{fontWeight:'bold',color:'black'}}>{name}</Text>
-        <Text style={{color:theme === 'dark' ?'black':'',}}>{item.text}</Text>
-        <Text style={{color:theme === 'dark' ?'black':'',fontSize:10}}>{date}</Text>
+        <Text style={{color:theme === 'dark' ?'black':'black',}}>{item.text}</Text>
+        <Text style={{color:theme === 'dark' ?'black':'black',fontSize:10}}>{date}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -883,7 +883,7 @@ const Entertainment = () => {
           >
            {comments.length > 0 ?(
              <View style={{marginTop:10,marginBottom:110,}}>
-              <Text style={{color:theme === 'dark' ?'black':'',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
+              <Text style={{color:theme === 'dark' ?'black':'black',alignSelf:'center',fontWeight:'bold'}}>Comments</Text>
              <FlatList
             data={comments || []}
             renderItem={CommentsItem}
@@ -895,7 +895,7 @@ const Entertainment = () => {
            placeholderTextColor={'black'}
            value={coment}
            onChangeText={(text)=>{setComment(text)}}
-           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'black',}}
            />
             {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
                onPress={()=>{
@@ -907,14 +907,14 @@ const Entertainment = () => {
            </View>
            ):(
             <View>
-            <Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold',color:theme === 'dark' ?'black':'',}}>No comments</Text>
+            <Text style={{alignSelf:'center',fontSize:20,fontWeight:'bold',color:theme === 'dark' ?'black':'black',}}>No comments</Text>
             <View style={{flexDirection:'row',}}>
            <TextInput
            placeholder='Add Review'
            placeholderTextColor={'black'}
            value={coment}
            onChangeText={(text)=>{setComment(text)}}
-           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'black',}}
            />
             {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
                onPress={()=>{
@@ -930,7 +930,7 @@ const Entertainment = () => {
            placeholder='Add comments'
            value={coment}
            onChangeText={(text)=>{setComment(text)}}
-           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'black',}}
            />
             {coment != '' ? (<TouchableOpacity style={{padding:5,backgroundColor:'blue',height:30,marginTop:20,borderRadius:10}}
                onPress={()=>{

@@ -80,7 +80,7 @@ const theme = useColorScheme();
          value={values.name}
          placeholder={'  Name'}
          placeholderTextColor={'black'}
-         style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+         style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'black',
          borderRadius:10,borderColor:'blue',borderWidth:1}}
          onChangeText={text => {
             setFieldValue('name' ,text);
@@ -99,7 +99,7 @@ const theme = useColorScheme();
                    value={values.password}
                    placeholder={'Password'}
                    placeholderTextColor={'black'}
-                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'',}}
+                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'black',}}
                    onChangeText={text => {
                    setFieldValue('password' ,text);
                    }}
@@ -130,7 +130,7 @@ const theme = useColorScheme();
                    value={values.confirmpassword}
                    placeholder={'Confirm Password'}
                    placeholderTextColor={'black'}
-                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'',}}
+                   style={{fontSize:15,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'black',}}
                    onChangeText={text => {
                    setFieldValue('confirmpassword' ,text);
                    }}

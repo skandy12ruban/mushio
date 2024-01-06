@@ -17,4 +17,4 @@ const Main = () => {
     )
 }
 
-AppRegistry.registerComponent(appName, () => Main);
+AppRegistry.registerComponent('mushio', () => Main);

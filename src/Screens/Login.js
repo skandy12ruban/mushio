@@ -176,7 +176,7 @@ const Login = withGlobalize(
                    placeholder={' Email'}
                    placeholderTextColor={'grey'}
                    style={{padding:6,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold',
-                   borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':''}}
+                   borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':'black'}}
                    onChangeText={text => {
                    setFieldValue('email' ,text);
                    }}
@@ -208,7 +208,7 @@ const Login = withGlobalize(
                    value={values.password}
                    placeholder={' Password'}
                    placeholderTextColor={'grey'}
-                   style={{fontSize:20,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':''}}
+                   style={{fontSize:20,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'black'}}
                    onChangeText={text => {
                    setFieldValue('password' ,text);
                    }}

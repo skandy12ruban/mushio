@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "381415506444",
-    "project_id": "mushio-79f06",
-    "storage_bucket": "mushio-79f06.appspot.com"
+    "project_number": "144507623524",
+    "project_id": "mushio-c477c",
+    "storage_bucket": "mushio-c477c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:381415506444:android:61cd7d54dbc91bf933a429",
+        "mobilesdk_app_id": "1:144507623524:android:373bd27bf180c54406e771",
         "android_client_info": {
           "package_name": "com.mushio"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB1J5Drc0d3RwY56cKQy6Jlja0bJBFPoho"
+          "current_key": "AIzaSyBoxr5ZesTXnTWFLJ_dxB2tBEqXJHE5ZcM"
         }
       ],
       "services": {

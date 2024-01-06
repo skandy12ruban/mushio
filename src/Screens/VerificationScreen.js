@@ -153,7 +153,7 @@ useEffect(()=>{
                    value={ country}
                    placeholder={''}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'15%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    style={{padding:5,backgroundColor:'white',width:'15%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'black',
                     borderRadius:10,borderColor:'blue',borderWidth:1}}    
                     keyboardType='numeric' 
                      onChangeText={text => {
@@ -164,7 +164,7 @@ useEffect(()=>{
                    value={ phoneNumber}
                    placeholder={' Phone number'}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'55%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    style={{padding:5,backgroundColor:'white',width:'55%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'black',
                     borderRadius:10,borderColor:'blue',borderWidth:1,}}    
                     keyboardType='numeric' 
                      onChangeText={text => {
@@ -176,7 +176,7 @@ useEffect(()=>{
                    value={email}
                    placeholder={' Email'}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'black',
                     borderRadius:10,borderColor:'blue',borderWidth:1,}}     
                      onChangeText={text => {
                       setEmail(text);
@@ -186,7 +186,7 @@ useEffect(()=>{
                    value={dob}
                    placeholder={' Dob'}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    style={{padding:5,backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'black',
                     borderRadius:10,borderColor:'blue',borderWidth:1}}    
                     keyboardType='numeric' 
                      onChangeText={text => {

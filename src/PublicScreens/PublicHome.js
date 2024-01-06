@@ -737,7 +737,7 @@ const PublicHome = (props) => {
            placeholderTextColor={'black'}
            value={coment}
            onChangeText={(text)=>{setComment(text)}}
-           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'',}}
+           style={{margin:10,borderRadius:10,borderWidth:0.5,width:'80%',color:theme === 'dark' ?'black':'black',}}
            />
             {coment != '' ? (<TouchableOpacity style={{backgroundColor:'blue',marginTop:15,borderRadius:5,padding:10,height:40}}
                onPress={()=>{

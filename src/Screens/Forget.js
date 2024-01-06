@@ -71,7 +71,7 @@ const getforgetPassword= async ()=>{
                    value={email}
                    placeholder={''}
                     placeholderTextColor={'black'}
-                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'',
+                    style={{padding:5,backgroundColor:'white',width:'70%',margin:10,fontSize:15,fontWeight:'bold',color:theme === 'dark' ?'black':'black',
                     borderRadius:10,borderColor:'blue',borderWidth:1,alignSelf:'center'}}     
                      onChangeText={text => {
                       setEmail(text);

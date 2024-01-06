@@ -5,7 +5,6 @@ import Loader from '../Components/Loader'
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
-import Video from 'react-native-video';
 import Video from 'react-native-video'
 
 

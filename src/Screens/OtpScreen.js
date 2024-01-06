@@ -109,7 +109,7 @@ const OtpScreen = () => {
                    placeholder={'enter otp'}
                     placeholderTextColor={'black'}
                     style={{padding:15,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:15,fontWeight:'bold',
-                    borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':'',}}  
+                    borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':'black',}}  
                       onChangeText={text => {
                       setOtp(text);
                      }}
