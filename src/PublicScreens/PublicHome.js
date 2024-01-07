@@ -54,7 +54,7 @@ const GetUserProfileInfo= async ()=>{
 }
 
 const Item= ({item,index})=>{
-  // console.log(item)
+  console.log('itemmmm',item)
   return(
     <View style={{margin:10,alignSelf:'center',}}>
         
@@ -74,11 +74,11 @@ const Item= ({item,index})=>{
                    />
             </View>
                  ) : item.type == 'image'  ?(
-           < View style={{}}>
+           < View style={{flex:1}}>
                   <Image
-                  key={index}
-                       source={{uri:item.url}}
-                       style={{width:300,height:250,alignSelf:'center',}}
+                  // key={index}
+                       source={{uri:`${item.url}`}}
+                       style={{width:300,height:250,alignSelf:'center',backgroundColor:theme === 'dark' ? 'black':'white'}}
                       />
                 </View>
            

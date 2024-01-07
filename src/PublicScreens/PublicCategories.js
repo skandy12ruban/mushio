@@ -84,6 +84,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     console.log(result.success)
     if(result && result.success == true){ 
       navigation.navigate('NewPost',{imgArray:result.data})
+      setImagArray([])
       setLoading(false)
     }
     setLoading(false)
@@ -171,7 +172,12 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
       
     </View>
     <TouchableOpacity onPress={()=>{
-      filesUpload()
+      if(imgArray.length > 0){
+        filesUpload()
+      }else{
+        alert('please upload any Image or Video')
+      }
+     
       // navigation.navigate('NewPost',{imgArray:imgArray})
     }} 
     style={{backgroundColor:theme === 'dark' ? 'white':'black',padding:10,width:150,borderRadius:5,marginTop:Metrics.rfv(30),alignSelf:'center',}}>

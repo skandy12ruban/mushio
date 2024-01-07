@@ -2,7 +2,7 @@ import { View, Text,TouchableOpacity,Image,FlatList,SafeAreaView,useColorScheme 
 import React,{useState,useEffect} from 'react'
 import Metrics from '../Constants/Metrics'
 import Loader from '../Components/Loader'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper'
 import Video from 'react-native-video';
@@ -12,6 +12,7 @@ import VideoPlayer from 'react-native-video-player'
 const People = () => {
   const [loading,setLoading]=useState(false)
   const[peopleArray,setPeopleArray]=useState([]);
+  const isFocused=useIsFocused()
   const theme = useColorScheme();
   const navigation=useNavigation()
   const data=[
@@ -66,7 +67,7 @@ const People = () => {
   
   useEffect(()=>{
     MyPeople();
-  },[])
+  },[isFocused])
   
   const Item= ({item,index})=>{
     // console.log(item)

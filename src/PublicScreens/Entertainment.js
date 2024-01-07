@@ -89,7 +89,7 @@ const Entertainment = () => {
       const GetUserProfileInfo= async ()=>{
         const res = await getUserProfileInfo()
         setUserid(res._id)
-        console.log('profile res',res)
+        // console.log('profile res',res)
       }
       const sendRequest=async(id)=>{
         const res = await getUserProfileInfo()
@@ -368,9 +368,9 @@ const Entertainment = () => {
                 <TouchableOpacity style={{backgroundColor:theme ==='dark'?'black':'white',padding:2,borderRadius:5,height:25,marginTop:10,marginLeft:100}}
      onPress={()=>{
          if(status == 'Connect'){
-          sendRequest(post._id)
+          sendRequest(profileId)
          }else if(status == 'Connected'){
-          disconnectUser(post._id)
+          disconnectUser(profileId)
          }else if(status == 'Requested'){
           RejectRequest(post.connectionRequestId)
          }else{
@@ -528,7 +528,7 @@ const Entertainment = () => {
   fetch(`${API_BASE_URL}/api/post/entertainment`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log('entertaiment result',result.data.posts)
+      // console.log('entertaiment result',result.data.posts)
       if(result && result.success == true){
       setEntertainmentArray(result.data.posts)
       setLoading(false)

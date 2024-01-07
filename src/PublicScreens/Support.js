@@ -39,11 +39,11 @@ const Support = () => {
 
     <View style={{alignSelf:'center',marginTop:Metrics.rfv(50)}}>
     <Text style={{fontWeight:'bold',color:black1,padding:10,fontSize:20}}>Customer Care</Text>
-    <Text style={{color:black1,padding:10}}>customercaremushio@gmail.com</Text>
+    <Text style={{color:black1,padding:10}}>sehalocustomercare@gmail.com</Text>
     <Text style={{fontWeight:'bold',color:black1,padding:10,fontSize:20}}>Complaints</Text>
-    <Text style={{color:black1,color:black1,padding:10}}>complaintsmushio@gmail.com</Text>
+    <Text style={{color:black1,color:black1,padding:10}}>Sehalocomplaints@gmail.com</Text>
     <Text style={{fontWeight:'bold',color:black1,padding:10,fontSize:20}}>Suggestions</Text>
-    <Text style={{color:black1,padding:10}}>suggestionsmushio@gmail.com</Text>
+    <Text style={{color:black1,padding:10}}>sehalo77@gmail.com</Text>
     </View>
     </SafeAreaView>
   )
