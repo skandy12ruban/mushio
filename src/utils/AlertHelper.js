@@ -23,17 +23,17 @@ export const AppOkAlert = (msg, onOkCallback, btnText = 'OK', title = APP_NAME) 
 
 
 export const AppAlertLoginError = (msg, title = APP_NAME) => {
-    // console.log('Cancel Pressed', msg),
-    // console.log('Cancel Pressed', msg.message.message),
+    // ,
+    // ,
     setTimeout(() => {
         Alert.alert(
             title,
             msg,
             [
-                // {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                // {text: 'Ask me later', onPress: () => },
                 // {
                 //     text: 'Cancel',
-                //     onPress: () => console.log('Cancel Pressed'),
+                //     
                 //     style: 'cancel',
                 // },
                 {
@@ -94,10 +94,10 @@ export const AppBackAlert = (msg, navigation, title = APP_NAME) => {
             title,
             msg,
             [
-                // {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                // {text: 'Ask me later', onPress: () => },
                 {
                     text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
+                    
                     style: 'cancel',
                 },
                 {
@@ -114,8 +114,8 @@ export const isObjectEquivalent = (a, b) => {
     // Create arrays of property names
     var aProps = Object.getOwnPropertyNames(a);
     var bProps = Object.getOwnPropertyNames(b);
-    console.log("aProps :- ", aProps)
-    console.log("bProps :- ", bProps)
+    
+    
 
     // If number of properties is different,
     // objects are not equivalent
@@ -125,11 +125,11 @@ export const isObjectEquivalent = (a, b) => {
 
     for (var i = 0; i < aProps.length; i++) {
         var propName = aProps[i];
-        console.log("propName :- ", propName)
+        
 
         // If values of same property are not equal,
         // objects are not equivalent
-        console.log(`a[propName] :- ${a[propName]}, b[propName]:- ${b[propName]}` )
+        
         if (a[propName] !== b[propName]) {
             return false;
         }

@@ -38,7 +38,7 @@ const data=[
       method: 'GET',
       redirect: 'follow'
     };
-    console.log(`${API_BASE_URL}/api/getCountries`)
+    
     fetch(`${API_BASE_URL}/api/getCountries`, requestOptions)
       .then(response => response.json())
       .then(result =>{
@@ -48,9 +48,9 @@ const data=[
              value:e.countryCode,
          }))
          setCountryList(country)
-         console.log('country res',country)
+         
         })
-      .catch(error =>{ console.log('error', error)});
+      .catch(error =>{ });
   }
 
 
@@ -73,10 +73,10 @@ let requestOptions = {
 fetch(`${API_BASE_URL}/api/userAuth/sendOtp`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(result)
+    
     if(result && result.success == true){
       let phone= country +' ' +phoneNumber
-      console.log(phone)
+      
       navigation.navigate('OtpScreen',{values:values,country:country,email:email,phoneNumber:phone,dob:dob,gender:gender})
       setLoading(false)
     }else{
@@ -86,7 +86,7 @@ fetch(`${API_BASE_URL}/api/userAuth/sendOtp`, requestOptions)
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
  
     setLoading(false)
   });
@@ -134,7 +134,7 @@ useEffect(()=>{
                   placeholder={'Select country'}
                   placeholderTextColor={'black'}
                   changeText={(text) => {
-                    console.log(text)
+                    
                     setCountry( text)
                   }}
                   containerStyle={{

@@ -10,10 +10,10 @@ const DeviceHelper = {
         isConnectedToInternet: async function() {
             try{
                let state = await NetInfo.fetch(); 
-               console.log('state.isConnected :- ', state.isConnected);
+               
                return state.isConnected;
             }catch (err){
-                console.log(err);
+                
                 return false;
             }
         }
@@ -69,7 +69,7 @@ export const OpenLinkToOtherApp = (link) => {
         if (supported) {
           Linking.openURL(link);
         } else {
-          console.log("Don't know how to open URI: " + this.props.url);
+          
         }
     });
 }

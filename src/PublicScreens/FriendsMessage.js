@@ -25,13 +25,13 @@ const FriendsMessage = () => {
   const route= useRoute()
   const{item}=route.params;
   
-// console.log('item',item)
+// 
 const time =`${new Date().toLocaleTimeString('en-US', {
   hour: 'numeric',
   minute: 'numeric',
   hour12: true, // This will display AM/PM
 })}`
-console.log('time',time)
+
 
 const [recordingActive, setRecordingActive] = useState(false);
 const [audioPath, setAudioPath] = useState('');
@@ -68,16 +68,16 @@ const checkPermissions = async ()=>{
         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
       ]);
   
-      console.log('write external stroage', grants);
+      
   
       if (
         grants['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
         grants['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
         grants['android.permission.RECORD_AUDIO'] === PermissionsAndroid.RESULTS.GRANTED
       ) {
-        console.log('Permissions granted');
+        
       } else {
-        console.log('All required permissions not granted');
+        
         return;
       }
     } catch (err) {
@@ -108,7 +108,7 @@ const onStopRecord = async () => {
   audioRecorderPlayer.removeRecordBackListener();
   setAudioPath(result)
   setIsAttachAudio(true)
-   console.log('response',result)
+   
   
 };
 
@@ -123,7 +123,7 @@ const _pickDocument = async () => {
     });
     const fileUri = result[0].fileCopyUri;
     if (!fileUri) {
-      console.log('File URI is undefined or null');
+      
       return;
     }
     if (fileUri.indexOf('.png') !== -1 || fileUri.indexOf('.jpg') !== -1) {
@@ -135,9 +135,9 @@ const _pickDocument = async () => {
     }
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
-      console.log('User cancelled file picker');
+      
     } else {
-      console.log('DocumentPicker err => ', err);
+      
       throw err;
     }
   }

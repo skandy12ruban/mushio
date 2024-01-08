@@ -29,7 +29,7 @@ const PublicSearchScreen1 = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState('');
   const {selectedId,}=route.params;
-  console.log(selectedId)
+  
   const theme = useColorScheme();
   const[loading,setLoading]=useState(false)
   const[coment,setComment]=useState('')
@@ -48,7 +48,7 @@ const PublicSearchScreen1 = () => {
     {id:4,image:require('../assets/images/place4.jpg')},
   ]
   const Item= ({item,index})=>{
-    // console.log(item)
+    // 
     return(
       <View style={{margin:5,alignSelf:'center',}}>
           
@@ -88,11 +88,11 @@ const PublicSearchScreen1 = () => {
   const GetUserProfileInfo= async ()=>{
     const res = await getUserProfileInfo()
     setUserid(res._id)
-    console.log('profile res',res)
+    
   }
   const selectSearchData=async()=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -101,11 +101,11 @@ const PublicSearchScreen1 = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(`${API_BASE_URL}/api/post/travel?postId=${selectedId}`)
+    
     fetch(`${API_BASE_URL}/api/post/travel?postId=${selectedId}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(' selecty rrsult',result.data.posts)
+        
         if(result && result.success == true){
           let item =result.data.posts
           setSearchArray(item)
@@ -115,14 +115,14 @@ const PublicSearchScreen1 = () => {
        
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
  
   const reportItem = async (text)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       // setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -139,11 +139,11 @@ const PublicSearchScreen1 = () => {
         body: raw,
         redirect: 'follow'
       };
-      console.log(raw)
+      
        fetch(`${API_BASE_URL}/api/report`, requestOptions)
         .then(response => response.json())
         .then(async (result) => {
-          console.log('report res',result)
+          
           if( result.success == true ){
               alert('Thanks for letting us know')
           }
@@ -152,14 +152,14 @@ const PublicSearchScreen1 = () => {
           setLoading(false)
         })
         .catch(error => {
-          console.log('error', error)
+          
           setLoading(false)
         });
   }
 
   const sendRequest=async(id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       // setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -174,29 +174,29 @@ const PublicSearchScreen1 = () => {
         body: raw,
         redirect: 'follow'
       };
-   console.log(requestOptions)
+   
     fetch(`${API_BASE_URL}/api/user/sendRequest`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(' request result',result.data)
+        
         selectSearchData()
         if(result && result.success == true){
           // setRequestStatus(result)
-         console.log(result.data)
+         
         // setSearchQuery(text)
         setLoading(false)
         }
        
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const disconnectUser=async(id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       // setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -211,29 +211,29 @@ const PublicSearchScreen1 = () => {
         body: raw,
         redirect: 'follow'
       };
-   console.log(requestOptions)
+   
     fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(' disconnectUser result',result)
+        
         selectSearchData()
         if(result && result.success == true){
         
-         console.log(result)
+         
         // setSearchQuery(text)
         setLoading(false)
         }
        
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const RejectRequest=async(id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       // setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -248,30 +248,30 @@ const PublicSearchScreen1 = () => {
         body: raw,
         redirect: 'follow'
       };
-   console.log(requestOptions)
-   console.log(`${API_BASE_URL}/api/user/deleteRequest`)
+   
+   
     fetch(`${API_BASE_URL}/api/user/deleteRequest`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(' reject result',result)
+        
         selectSearchData()
         // if(result && result.success == true){
         
-        //  console.log(result)
+        //  
         // // setSearchQuery(text)
         // setLoading(false)
         // }
        
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const ratingCompleted = (rating) => {
     setRating(rating);
-    console.log("Rating is:==========> " + rating)
+    
 }
 
   useEffect(()=>{
@@ -289,15 +289,15 @@ const PublicSearchScreen1 = () => {
   
     try {
       const result = await Share.open(shareOptions);
-      console.log(result);
+      
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
   const DeletePost = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -310,7 +310,7 @@ const PublicSearchScreen1 = () => {
     fetch(`${API_BASE_URL}/api/post/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('delete post res',result)
+        
         selectSearchData()
         if(result && result.success == true){
           selectSearchData()
@@ -319,14 +319,14 @@ const PublicSearchScreen1 = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const postLikes = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -339,7 +339,7 @@ const PublicSearchScreen1 = () => {
     fetch(`${API_BASE_URL}/api/post/toggleLike/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        
         if( result.message == 'Post unliked successfully' ){
           //  alert(result.message)
            setSelectedItem(null)
@@ -348,14 +348,14 @@ const PublicSearchScreen1 = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const getComments = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -368,19 +368,19 @@ const PublicSearchScreen1 = () => {
     fetch(`${API_BASE_URL}/api/post/getComments/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('getCommnets res',result.data.comments)
+        
         setComments(result.data.comments)
         selectSearchData()
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
   const userProfile = async (id,name)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -390,27 +390,27 @@ const PublicSearchScreen1 = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    // 
     fetch(`${API_BASE_URL}/api/user/profile/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('get userprofile response',result.data)
+        
         if(result && result.success == true){
-          console.log(result.data.accessToken)
+          
              navigation.navigate('PublicProfile1',{Token:result.data.accessToken,userProfile:true,name:name})
               setLoading(false)
         }
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const AddComment = async ()=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -425,24 +425,24 @@ const PublicSearchScreen1 = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(raw)
+    
     fetch(`${API_BASE_URL}/api/post/addComment/${comentId}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        
        setComment('') 
        getComments(comentId)
        selectSearchData();
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
   const DisconnectUser = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -457,11 +457,11 @@ const PublicSearchScreen1 = () => {
         body: raw,
         redirect: 'follow'
       };
-    console.log(raw)
+    
     fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('disconnect user res',result)
+        
         if(result && result.success == true){
           selectSearchData()
         setLoading(false)
@@ -469,13 +469,13 @@ const PublicSearchScreen1 = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
   const deleteComment = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -485,24 +485,24 @@ const PublicSearchScreen1 = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    // 
     fetch(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('delete',result)
+        
        getComments(comentId)
        selectSearchData();
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
 
   const renderPost = (post, index) => {
-// console.log('post1',post)
+// 
     let name = post.createdBy.name;
     let type= post.createdBy.userType;
     let status =post.status
@@ -577,7 +577,7 @@ const PublicSearchScreen1 = () => {
         //  Alert.alert('Delete', 'Delete this post', [
         //   {
         //     text: 'Cancel',
-        //     onPress: () => console.log('Cancel Pressed'),
+        //     
         //     style: 'cancel',
         //   },
         //   {text: 'OK', onPress: () => { DeletePost(Id2)}},
@@ -677,7 +677,7 @@ const PublicSearchScreen1 = () => {
     )
   };
   const CommentsItem =  ({item})=>{
-    console.log('comment',item)
+    
     let profileImage = item.user.profileImage
     let name = item.user.name
     let id= item._id
@@ -687,7 +687,7 @@ const PublicSearchScreen1 = () => {
         Alert.alert('Delete', 'Delete this message', [
           {
             text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
+            
             style: 'cancel',
           },
           {text: 'OK', onPress: () => { deleteComment(id)}},

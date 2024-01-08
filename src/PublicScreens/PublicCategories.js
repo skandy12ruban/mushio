@@ -22,7 +22,7 @@ const PublicCategories = () => {
   const[loading,setLoading]=useState(false)
    const[imgArray,setImagArray]=useState([])
    const theme = useColorScheme();
-// console.log("imgArray res",imgArray)
+// 
 
   const launchNativeImageLibrary = () => {
     let options = {
@@ -35,15 +35,14 @@ const PublicCategories = () => {
       },
     };
     launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
+      
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.error);
+        
       } else {
         const source = { uri: response.assets.uri };
-        console.log('response', JSON.stringify(response));
         setImagArray(response.assets)
         
         setType(response.assets[0].type)
@@ -75,11 +74,11 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-// console.log(requestOptions) 
+//  
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(result.success)
+    
     if(result && result.success == true){ 
       navigation.navigate('NewPost',{imgArray:result.data})
       setLoading(false)
@@ -87,12 +86,12 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
  
-  // console.log('imgArray',imgArray)
+  // 
   return (
     <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,backgroundColor:theme === 'dark' ? 'black':'white',}}>
       <Loader loading={loading}></Loader>
@@ -115,7 +114,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     <ScrollView   horizontal style={{flexDirection:'row'}}>
        {/* {fileUri != null ?(*/}
     {imgArray.map((e)=>{
-          // console.log('ee',e)
+          // 
           return(
             < View style={{}}>
        { e.type == 'image/jpeg'  ? (

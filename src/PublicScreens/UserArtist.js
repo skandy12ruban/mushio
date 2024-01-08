@@ -29,7 +29,7 @@ const UserArtist = () => {
 
       const getArtists = async ()=>{
         const res = await getUserProfileInfo()
-        // console.log(res.accessToken)
+        // 
         setLoading(true)
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${Token}`);
@@ -43,7 +43,7 @@ const UserArtist = () => {
           fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=artist`, requestOptions)
             .then(response => response.json())
             .then(result => {
-              console.log('artist res',result.data)
+              
               if(result && result.success == true){
               setArtistArray(result.data.list)
               setLoading(false)
@@ -51,7 +51,7 @@ const UserArtist = () => {
               setLoading(false)
             })
             .catch(error => {
-              console.log('error', error)
+              
             setLoading(false)
             });
           }
@@ -125,7 +125,7 @@ const UserArtist = () => {
     }
     const getRequests = async ()=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${Token}`);
@@ -139,7 +139,7 @@ const UserArtist = () => {
       fetch(`${API_BASE_URL}/api/user/pendingConnections?userType=artist`, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result.data.list)
+          
           if(result && result.success == true){
           setRequestArray(result.data.list)
           getArtists()
@@ -147,7 +147,7 @@ const UserArtist = () => {
           }
         })
         .catch(error => {
-          console.log('error', error)
+          
         setLoading(false)
         });
       }
@@ -158,7 +158,7 @@ const UserArtist = () => {
 
       const AcceptRequest=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -173,30 +173,30 @@ const UserArtist = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
+       
         fetch(`${API_BASE_URL}/api/user/acceptRequest`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' request result',result)
+            
             getRequests()
             getArtists()
             setLoading(false)
             // if(result && result.success == true){
-            //  console.log(result.data.status)
+            //  
             // // setSearchQuery(text)
             // setLoading(false)
             // }
            
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
 
       const RejectRequest=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -211,24 +211,24 @@ const UserArtist = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
+       
         fetch(`${API_BASE_URL}/api/user/deleteRequest`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' request result',result)
+            
             getRequests()
             getArtists()
             setLoading(false)
             // if(result && result.success == true){
             
-            //  console.log(result.data.status)
+            //  
             // // setSearchQuery(text)
             // setLoading(false)
             // }
            
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }

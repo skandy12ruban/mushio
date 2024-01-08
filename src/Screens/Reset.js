@@ -39,7 +39,7 @@ const ResetPassword= async ()=>{
   fetch(`${API_BASE_URL}/api/userAuth/resetPassword`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log(result)
+      
       if(result && result.success == true){
         navigation.navigate('Login')
         setLoading(false)
@@ -50,7 +50,7 @@ const ResetPassword= async ()=>{
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
    
       setLoading(false)
     });

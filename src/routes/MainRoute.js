@@ -22,7 +22,7 @@ const MainStack = createStackNavigator();
 const MainRoute = () => {
 
     const login_status = useSelector(state => state.User.login_status);
-    console.log("loginStatus",login_status)
+    
     // const dispatch = useDispatch();
 
     // const checkUser = async () => {

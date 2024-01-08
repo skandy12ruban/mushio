@@ -14,7 +14,7 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 
 function InChatViewFile({props, visible, onClose,}) {
   const {currentMessage} = props;
-  // console.log("currentMessage",currentMessage)
+  // 
   var fileType = '';
   if ((currentMessage.file && currentMessage.file.url) !== undefined) {
     fileType= currentMessage.file && currentMessage.file.url.split('.').pop();

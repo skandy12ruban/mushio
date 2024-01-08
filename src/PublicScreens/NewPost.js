@@ -21,17 +21,17 @@ const NewPost = () => {
   const[tag,setTag]=useState('')
   const [caption,setCaption]=useState('')
   const[dob,setDob]=useState(DateHelper.formatToDateYMD(new Date()))
-console.log(category)
+
   const data=[
     {value:'place',label:'place'},{value:'people',label:'people'},{value:'moments',label:'moment'}
   ]
 
    
-  console.log('imgArray..',imgArray)
+  
 
 const MyPost = async ()=>{
   const res = await getUserProfileInfo()
-  // console.log(res.accessToken)
+  // 
   setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -51,18 +51,18 @@ const MyPost = async ()=>{
     body: raw,
     redirect: 'follow'
   };
-  console.log('raw',raw)
+  
   fetch(`${API_BASE_URL}/api/post`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(result)
+    
     if(result && result.success == true){
         // setImagePath(result.data.url)
     //  alert(result.message)
     Alert.alert('Post', result.message, [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
+        
         style: 'cancel',
       },
       {text: 'OK', onPress: () =>  {
@@ -75,7 +75,7 @@ const MyPost = async ()=>{
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
@@ -104,7 +104,7 @@ const MyPost = async ()=>{
    
       <ScrollView horizontal style={{flexDirection:'row'}}>
       {imgArray.map((e)=>{
-          console.log('ee',e)
+          
           return(
             < View style={{}}>
        { e.type == 'image'  ? (

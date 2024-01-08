@@ -61,7 +61,7 @@ const theme = useColorScheme();
           validationSchema={SignUpFormValidator(props)}
           onSubmit={(values, {resetForm}) => {
             // SignUpFunction(values, resetForm);
-            console.log('values',values)
+            
             navigation.navigate('VerificationScreen',{values:values})
           }}>
           {({

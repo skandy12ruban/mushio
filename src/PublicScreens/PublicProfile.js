@@ -30,13 +30,13 @@ const PublicProfile = () => {
 
   const getUserResponse = async () => {
     const res = await getUserProfileInfo()
-    console.log('res...', res)
+    
     setName(res.name)
   }
 
   const getArtists = async () => {
     const res = await getUserProfileInfo()
-    // console.log(res.accessToken)
+    // 
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -50,7 +50,7 @@ const PublicProfile = () => {
     fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=artist`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('artist res', result.data)
+        
         if (result && result.success == true) {
           setArtistArray(result.data.list)
           setLoading(false)
@@ -58,14 +58,14 @@ const PublicProfile = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const getAudience = async () => {
     const res = await getUserProfileInfo()
-    // console.log(res.accessToken)
+    // 
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -79,7 +79,7 @@ const PublicProfile = () => {
     fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=audience`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('audience res', result.data)
+        
         if (result && result.success == true) {
           setAudienceArray(result.data.list)
           setLoading(false)
@@ -87,14 +87,14 @@ const PublicProfile = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const getProfile = async () => {
     const res = await getUserProfileInfo()
-    // console.log(res.accessToken)
+    // 
     setLoading(true)
     var myHeaders = new Headers();
     // myHeaders.append("Content-Type", "application/json");
@@ -109,7 +109,7 @@ const PublicProfile = () => {
     fetch(`${API_BASE_URL}/api/user/myProfile`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('profile res...', result.data)
+        
         if (result && result.success == true) {
           setProfileRes(result.data)
           setLoading(false)
@@ -117,7 +117,7 @@ const PublicProfile = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
 

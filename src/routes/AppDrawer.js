@@ -15,7 +15,7 @@ const Drawer = createDrawerNavigator();
 
 export const AppDrawer = (props) => {
 
-    console.log('AppDrawer tab')
+    
     return (
         <Drawer.Navigator
             drawerStyle={{

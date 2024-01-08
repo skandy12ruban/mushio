@@ -12,14 +12,14 @@ import Video from 'react-native-video'
 const UserMoments = () => {
     const route=useRoute();
     const{Token,userProfile} =route.params;
-    console.log('Token,userProfile..',Token,userProfile)
+    
   const videoPlayer = useRef(null);
   const [loading,setLoading]=useState(false)
   const isFocused=useIsFocused()
   const theme = useColorScheme();
   const[momentsArray,setMomentsArray]=useState([]);
   const navigation=useNavigation()
-  console.log('moments...',momentsArray)
+  
   const data=[
     {id:1,image:require('../assets/images/place1.jpg')},
     {id:2,image:require('../assets/images/place2.jpg')},
@@ -31,7 +31,7 @@ const UserMoments = () => {
 
 const Mymoments = async ()=>{
   const res = await getUserProfileInfo()
-  console.log(res.accessToken)
+  
   setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${Token}`);
@@ -42,11 +42,11 @@ method: 'GET',
 headers: myHeaders,
 redirect: 'follow'
 };
-console.log(myHeaders)
+
 fetch(`${API_BASE_URL}/api/post/myPosts?postType=moments`, requestOptions)
 .then(response => response.json())
 .then(result => {
-  console.log('..',result.data.list)
+  
   if(result && result.success == true){
     const updatedA = result.data.list.map(item => ({
       files: item.files.map(file => ({
@@ -58,7 +58,7 @@ fetch(`${API_BASE_URL}/api/post/myPosts?postType=moments`, requestOptions)
     updatedA.map((e)=>{
        let a= e.files;
          for(let i=0; i<a.length;i++){
-           // console.log('iiiiiiii',a[i])
+           // 
            userdata.push(a[i])
          }
      })
@@ -68,7 +68,7 @@ fetch(`${API_BASE_URL}/api/post/myPosts?postType=moments`, requestOptions)
   setLoading(false)
 })
 .catch(error => {
-  console.log('error', error)
+  
   setLoading(false)
 });
 }
@@ -78,7 +78,7 @@ useEffect(()=>{
 },[isFocused])
 
 const Item= ({item,index})=>{
-  // console.log(item)
+  // 
   return(
     <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
         
@@ -142,7 +142,7 @@ const Item= ({item,index})=>{
              <View key={item._id} style={{ width: '33.33%',padding:1 }}>
         
                    {item.files.map((file) => (
-                    // console.log(file)
+                    // 
             <View key={file._id} style={{margin:2}}>
               {file.type === 'image' && (
                <TouchableOpacity style={{backgroundColor:'white',  }}

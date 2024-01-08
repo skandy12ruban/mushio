@@ -21,7 +21,7 @@ const isFocused = useIsFocused()
 const dispatch=useDispatch()
 const route=useRoute();
 const {Token,userProfile,name}=route.params;
-// console.log('Token,userProfile',Token,userProfile)
+// 
 const theme = useColorScheme();
 const [isSwitchOn, setIsSwitchOn] = useState(false);
 const[loading,setLoading]=useState(false)
@@ -44,7 +44,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
 
      const getArtists = async ()=>{
       const res = await getUserProfileInfo()
-      // console.log(res.accessToken)
+      // 
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${Token}`);
@@ -58,7 +58,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
         fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=artist`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log('artist res',result.data)
+            
             if(result && result.success == true){
             setArtistArray(result.data.list)
             setLoading(false)
@@ -66,14 +66,14 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
             setLoading(false)
           })
           .catch(error => {
-            console.log('error', error)
+            
           setLoading(false)
           });
         }
        
         const getAudience = async ()=>{
           const res = await getUserProfileInfo()
-          // console.log(res.accessToken)
+          // 
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Authorization", `Bearer ${Token}`);
@@ -87,7 +87,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
             fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=audience`, requestOptions)
               .then(response => response.json())
               .then(result => {
-                console.log('audience res',result.data)
+                
                 if(result && result.success == true){
                 setAudienceArray(result.data.list)
                 setLoading(false)
@@ -95,14 +95,14 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                 setLoading(false)
               })
               .catch(error => {
-                console.log('error', error)
+                
               setLoading(false)
               });
             }
            
             const getProfile = async ()=>{
               const res = await getUserProfileInfo()
-              // console.log(res.accessToken)
+              // 
               setLoading(true)
               var myHeaders = new Headers();
               // myHeaders.append("Content-Type", "application/json");
@@ -117,7 +117,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                 fetch(`${API_BASE_URL}/api/user/myProfile`, requestOptions)
                   .then(response => response.json())
                   .then(result => {
-                    console.log('profile res...',result.data)
+                    
                     if(result && result.success == true){
                       setProfileRes(result.data)
                     setLoading(false)
@@ -125,7 +125,7 @@ const [profileimg,setProfileImg]=useState(require('../assets/images/image3.jpg')
                     setLoading(false)
                   })
                   .catch(error => {
-                    console.log('error', error)
+                    
                   setLoading(false)
                   });
               

@@ -94,10 +94,10 @@ const Login = withGlobalize(
     fetch(`${API_BASE_URL}/api/userAuth/login`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result.data)
+        
         if(result && result.success == true){
            const usertype= getUserType()
-           console.log('vsfvfzv',usertype)
+           
               const userInfo = result.data;
               saveUserProfileInfo(userInfo);
               dispatch(setuser(userInfo))
@@ -121,7 +121,7 @@ const Login = withGlobalize(
         }
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
    }
@@ -249,7 +249,7 @@ const Login = withGlobalize(
                   activeOpacity={0.5}
                   onPress={async() => {
                     // const usertype=await getUserType()
-                    // console.log('vsfvfzv',usertype)
+                    // 
                     // const userInfo = {userId: 101};
                     // saveUserProfileInfo(userInfo);
                     // dispatch(setuser(userInfo))

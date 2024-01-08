@@ -11,7 +11,7 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 const MyMoment = () => {
   const route=useRoute()
   const {item}=route.params;
-  console.log('item1',item)
+  
   const [recordTime, setRecordTime] = useState(0);
   const [paused, setPaused] = useState(false);
   const [currentPositionSec, setCurrentPositionSec] = useState(0);
@@ -61,7 +61,7 @@ const onStopPlay = async () => {
 };
 
  const Item= ({item,index})=>{
-    console.log('vhjvjh',item)
+    
     return(
       <View style={{margin:10,alignSelf:'center',}}>
           
@@ -74,7 +74,7 @@ const onStopPlay = async () => {
     )
   }
   const Item1= ({item,index})=>{
-    console.log('video url',item)
+    
     return(
       <View style={{margin:10,alignSelf:'center',}}>
          <Video
@@ -88,7 +88,7 @@ const onStopPlay = async () => {
     )
   }
   const Item2= ({item,index})=>{
-    console.log('audio',item)
+    
     return(
       <View style={{margin:10,alignSelf:'center',marginTop:30}}>
            <View >

@@ -45,15 +45,15 @@ const PublicHome = (props) => {
     { id: 3, image: require('../assets/images/place3.jpg') },
     { id: 4, image: require('../assets/images/place4.jpg') },
   ]
-  console.log('showPopover1', showPopover1)
+  
   const GetUserProfileInfo = async () => {
     const res = await getUserProfileInfo()
     setUserid(res._id)
-    console.log('profile res', res)
+    
   }
 
   const Item = ({ item, index }) => {
-    // console.log(item)
+    // 
     return (
       <View style={{ margin: 10, alignSelf: 'center', }}>
 
@@ -92,7 +92,7 @@ const PublicHome = (props) => {
 
   const reportItem = async (text) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     // setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -109,11 +109,11 @@ const PublicHome = (props) => {
       body: raw,
       redirect: 'follow'
     };
-    console.log(raw)
+    
     fetch(`${API_BASE_URL}/api/report`, requestOptions)
       .then(response => response.json())
       .then(async (result) => {
-        console.log('report res', result)
+        
         if (result.success == true) {
           alert('Thanks for letting us know')
         }
@@ -122,7 +122,7 @@ const PublicHome = (props) => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
@@ -130,7 +130,7 @@ const PublicHome = (props) => {
 
   const sharePost = async (id) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -149,7 +149,7 @@ const PublicHome = (props) => {
     fetch(`${API_BASE_URL}/api/share`, requestOptions)
       .then(response => response.json())
       .then(async (result) => {
-        console.log('share res', result)
+        
         if (result.success == true) {
           //  alert(result.message)
           setLink(result.data.link)
@@ -162,16 +162,16 @@ const PublicHome = (props) => {
 
           try {
             const result = await Share.open(shareOptions);
-            console.log(result);
+            
           } catch (error) {
-            console.log(error);
+            
           }
         }
         getHomedata()
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
 
@@ -179,7 +179,7 @@ const PublicHome = (props) => {
 
   const DeletePost = async (id) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -192,7 +192,7 @@ const PublicHome = (props) => {
     fetch(`${API_BASE_URL}/api/post/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('delete post res', result)
+        
         if (result && result.success == true) {
           getHomedata()
           setLoading(false)
@@ -200,14 +200,14 @@ const PublicHome = (props) => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const DisconnectUser = async (id) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -222,11 +222,11 @@ const PublicHome = (props) => {
       body: raw,
       redirect: 'follow'
     };
-    console.log(raw)
+    
     fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('disconnect user res', result)
+        
         if (result && result.success == true) {
           getHomedata()
           setLoading(false)
@@ -234,14 +234,14 @@ const PublicHome = (props) => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const getHomedata = async () => {
     const res = await getUserProfileInfo()
-    console.log('res', res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -254,7 +254,7 @@ const PublicHome = (props) => {
     fetch(`${API_BASE_URL}/api/post/home`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('home res', result.data.posts)
+        
         if (result && result.success == true) {
           setHomeArray(result.data.posts)
           setLoading(false)
@@ -262,7 +262,7 @@ const PublicHome = (props) => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
@@ -274,7 +274,7 @@ const PublicHome = (props) => {
 
   const postLikes = async (id) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -291,19 +291,19 @@ const PublicHome = (props) => {
           //  alert(result.message)
           setSelectedItem(null)
         }
-        console.log('likes response', result)
+        
         getHomedata()
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const getComments = async (id) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -316,20 +316,20 @@ const PublicHome = (props) => {
     fetch(`${API_BASE_URL}/api/post/getComments/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('getCommnets res', result.data.comments)
+        
         setComments(result.data.comments)
         getHomedata()
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const AddComment = async () => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -344,25 +344,25 @@ const PublicHome = (props) => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(raw)
+    
     fetch(`${API_BASE_URL}/api/post/addComment/${comentId}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        
         setComment('')
         getComments(comentId)
         getHomedata();
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const deleteComment = async (id) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -372,24 +372,24 @@ const PublicHome = (props) => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    // 
     fetch(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('delete', result)
+        
         getComments(comentId)
         getHomedata();
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const userProfile = async (id, name) => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -399,26 +399,26 @@ const PublicHome = (props) => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    // 
     fetch(`${API_BASE_URL}/api/user/profile/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('get userprofile response', result.data)
+        
         if (result && result.success == true) {
-          console.log(result.data.accessToken)
+          
           navigation.navigate('PublicProfile1', { Token: result.data.accessToken, userProfile: true, name: name })
           setLoading(false)
         }
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const renderPost = (post, index) => {
-    console.log('post', post)
+    
     let name = post.createdBy.name;
     let likeCount = post.likeCount;
     let commentsCount = post.commentCount
@@ -433,8 +433,8 @@ const PublicHome = (props) => {
       if (e.user == userid)
         return e;
     })
-    //  console.log('likes....',likes)
-    //  console.log("likessss...",likes[0] && likes[0].user == userid,isSelected,like)
+    //  
+    //  
     return (
       <Card style={{ padding: 10, margin: 10, width: '90%', alignSelf: 'center', backgroundColor: theme === 'dark' ? 'white' : 'black' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -465,7 +465,7 @@ const PublicHome = (props) => {
             // Alert.alert('Delete', 'Delete this post', [
             //   {
             //     text: 'Cancel',
-            //     onPress: () => console.log('Cancel Pressed'),
+            //     
             //     style: 'cancel',
             //   },
             //   {text: 'OK', onPress: () => { DeletePost(Id)}},
@@ -583,7 +583,7 @@ const PublicHome = (props) => {
   }, []);
 
   const CommentsItem = ({ item }) => {
-    console.log('comment', item)
+    
     let profileImage = item.user.profileImage
     let name = item.user.name
     let id = item._id
@@ -593,7 +593,7 @@ const PublicHome = (props) => {
         Alert.alert('Delete', 'Delete  comment', [
           {
             text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
+            
             style: 'cancel',
           },
           { text: 'OK', onPress: () => { deleteComment(id) } },
@@ -617,8 +617,8 @@ const PublicHome = (props) => {
           </View>
           <View style={{ marginLeft: 10, marginTop: 5 }}>
             <Text style={{ fontWeight: 'bold', color: 'black' }}>{name}</Text>
-            <Text style={{ color: theme === 'dark' ? 'black' : '', }}>{item.text}</Text>
-            <Text style={{ color: theme === 'dark' ? 'black' : '', fontSize: 10, }}>{date}</Text>
+            <Text style={{ color: theme === 'dark' ? 'black' : 'white', }}>{item.text}</Text>
+            <Text style={{ color: theme === 'dark' ? 'black' : 'white', fontSize: 10, }}>{date}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -689,7 +689,7 @@ const PublicHome = (props) => {
 
           {comments.length > 0 ? (
             <View style={{ marginTop: 10, marginBottom: 110, }}>
-              <Text style={{ color: theme === 'dark' ? 'black' : '', alignSelf: 'center', fontWeight: 'bold' }}>Comments</Text>
+              <Text style={{ color: theme === 'dark' ? 'black' : 'white', alignSelf: 'center', fontWeight: 'bold' }}>Comments</Text>
               <FlatList
                 data={comments || []}
                 renderItem={CommentsItem}
@@ -701,7 +701,7 @@ const PublicHome = (props) => {
                   placeholderTextColor={'black'}
                   value={coment}
                   onChangeText={(text) => { setComment(text) }}
-                  style={{ margin: 10, borderRadius: 10, borderWidth: 0.5, width: '80%', color: theme === 'dark' ? 'black' : '', }}
+                  style={{ margin: 10, borderRadius: 10, borderWidth: 0.5, width: '80%', color: theme === 'dark' ? 'black' : 'white', }}
                 />
                 {coment != '' ? (<TouchableOpacity style={{ backgroundColor: 'blue', marginTop: 15, borderRadius: 5, padding: 10, height: 40 }}
                   onPress={() => {
@@ -713,14 +713,14 @@ const PublicHome = (props) => {
             </View>
           ) : (
             <View>
-              <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: 'bold', color: theme === 'dark' ? 'black' : '', }}>No comments</Text>
+              <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: 'bold', color: theme === 'dark' ? 'black' : 'white', }}>No comments</Text>
               <View style={{ flexDirection: 'row', }}>
                 <TextInput
                   placeholder='Add comments'
                   placeholderTextColor={'black'}
                   value={coment}
                   onChangeText={(text) => { setComment(text) }}
-                  style={{ margin: 10, borderRadius: 10, borderWidth: 0.5, width: '80%', color: theme === 'dark' ? 'black' : '', }}
+                  style={{ margin: 10, borderRadius: 10, borderWidth: 0.5, width: '80%', color: theme === 'dark' ? 'black' : 'white', }}
                 />
                 {coment != '' ? (<TouchableOpacity style={{ backgroundColor: 'blue', marginTop: 15, borderRadius: 5, padding: 10, height: 40 }}
                   onPress={() => {

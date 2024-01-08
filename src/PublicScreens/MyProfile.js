@@ -15,7 +15,7 @@ const MyProfile = () => {
     const navigation=useNavigation()
     const route=useRoute()
     const {profileRes,getProfile}=route.params;
-    console.log('profile res',profileRes)
+    
     const theme = useColorScheme();
      
     const[loading,setLoading]=useState(false)
@@ -53,15 +53,14 @@ const MyProfile = () => {
       },
     };
     launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
+      
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.error);
+        
       } else {
         const source = { uri: response.assets.uri };
-        console.log('response', JSON.stringify(response));
         setFileName(response.assets[0].fileName)
         setImageType(response.assets[0].type)
         setFileUri(response.assets[0].uri)
@@ -73,7 +72,7 @@ const MyProfile = () => {
 
   const filesUpload = async (imgArray)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -93,11 +92,11 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-console.log(formdata)
+
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log('image path',result)
+    
     if(result && result.success == true){
         setImagePath(result.data[0].url)
      alert(result.message)
@@ -106,12 +105,12 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
 
-//   console.log(fileUri)
+//   
 
    const Profile= async()=>{
     const res = await getUserProfileInfo()
@@ -134,16 +133,16 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
         body: raw,
         redirect: 'follow'
       };
-      console.log(raw)
+      
       fetch(`${API_BASE_URL}/api/user/myProfile`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log('profile updated res',result)
+    
     if(result && result.success == true){
       Alert.alert(' ', result.message, [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
+          
           style: 'cancel',
         },
         {text: 'OK', onPress: () =>  navigation.goBack()},
@@ -155,7 +154,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   })
   .catch(error => {
     alert(result.message)
-    console.log('error', error)
+    
     setLoading(false)
   });
    }

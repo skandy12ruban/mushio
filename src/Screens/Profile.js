@@ -47,7 +47,7 @@ const Profile = () => {
    const MyScore = async ()=>{
     const res = await getUserProfileInfo()
     setUserInfo(res)
-    // console.log(res)
+    // 
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -61,7 +61,7 @@ const Profile = () => {
   fetch(`${API_BASE_URL}/api/private/moment/myProfile`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(result.data)
+    
     if(result && result.success == true){
     setScoreRes(result.data)
       setLoading(false)
@@ -69,7 +69,7 @@ const Profile = () => {
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
@@ -122,7 +122,7 @@ const Profile = () => {
                     keyExtractor={item => item.id}
                     renderItem={(e1)=>{
                      let name = e1.item.name ==  scoreRes.emoji ? e1.item : null;
-                      console.log('eeeeee',name);
+                      
                       if(name != null){
                       return(
                         <TouchableOpacity style={{backgroundColor: name.color ,width:70,height:70,borderRadius:5,marginTop:50}} >

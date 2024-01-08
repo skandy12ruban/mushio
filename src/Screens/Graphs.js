@@ -107,12 +107,12 @@ for(let i=1; i<=10; i++){
   year = year + 1
   years.push(year)
 }
-console.log(years)
+
 
 const DATA=years;
 
 const Item=({item})=>{
-  // console.log('iii',item == new Date().getFullYear())
+  // .getFullYear())
     return(
       <View style={{margin:2,}}>
 
@@ -131,35 +131,35 @@ let date = new Date();  // 2009-11-10
 date.setMonth(date.getMonth() - 1);
 
 const month = date.toLocaleString('default', { month: 'long' });
-console.log('month..',month);
+
 
 const getWeeklyAverageScore =async (week)=>{
  
   let start_date= '';
   let end_date= '';
   let days= (new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate())
-  console.log('days' ,days)
+  
 
     if(week == 1){
    start_date = `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'01'}`  
    end_date= `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'07'}`
-   console.log(start_date,end_date)
+   
     }else if(week == 2){
       start_date = `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'08'}`  
       end_date= `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'14'}`
-      console.log(start_date,end_date)
+      
     }else if(week == 3){
       start_date = `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'15'}`  
       end_date= `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'21'}`
-      console.log(start_date,end_date)
+      
     }else{
       start_date = `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+'22'}`  
       end_date= `${new Date().getFullYear()+'-'+new Date().getMonth()+'-'+days}`
-      console.log(start_date,end_date)
+      
     }
     
   const res = await getUserProfileInfo()
-  // console.log(res.accessToken)
+  // 
   setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -168,11 +168,11 @@ const getWeeklyAverageScore =async (week)=>{
     headers: myHeaders,
     redirect: 'follow'
     };
-     console.log(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`)
+     
     fetch(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log('score res',result.data)
+      
       if(result && result.success == true){
         setWeeklyScoreRes(result.data)
         setLoading(false)
@@ -180,22 +180,22 @@ const getWeeklyAverageScore =async (week)=>{
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
       setLoading(false)
     });
     }
 
   const getMonthlyAverageScore =async (month)=>{
     let days= (new Date(new Date().getFullYear(), month, 0).getDate())
-    // console.log('year, month',new Date().getFullYear(), month)
-    // console.log('days' ,days)
+    // .getFullYear(), month)
+    // 
       
     let start_date = `${new Date().getFullYear()+'-'+month+'-'+'01'}`  
     let end_date= `${new Date().getFullYear()+'-'+month+'-'+days}`
-     console.log(start_date,end_date)
+     
 
     const res = await getUserProfileInfo()
-    // console.log(res.accessToken)
+    // 
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -204,11 +204,11 @@ const getWeeklyAverageScore =async (week)=>{
       headers: myHeaders,
       redirect: 'follow'
       };
-      console.log(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`)
+      
       fetch(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('score res',result.data)
+        
         if(result && result.success == true){
         setMonthlyScoreRes(result.data)
           setLoading(false)
@@ -216,7 +216,7 @@ const getWeeklyAverageScore =async (week)=>{
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
       }
@@ -225,10 +225,10 @@ const getWeeklyAverageScore =async (week)=>{
           
         let start_date = `${year+'-'+'01'+'-'+'01'}`  
         let end_date= `${year+'-'+'12'+'-'+'31'}`
-         console.log(start_date,end_date)
+         
     
         const res = await getUserProfileInfo()
-        // console.log(res.accessToken)
+        // 
         setLoading(true)
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -237,11 +237,11 @@ const getWeeklyAverageScore =async (week)=>{
           headers: myHeaders,
           redirect: 'follow'
           };
-          console.log(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`)
+          
           fetch(`${API_BASE_URL}/api/private/moment/myStats?startDate=${start_date}&endDate=${end_date}`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log('score res',result.data)
+            
             if(result && result.success == true){
             setYearlyScoreRes(result.data)
               setLoading(false)
@@ -249,14 +249,12 @@ const getWeeklyAverageScore =async (week)=>{
             setLoading(false)
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
           }
 
       const daysInMonth = ( month) => {
-        console.log('year, month',new Date().getFullYear(), month)
-       console.log( (new Date(new Date().getFullYear(), month, 0).getDate()))
       };
 
 

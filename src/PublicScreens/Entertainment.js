@@ -40,7 +40,7 @@ const Entertainment = () => {
   const [showPopover1, setShowPopover1] = useState(false);
     const [like,setLike]=useState(false)
     // const{name,category,role,tagline}=route.params;
-    // console.log(name,category,role,tagline)
+    // 
 
     const data=[
         {id:1,image:require('../assets/images/place1.jpg')},
@@ -50,7 +50,7 @@ const Entertainment = () => {
       ]
       
       const Item= ({item,index})=>{
-        // console.log(item)
+        // 
         return(
           <View style={{margin:10,alignSelf:'center',}}>
               
@@ -89,11 +89,11 @@ const Entertainment = () => {
       const GetUserProfileInfo= async ()=>{
         const res = await getUserProfileInfo()
         setUserid(res._id)
-        console.log('profile res',res)
+        
       }
       const sendRequest=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           // setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -108,29 +108,29 @@ const Entertainment = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
+       
         fetch(`${API_BASE_URL}/api/user/sendRequest`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' request result',result)
+            
             getEntertainments()
             // if(result && result.success == true){
             //   // setRequestStatus(result.data.status)
-            //  console.log(result.data.status)
+            //  
             // // setSearchQuery(text)
             // setLoading(false)
             // }
            
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
 
       const reportItem = async (text)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           // setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -147,11 +147,11 @@ const Entertainment = () => {
             body: raw,
             redirect: 'follow'
           };
-          console.log(raw)
+          
            fetch(`${API_BASE_URL}/api/report`, requestOptions)
             .then(response => response.json())
             .then(async (result) => {
-              console.log('report res',result)
+              
               if( result.success == true ){
                   alert('Thanks for letting us know')
               }
@@ -160,13 +160,13 @@ const Entertainment = () => {
               setLoading(false)
             })
             .catch(error => {
-              console.log('error', error)
+              
               setLoading(false)
             });
       }
       const userProfile = async (id,name)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -176,26 +176,26 @@ const Entertainment = () => {
           headers: myHeaders,
           redirect: 'follow'
         };
-        // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+        // 
         fetch(`${API_BASE_URL}/api/user/profile/${id}`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log('get userprofile response',result.data)
+            
             if(result && result.success == true){
-              console.log(result.data.accessToken)
+              
                  navigation.navigate('PublicProfile1',{Token:result.data.accessToken,userProfile:true,name:name})
                   setLoading(false)
             }
             setLoading(false)
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
       const disconnectUser=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           // setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -210,28 +210,28 @@ const Entertainment = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
+       
         fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' disconnectUser result',result)
+            
             getEntertainments()
             if(result && result.success == true){
             
-             console.log(result)
+             
             // setSearchQuery(text)
             setLoading(false)
             }
            
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
       const DisconnectUser = async (id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -246,11 +246,11 @@ const Entertainment = () => {
             body: raw,
             redirect: 'follow'
           };
-        console.log(raw)
+        
         fetch(`${API_BASE_URL}/api/user/disconnectUser`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log('disconnect user res',result)
+            
             if(result && result.success == true){
               getEntertainments()
             setLoading(false)
@@ -258,13 +258,13 @@ const Entertainment = () => {
             setLoading(false)
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
       const RejectRequest=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           // setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -279,29 +279,29 @@ const Entertainment = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
-       console.log(`${API_BASE_URL}/api/user/deleteRequest`)
+       
+       
         fetch(`${API_BASE_URL}/api/user/deleteRequest`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' reject result',result)
+            
             getEntertainments()
             // if(result && result.success == true){
             
-            //  console.log(result)
+            //  
             // // setSearchQuery(text)
             // setLoading(false)
             // }
            
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
 
       const renderPost = (post, index) => {
-          // console.log('entertaimnent post',post)
+          // 
         let name = post.createdBy.name;
         let type= post.createdBy.userType;
         let head= post.head
@@ -387,7 +387,7 @@ const Entertainment = () => {
         //  Alert.alert('Delete', 'Delete this post', [
         //   {
         //     text: 'Cancel',
-        //     onPress: () => console.log('Cancel Pressed'),
+        //     
         //     style: 'cancel',
         //   },
         //   {text: 'OK', onPress: () => { DeletePost(Id2)}},
@@ -510,12 +510,12 @@ const Entertainment = () => {
 
     const ratingCompleted = (rating) => {
       setRating(rating);
-      console.log("Rating is:==========> " + rating)
+      
   }
 
   const getEntertainments = async ()=>{
     const res = await getUserProfileInfo()
-  console.log(res.accessToken)
+  
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -528,7 +528,7 @@ const Entertainment = () => {
   fetch(`${API_BASE_URL}/api/post/entertainment`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log('entertaiment result',result.data.posts)
+      
       if(result && result.success == true){
       setEntertainmentArray(result.data.posts)
       setLoading(false)
@@ -536,7 +536,7 @@ const Entertainment = () => {
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
       setLoading(false)
     });
   }
@@ -556,15 +556,15 @@ const Entertainment = () => {
   
     try {
       const result = await Share.open(shareOptions);
-      console.log(result);
+      
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
   const DeletePost = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -577,7 +577,7 @@ const Entertainment = () => {
     fetch(`${API_BASE_URL}/api/post/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('delete post res',result)
+        
         if(result && result.success == true){
           getEntertainments()
         setLoading(false)
@@ -585,14 +585,14 @@ const Entertainment = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const postLikes = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -605,7 +605,7 @@ const Entertainment = () => {
     fetch(`${API_BASE_URL}/api/post/toggleLike/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        
         if( result.message == 'Post unliked successfully' ){
           //  alert(result.message)
            setSelectedItem(null)
@@ -614,14 +614,14 @@ const Entertainment = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const getComments = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -634,20 +634,20 @@ const Entertainment = () => {
     fetch(`${API_BASE_URL}/api/post/getComments/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('getCommnets res',result.data.comments)
+        
         setComments(result.data.comments)
         getEntertainments()
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const AddComment = async ()=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -662,25 +662,25 @@ const Entertainment = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(raw)
+    
     fetch(`${API_BASE_URL}/api/post/addComment/${comentId}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
+        
        setComment('') 
        getComments(comentId)
        getEntertainments();
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const deleteComment = async (id)=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -690,23 +690,23 @@ const Entertainment = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    // console.log(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`)
+    // 
     fetch(`${API_BASE_URL}/api/post/deleteComment/${comentId}/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('delete',result)
+        
        getComments(comentId)
        getEntertainments();
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
 
   const CommentsItem =  ({item})=>{
-    console.log('comment',item)
+    
     let profileImage = item.user.profileImage
     let name = item.user.name
     let id= item._id
@@ -716,7 +716,7 @@ const Entertainment = () => {
         Alert.alert('Delete', 'Delete this message', [
           {
             text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
+            
             style: 'cancel',
           },
           {text: 'OK', onPress: () => { deleteComment(id)}},

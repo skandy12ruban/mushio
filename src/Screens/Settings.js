@@ -24,7 +24,7 @@ const Settings = () => {
 
  const getProfile = async ()=>{
   const res = await getUserProfileInfo()
-  // console.log(res.accessToken)
+  // 
   setLoading(true)
   var myHeaders = new Headers();
   // myHeaders.append("Content-Type", "application/json");
@@ -41,7 +41,7 @@ const Settings = () => {
     fetch(`${API_BASE_URL}/api/user/myProfile?privateMode=true`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        // console.log('profile res...',result.data)
+        // 
         if(result && result.success == true){
           setProfileRes(result.data)
         setLoading(false)
@@ -49,7 +49,7 @@ const Settings = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
       setLoading(false)
       });
   

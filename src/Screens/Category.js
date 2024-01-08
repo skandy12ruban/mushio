@@ -22,7 +22,7 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 const Category = () => {
     const route =useRoute()
     const {item,hashtags}=route.params;
-    console.log(item,hashtags)
+    
     const[loading,setLoading]=useState(false)
     const navigation=useNavigation()
     const[title,setTitle]=useState('')
@@ -50,7 +50,7 @@ const Category = () => {
 
   
 
-console.log('duration',duration)
+
 
   const showDatePicker = () => {
     setDatePickerVisible(true);
@@ -75,16 +75,16 @@ console.log('duration',duration)
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
         ]);
     
-        console.log('write external stroage', grants);
+        
     
         if (
           grants['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
           grants['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
           grants['android.permission.RECORD_AUDIO'] === PermissionsAndroid.RESULTS.GRANTED
         ) {
-          console.log('Permissions granted');
+          
         } else {
-          console.log('All required permissions not granted');
+          
           return;
         }
       } catch (err) {
@@ -125,13 +125,13 @@ console.log('duration',duration)
            type: "audio/mp3", // Change this to the appropriate MIME type for your use case
           fileName: 'audio',
        };
-       console.log(resultObject);
+       
     setAudioPath(result)
     const audioArray=[]
     audioArray.push(resultObject)
-    // console.log('audioArray...',audioArray)
+    // 
     filesUpload2(audioArray)
-     console.log('response',result)
+     
     
   };
 
@@ -182,15 +182,14 @@ console.log('duration',duration)
       },
     };
     launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
+      
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.error);
+        
       } else {
         const source = { uri: response.assets.uri };
-        console.log('response', JSON.stringify(response));
        
         setType(response.assets[0].type)
         setFileUri(response.assets[0].uri)
@@ -210,15 +209,14 @@ console.log('duration',duration)
       },
     };
     launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
+      
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.error);
+        
       } else {
         const source = { uri: response.assets.uri };
-        console.log(' video response', JSON.stringify(response));
         setType(response.assets[0].type)
         setFileUri1(response.assets[0].uri)
         filesUpload1(response.assets)
@@ -249,20 +247,20 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-// console.log(requestOptions) 
+//  
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    // console.log('upload res',result.data)
+    // 
     if(result && result.success == true){ 
       const urlArray = result.data.map(item => item.url);
       setImagArray(urlArray)
-      // console.log(urlArray)
+      // 
       // alert(result.message)
       Alert.alert('Image', result.message, [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
+          
           style: 'cancel',
         },
         {text: 'OK', onPress: () =>  {
@@ -274,7 +272,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
@@ -300,20 +298,20 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-console.log(requestOptions) 
+ 
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(' video upload res',result.data)
+    
     if(result && result.success == true){ 
       const urlArray = result.data.map(item => item.url);
       setVideoArray(urlArray)
-      // console.log(urlArray)
+      // 
       // alert(result.message)
       Alert.alert('Video', result.message, [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
+          
           style: 'cancel',
         },
         {text: 'OK', onPress: () =>  {
@@ -325,7 +323,7 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
@@ -351,20 +349,20 @@ var requestOptions = {
   body: formdata,
   redirect: 'follow'
 };
-// console.log(formdata) 
+//  
 fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    // console.log('upload res',result.data)
+    // 
     if(result && result.success == true){ 
       const urlArray = result.data.map(item => item.url);
       setAudioArray(urlArray)
-      // console.log(urlArray)
+      // 
       // alert(result.message)
       Alert.alert('Audio', result.message, [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
+          
           style: 'cancel',
         },
         {text: 'OK', onPress: () =>  {
@@ -376,18 +374,18 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
 
-  console.log('audio res',audioArray)
-  console.log('video res',videoArray)
-  console.log('image res',imgArray)
+  
+  
+  
 
  const onSubmit = async ()=>{
   const res= await getUserProfileInfo()
-  console.log(res.accessToken)
+  
      setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -410,17 +408,17 @@ fetch(`${API_BASE_URL}/api/fileUpload/uploadFiles`, requestOptions)
     body: raw,
     redirect: 'follow'
   };
-  console.log(raw)
+  
   fetch(`${API_BASE_URL}/api/private/moment`, requestOptions)
 .then(response => response.json())
 .then(result => {
-console.log('moment res',result)
+
 if(result && result.success == true){
-  console.log(result.data)
+  
   Alert.alert('Moment', result.message, [
     {
       text: 'Cancel',
-      onPress: () => console.log('Cancel Pressed'),
+      
       style: 'cancel',
     },
     {text: 'OK', onPress: () =>  {
@@ -434,7 +432,7 @@ setLoading(false)
 })
 .catch(error => {
 alert(result.message)
-console.log('error', error)
+
 setLoading(false)
 });
 }

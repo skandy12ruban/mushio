@@ -23,7 +23,7 @@ const Home = (props) => {
 
   const UserProfileInfo = async ()=>{
     const res= await getUserProfileInfo()
-    console.log(res)
+    
     setUserInfo(res)
   }
   
@@ -34,7 +34,7 @@ const Home = (props) => {
 const [showAllMonths, setShowAllMonths] = useState(false);
 const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 const [selectedDateString, setSelectedDateString] = useState(DateHelper.formatToDateYMD(new Date()));
-// console.log('dddd',selectedDateString)
+// 
 const data=[
   {id:1,color:'#FFB6C1',image:require('../assets/images/image1.jpg'),name:'SuperHappy'},
   {id:2,color:'#00B0FF',image:require('../assets/images/image3.jpg'),name:'Happy'},
@@ -46,9 +46,9 @@ const data=[
 
 const getAllMoments = async (Date)=>{
 
-  // console.log('date.',Date != undefined ? Date : selectedDateString);
+  // 
   const res= await getUserProfileInfo()
-  // console.log(res.accessToken)
+  // 
  setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -57,11 +57,11 @@ const getAllMoments = async (Date)=>{
     headers: myHeaders,
     redirect: 'follow'
     };
-    // console.log(`${API_BASE_URL}/api/private/moment/myMoments?date=${Date != undefined ? Date : selectedDateString}&sortType=desc&page=1&perPage=100`)
+    // 
     fetch(`${API_BASE_URL}/api/private/moment/myMoments?date=${Date != undefined ? Date : selectedDateString}&sortType=desc&page=1&perPage=100`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log(result.data.list)
+      
       if(result && result.success == true){
         setMomentsArray(result.data.list)
         setLoading(false)
@@ -69,14 +69,14 @@ const getAllMoments = async (Date)=>{
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
       setLoading(false)
     });
 }
 
 const deleteMomentum = async (id)=>{
   const res= await getUserProfileInfo()
-  // console.log(res.accessToken)
+  // 
  setLoading(true)
   var myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -88,7 +88,7 @@ const deleteMomentum = async (id)=>{
     fetch(`${API_BASE_URL}/api/private/moment/${id}`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log('delete',result.data)
+      
       if(result && result.success == true){
         getAllMoments()
         setLoading(false)
@@ -96,7 +96,7 @@ const deleteMomentum = async (id)=>{
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
       setLoading(false)
     });
 }
@@ -151,7 +151,6 @@ const getGreetingText = () => {
 
 const handleMonthChanged = (start, end) => {
   // Handle month change event
-  console.log('Month changed:', start.format('MMMM YYYY'));
 };
 
   return (
@@ -188,7 +187,7 @@ const handleMonthChanged = (start, end) => {
       highlightDateNumberStyle={{backgroundColor:'white',borderRadius:100,color:'black',padding:3}}
       onDateSelected={(date) => {
         let Date=DateHelper.formatToDateYMD(date)
-        // console.log('date..',DateHelper.formatToDateYMD(date))
+        // )
         setSelectedDateString(DateHelper.formatToDateYMD(Date))
         getAllMoments(Date)
       }}
@@ -200,7 +199,7 @@ const handleMonthChanged = (start, end) => {
             const date= item.createdAt.slice(11,16)
             var time12 = convertTo12HourFormat(date);
             let Id= item._id
-          //  console.log(item)
+          //  
             return(
               <View style={{margin:10,flex:1}}>
               <Card style={{backgroundColor:theme === 'dark' ? '#474242':'#ffffff',}} 
@@ -216,7 +215,7 @@ const handleMonthChanged = (start, end) => {
                 Alert.alert('Delete', 'delete moment ?', [
                   {
                     text: 'No',
-                    onPress: () => console.log('Cancel Pressed'),
+                    
                     style: 'cancel',
                   },
                   {text: 'yes', onPress: () =>  deleteMomentum(Id)},
@@ -233,7 +232,7 @@ const handleMonthChanged = (start, end) => {
                     data={item.keywords}
                     keyExtractor={item => item.index}
                     renderItem={(e)=>{
-                      // console.log(e)
+                      // 
                       return(
                         <View style={{paddingLeft:10,backgroundColor:theme === 'dark' ? 'black':'#00B0FF',margin:5,borderRadius:10,}}>
                         <Text style={{alignSelf:'center',padding:2,color:theme === 'dark' ? 'white':'black',marginRight:5}}>{e.item}</Text>
@@ -248,7 +247,7 @@ const handleMonthChanged = (start, end) => {
                     keyExtractor={item => item.id}
                     renderItem={(e1)=>{
                      let name = e1.item.name ==  item.emoji ? e1.item : null;
-                      // console.log('eeeeee',name);
+                      // 
                       if(name != null){
                       return(
                         <View>

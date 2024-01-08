@@ -21,7 +21,7 @@ const Posts = () => {
 
   const getAudience = async ()=>{
     const res = await getUserProfileInfo()
-    // console.log(res.accessToken)
+    // 
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -35,7 +35,7 @@ const Posts = () => {
       fetch(`${API_BASE_URL}/api/user/connectedUsers?userType=audience`, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log('audience res',result.data)
+          
           if(result && result.success == true){
           setAudienceArray(result.data.list)
           setLoading(false)
@@ -43,7 +43,7 @@ const Posts = () => {
           setLoading(false)
         })
         .catch(error => {
-          console.log('error', error)
+          
         setLoading(false)
         });
       }
@@ -118,7 +118,7 @@ const Posts = () => {
 
      const AcceptRequest=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -133,29 +133,29 @@ const Posts = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
+       
         fetch(`${API_BASE_URL}/api/user/acceptRequest`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' request result',result)
+            
             getRequests()
             getAudience()
             // if(result && result.success == true){
-            //  console.log(result.data.status)
+            //  
             // // setSearchQuery(text)
             // setLoading(false)
             // }
             setLoading(false)
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
 
       const RejectRequest=async(id)=>{
         const res = await getUserProfileInfo()
-        console.log(res.accessToken)
+        
           setLoading(true)
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
@@ -170,31 +170,31 @@ const Posts = () => {
             body: raw,
             redirect: 'follow'
           };
-       console.log(requestOptions)
+       
         fetch(`${API_BASE_URL}/api/user/deleteRequest`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(' request result',result)
+            
             getRequests()
             getAudience()
             setLoading(false)
             // if(result && result.success == true){
             
-            //  console.log(result.data.status)
+            //  
             // // setSearchQuery(text)
             // setLoading(false)
             // }
            
           })
           .catch(error => {
-            console.log('error', error)
+            
             setLoading(false)
           });
       }
 
   const getRequests = async ()=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -208,7 +208,7 @@ const Posts = () => {
       fetch(`${API_BASE_URL}/api/user/pendingConnections?userType=audience`, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result.data.list)
+          
           if(result && result.success == true){
           setRequestArray(result.data.list)
           getAudience()
@@ -216,7 +216,7 @@ const Posts = () => {
           }
         })
         .catch(error => {
-          console.log('error', error)
+          
         setLoading(false)
         });
       }

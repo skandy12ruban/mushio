@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Dimensions, StyleSheet, useColorScheme } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -6,9 +6,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import messaging from '@react-native-firebase/messaging';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Metrics from '../Constants/Metrics';
 import { Categories, Home, Profile, Graphs } from '../Screens';
+import { useDispatch, useSelector } from 'react-redux';
 import { HOME, GRAPHS } from './RouteConst';
 import PublicSearchScreen from '../PublicScreens/PublicSearchScreen';
 import PublicCategories from '../PublicScreens/PublicCategories';
@@ -18,7 +20,7 @@ import PublicProfile from '../PublicScreens/PublicProfile';
 import { PUBLIC_HOME, PUBLIC_PROFILE } from './PublicRouteConts';
 import EditProfile from '../PublicScreens/EditProfile';
 import Entertainment from '../PublicScreens/Entertainment';
-
+import DeviceInfo from 'react-native-device-info';
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
@@ -57,8 +59,32 @@ const tabIcon = (icon, focused) => {
 
 const PublicBottomTabs = (props) => {
   const theme = useColorScheme()
+  const userData = useSelector(state => state.User.userData);
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      // User has authorized
+      let fcmToken = await messaging().getToken();
+      let deviceId = DeviceInfo.getUniqueId();
+      let deviceType = Platform.OS;
+     
+      return {
+        'deviceId': deviceId,
+        'deviceToken': fcmToken,
+        'deviceType': Platform.OS
+      }
+    }
+  };
 
-
+  useEffect(()=>{
+    let info = requestUserPermission();
+    
+    
+  },[])
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>

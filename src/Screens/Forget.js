@@ -33,7 +33,7 @@ const getforgetPassword= async ()=>{
   fetch(`${API_BASE_URL}/api/userAuth/forgotPassword`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log(result)
+      
       if(result && result.success == true){
         let response=result.data
         navigation.navigate('VerifyForget',{forgetRes:response})
@@ -45,7 +45,7 @@ const getforgetPassword= async ()=>{
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
    
       setLoading(false)
     });

@@ -29,7 +29,7 @@ const PublicSearchScreen = () => {
   ]
 
 const Item= ({item,index})=>{
-  // console.log(item)
+  // 
   return(
     // <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
         
@@ -72,7 +72,7 @@ const Item= ({item,index})=>{
 
 const getSearchdata = async ()=>{
   const res = await getUserProfileInfo()
-  console.log(res.accessToken)
+  
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -81,22 +81,22 @@ const getSearchdata = async ()=>{
     headers: myHeaders,
     redirect: 'follow'
   };
-  console.log(`${API_BASE_URL}/api/post`)
+  
   fetch(`${API_BASE_URL}/api/post`, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log('rrsults',result.data.posts)
+      
       if(result && result.success == true){
       //   let userdata=[]
       //  result.data.posts.map((e)=>{
       //     let a= e.files;
       //       for(let i=0; i<a.length;i++){
-      //         // console.log('iiiiiiii',a[i])
+      //         // 
       //         userdata.push(a[i])
       //       }
       //   })
        
-        // console.log('response',userdata)
+        // 
       // setSearchArray(userdata)
 
       const updatedA = result.data.posts.map(item => ({
@@ -109,11 +109,11 @@ const getSearchdata = async ()=>{
       updatedA.map((e)=>{
          let a= e.files;
            for(let i=0; i<a.length;i++){
-             // console.log('iiiiiiii',a[i])
+             // 
              userdata.push(a[i])
            }
        })
-      // console.log('response11',userdata)
+      // 
       setSearchArray(userdata)
 
       setLoading(false)
@@ -121,14 +121,14 @@ const getSearchdata = async ()=>{
       setLoading(false)
     })
     .catch(error => {
-      console.log('error', error)
+      
       setLoading(false)
     });
   }
   const getSearchdata1 = async (text)=>{
    
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
       // setLoading(true)
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -137,11 +137,11 @@ const getSearchdata = async ()=>{
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(`${API_BASE_URL}/api/post?q=${text}`)
+    
     fetch(`${API_BASE_URL}/api/post?q=${text}`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('rrsult',result.data.posts)
+        
         if(result && result.success == true){
           const updatedA = result.data.posts.map(item => ({
             files: item.files.map(file => ({
@@ -153,7 +153,7 @@ const getSearchdata = async ()=>{
           updatedA.map((e)=>{
              let a= e.files;
                for(let i=0; i<a.length;i++){
-                 // console.log('iiiiiiii',a[i])
+                 // 
                  userdata.push(a[i])
                }
            })
@@ -164,7 +164,7 @@ const getSearchdata = async ()=>{
        
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
 
@@ -172,7 +172,7 @@ const getSearchdata = async ()=>{
   
     // const selectSearchData=async(id)=>{
     //   const res = await getUserProfileInfo()
-    //   console.log(res.accessToken)
+    //   
     //     setLoading(true)
     //     var myHeaders = new Headers();
     //     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -181,11 +181,11 @@ const getSearchdata = async ()=>{
     //     headers: myHeaders,
     //     redirect: 'follow'
     //   };
-    //   console.log(`${API_BASE_URL}/api/post/travel?postId=${id}`)
+    //   
     //   fetch(`${API_BASE_URL}/api/post/travel?postId=${id}`, requestOptions)
     //     .then(response => response.json())
     //     .then(result => {
-    //       console.log(' selecty rrsult',result.data.posts)
+    //       
     //       if(result && result.success == true){
     //         let item =result.data.posts
     //         navigation.navigate('PublicSearchScreen1',{searchArray:item,selectSearchData:selectSearchData})
@@ -195,7 +195,7 @@ const getSearchdata = async ()=>{
          
     //     })
     //     .catch(error => {
-    //       console.log('error', error)
+    //       
     //       setLoading(false)
     //     });
     // }
@@ -236,7 +236,7 @@ const getSearchdata = async ()=>{
                </View>
        {/* {serachArray.map((e)=>{
 
-            console.log('ee',e)
+            
             return(
               < View style={{}}>
                 <FlatList

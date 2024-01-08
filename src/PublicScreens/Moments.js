@@ -16,7 +16,7 @@ const Moments = () => {
   const theme = useColorScheme();
   const [momentsArray, setMomentsArray] = useState([]);
   const navigation = useNavigation()
-  console.log('moments...', momentsArray)
+  
   const data = [
     { id: 1, image: require('../assets/images/place1.jpg') },
     { id: 2, image: require('../assets/images/place2.jpg') },
@@ -28,7 +28,7 @@ const Moments = () => {
 
   const Mymoments = async () => {
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${res.accessToken}`);
@@ -39,11 +39,11 @@ const Moments = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    console.log(myHeaders)
+    
     fetch(`${API_BASE_URL}/api/post/myPosts?postType=moments`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log('..', result.data.list)
+        
         if (result && result.success == true) {
           const updatedA = result.data.list.map(item => ({
             files: item.files.map(file => ({
@@ -55,7 +55,7 @@ const Moments = () => {
           updatedA.map((e) => {
             let a = e.files;
             for (let i = 0; i < a.length; i++) {
-              // console.log('iiiiiiii',a[i])
+              // 
               userdata.push(a[i])
             }
           })
@@ -65,7 +65,7 @@ const Moments = () => {
         setLoading(false)
       })
       .catch(error => {
-        console.log('error', error)
+        
         setLoading(false)
       });
   }
@@ -75,7 +75,7 @@ const Moments = () => {
   }, [isFocused])
 
   const Item = ({ item, index }) => {
-    // console.log(item)
+    // 
     return (
       <View style={{ alignSelf: 'center', borderWidth: 1, margin: 2, marginLeft: 5 }}>
 
@@ -141,7 +141,7 @@ const Moments = () => {
              <View key={item._id} style={{ width: '33.33%',padding:1 }}>
         
                    {item.files.map((file) => (
-                    // console.log(file)
+                    // 
             <View key={file._id} style={{margin:2}}>
               {file.type === 'image' && (
                <TouchableOpacity style={{backgroundColor:'white',  }}

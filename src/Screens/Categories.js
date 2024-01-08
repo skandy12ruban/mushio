@@ -41,7 +41,7 @@ const data1=[
 
 const [hastags,setHastags]=useState(data1)
 const [selectedHastags,setSelectedHastags]=useState([])
-console.log('hastags',selectedHastags)
+
 
 const Item=({item})=>{
   return(

@@ -20,7 +20,7 @@ const OtpScreen = () => {
     const navigation=useNavigation()
     const route=useRoute();
     const {values,country,email,phoneNumber,dob,gender}=route.params;
-    console.log(phoneNumber)
+    
     const [loading,setLoading] = useState(false)
    const[checked,setChecked]=useState(false)
     const[otp,setOtp]=useState('')
@@ -40,7 +40,7 @@ const OtpScreen = () => {
         "gender":`${gender}`,
         "dob":`${dob}`,
       });
-      console.log(payload)
+      
       let requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -49,7 +49,7 @@ const OtpScreen = () => {
       fetch(`${API_BASE_URL}/api/userAuth/register`, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result)
+          
           if(result && result.success == true){
             Alert.alert( APP_NAME,result.message, [
               {text: 'Cancel', onPress: () => {}},
@@ -69,7 +69,7 @@ const OtpScreen = () => {
      
         })
         .catch(error => {
-          console.log('errors', error)
+          
           setLoading(false)
         });
     }

@@ -12,7 +12,7 @@ import UserPlaces from '../PublicScreens/UserPlaces';
 const Tab = createMaterialTopTabNavigator();
 const UserTopTabs = (props) => {
   const{Token,userProfile} =props
-//   console.log('Token,userProfile.',Token,userProfile)
+//   
   return (
     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
       <Tab.Navigator

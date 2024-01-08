@@ -167,7 +167,7 @@ const ProfileDetails = () => {
   const route=useRoute();
   const {profileRes,getProfile}=route.params;
   // const[profileRes,setProfileRes]=useState({})
-  console.log('profile res...',profileRes)
+  
   const[name,setName]=useState(profileRes && profileRes.nickName ? profileRes.nickName :'')
   const[dob,setDob]=useState(profileRes && profileRes.dob ? profileRes.dob.slice(0,10) :'')
   const[dates,setDates]=useState(profileRes && profileRes.impDates ? profileRes.impDates :"")
@@ -195,16 +195,16 @@ const ProfileDetails = () => {
         body: raw,
         redirect: 'follow'
       };
-      console.log(raw)
+      
       fetch(`${API_BASE_URL}/api/user/myProfile`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log('profile updated res',result)
+    
     if(result && result.success == true){
       Alert.alert(' ', result.message, [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
+          
           style: 'cancel',
         },
         {text: 'OK', onPress: () =>  navigation.goBack()},
@@ -216,7 +216,7 @@ const ProfileDetails = () => {
   })
   .catch(error => {
     alert(result.message)
-    console.log('error', error)
+    
     setLoading(false)
   });
    }

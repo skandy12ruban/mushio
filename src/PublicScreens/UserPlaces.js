@@ -23,7 +23,7 @@ const UserPlaces = () => {
   ]
   const MyPlace = async ()=>{
     const res = await getUserProfileInfo()
-    console.log(res.accessToken)
+    
     setLoading(true)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${Token}`);
@@ -34,11 +34,11 @@ const UserPlaces = () => {
   headers: myHeaders,
   redirect: 'follow'
   };
-  console.log(myHeaders)
+  
   fetch(`${API_BASE_URL}/api/post/myPosts?postType=place`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    console.log(result.data.list)
+    
     if(result && result.success == true){
       const updatedA = result.data.list.map(item => ({
         files: item.files.map(file => ({
@@ -50,7 +50,7 @@ const UserPlaces = () => {
       updatedA.map((e)=>{
          let a= e.files;
            for(let i=0; i<a.length;i++){
-             // console.log('iiiiiiii',a[i])
+             // 
              userdata.push(a[i])
            }
        })
@@ -60,7 +60,7 @@ const UserPlaces = () => {
     setLoading(false)
   })
   .catch(error => {
-    console.log('error', error)
+    
     setLoading(false)
   });
   }
@@ -70,7 +70,7 @@ const UserPlaces = () => {
   },[])
   
   const Item= ({item,index})=>{
-    // console.log(item)
+    // 
     return(
       <View style={{alignSelf:'center',borderWidth:1,margin:2,marginLeft:5}}>
           
