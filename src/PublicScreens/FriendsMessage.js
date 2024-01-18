@@ -1,11 +1,13 @@
-import React,{useState,useEffect,useCallback,} from 'react';
-import { View, Text, SafeAreaView,Image,TouchableOpacity,ScrollView,StyleSheet,PermissionsAndroid,Platform,ActivityIndicator,Clipboard } from 'react-native';
+import React, { useState, useEffect, useCallback, } from 'react';
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, StyleSheet, PermissionsAndroid, Platform, ActivityIndicator, Clipboard } from 'react-native';
 import Loader from '../Components/Loader';
 import Metrics from '../Constants/Metrics';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { API_BASE_URL } from '../api/ApiClient'
+import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {Bubble, GiftedChat, Send, IMessage, InputToolbar} from 'react-native-gifted-chat';
+import { Bubble, GiftedChat, Send, IMessage, InputToolbar } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,137 +17,154 @@ import InChatFileTransfer from '../Components/chat/InChatFileTransfer';
 import InChatViewFile from '../Components/chat/InChatViewFile';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFetchBlob from 'rn-fetch-blob';
+import { getAPI, postAPI } from '../api/api-utils';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 
 const FriendsMessage = () => {
-  const navigation=useNavigation()
-  const[loading,setLoading]=useState(false)
-  const route= useRoute()
-  const{item}=route.params;
-  
-// 
-const time =`${new Date().toLocaleTimeString('en-US', {
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true, // This will display AM/PM
-})}`
+  const navigation = useNavigation()
+
+  const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState(null)
+  const [participant, setParticipant] = useState(null)
+  const route = useRoute()
+  const { item } = route.params;
+  // 
+  const time = `${new Date().toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // This will display AM/PM
+  })}`
 
 
-const [recordingActive, setRecordingActive] = useState(false);
-const [audioPath, setAudioPath] = useState('');
+  const [recordingActive, setRecordingActive] = useState(false);
+  const [audioPath, setAudioPath] = useState('');
 
-const [isAttachAudio, setIsAttachAudio] = useState(false);
-const [isAttachImage, setIsAttachImage] = useState(false);
-const [isAttachFile, setIsAttachFile] = useState(false);
-const [imagePath, setImagePath] = useState('');
-const [filePath, setFilePath] = useState('');
-const [fileVisible, setFileVisible] = useState(false);
-const [messages, setMessages] = useState([
-  {
-    _id: 1,
-    text: item && `${item.message}`,
-    createdAt: new Date(),
-    user: {
-      _id: 1,
-      name: 'UserChat',
-      avatar: '',
-    },
-    image: '',
-    file: {
-      url: '',
-    }
-  },
-]);
+  const [isAttachAudio, setIsAttachAudio] = useState(false);
+  const [isAttachImage, setIsAttachImage] = useState(false);
+  const [isAttachFile, setIsAttachFile] = useState(false);
+  const [imagePath, setImagePath] = useState('');
+  const [filePath, setFilePath] = useState('');
+  const [fileVisible, setFileVisible] = useState(false);
+  const [messages, setMessages] = useState([]);
 
-const checkPermissions = async ()=>{
-  if (Platform.OS === 'android') {
-    try {
-      const grants = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      ]);
-  
-      
-  
-      if (
-        grants['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-        grants['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-        grants['android.permission.RECORD_AUDIO'] === PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        
-      } else {
-        
+  const checkPermissions = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const grants = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        ]);
+
+
+
+        if (
+          grants['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+          grants['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+          grants['android.permission.RECORD_AUDIO'] === PermissionsAndroid.RESULTS.GRANTED
+        ) {
+
+        } else {
+
+          return;
+        }
+      } catch (err) {
+        console.warn(err);
         return;
       }
-    } catch (err) {
-      console.warn(err);
-      return;
     }
   }
-}
 
-useEffect(()=>{
-  checkPermissions();
-},[])
-const dirs = RNFetchBlob.fs.dirs;
-const path = Platform.select({
-  ios: 'hello.m4a',
-  android: `${dirs.CacheDir}/hello.mp3`,
-});
-
-const onStartRecord = async () => {
-  setRecordingActive(true);
-
-  await audioRecorderPlayer.startRecorder(path);
-}
-const onStopRecord = async () => {
-  setRecordingActive(false);
-
-  const result = await audioRecorderPlayer.stopRecorder();
-  audioRecorderPlayer.removeRecordBackListener();
-  setAudioPath(result)
-  setIsAttachAudio(true)
-   
-  
-};
-
-
-const _pickDocument = async () => {
-  try {
-    const result = await DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
-      copyTo: 'documentDirectory',
-      mode: 'import',
-      allowMultiSelection: true,
-    });
-    const fileUri = result[0].fileCopyUri;
-    if (!fileUri) {
-      
-      return;
-    }
-    if (fileUri.indexOf('.png') !== -1 || fileUri.indexOf('.jpg') !== -1) {
-      setImagePath(fileUri);
-      setIsAttachImage(true);
-    } else {
-      setFilePath(fileUri);
-      setIsAttachFile(true);
-    }
-  } catch (err) {
-    if (DocumentPicker.isCancel(err)) {
-      
-    } else {
-      
-      throw err;
+  const serializeChat = (item) => {
+    return {
+      _id: item._id,
+      text: item.message,
+      createdAt: item.createdAt,
+      user: {
+        _id: item.sender._id,
+        name: item.sender.name,
+        avatar: item.sender.profileImage,
+      },
     }
   }
-};
 
+  const fetchChats = async () => {
+    let url = `${API_BASE_URL}/api/message/${item._id}`;
+    getAPI(url).then(res => {
+      let messages = res.data.list.map(item => serializeChat(item))
+      messages = messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setMessages(messages)
+    })
+  }
   useEffect(() => {
-    
-  }, []);
+
+    getUserProfileInfo().then(userDetails => {
+      let id = userDetails._id;
+      let userInfo = item.participants.find(user => user._id == id)
+      let otherUserInfo = item.participants.find(user => user._id != id)
+      if (userInfo) {
+        setUser(userInfo);
+      }
+      if (otherUserInfo) {
+        setParticipant(otherUserInfo);
+      }
+    });
+    checkPermissions();
+    fetchChats();
+  }, [])
+
+  const dirs = RNFetchBlob.fs.dirs;
+  const path = Platform.select({
+    ios: 'hello.m4a',
+    android: `${dirs.CacheDir}/hello.mp3`,
+  });
+
+  const onStartRecord = async () => {
+    setRecordingActive(true);
+
+    await audioRecorderPlayer.startRecorder(path);
+  }
+  const onStopRecord = async () => {
+    setRecordingActive(false);
+
+    const result = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+    setAudioPath(result)
+    setIsAttachAudio(true)
+  };
+
+
+  const _pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+        copyTo: 'documentDirectory',
+        mode: 'import',
+        allowMultiSelection: true,
+      });
+      const fileUri = result[0].fileCopyUri;
+      if (!fileUri) {
+
+        return;
+      }
+      if (fileUri.indexOf('.png') !== -1 || fileUri.indexOf('.jpg') !== -1) {
+        setImagePath(fileUri);
+        setIsAttachImage(true);
+      } else {
+        setFilePath(fileUri);
+        setIsAttachFile(true);
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+
+      } else {
+
+        throw err;
+      }
+    }
+  };
 
   const onSend = useCallback((messages = []) => {
     const [messageToSend] = messages;
@@ -179,7 +198,7 @@ const _pickDocument = async () => {
         },
         image: '',
         file: {
-          url:audioPath
+          url: audioPath
         }
       };
       setMessages(previousMessages =>
@@ -187,7 +206,7 @@ const _pickDocument = async () => {
       );
       setAudioPath('');
       setIsAttachAudio(false);
-    }else if (isAttachFile) {
+    } else if (isAttachFile) {
       const newMessage = {
         _id: messages[0]._id + 1,
         text: messageToSend.text,
@@ -207,90 +226,103 @@ const _pickDocument = async () => {
       setFilePath('');
       setIsAttachFile(false);
     } else {
-      setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, messages),
-      );
+      addMessage(messageToSend)
     }
   },
-  [filePath, imagePath, isAttachFile, isAttachImage,audioPath, isAttachAudio],
+    [filePath, imagePath, isAttachFile, isAttachImage, audioPath, isAttachAudio],
   );
 
+  const addMessage = (message) => {
+    let payload = {
+      message: message.text,
+      chatId: item._id,
+    }
+    let url = `${API_BASE_URL}/api/message`;
+    postAPI(url, payload).then(res => {
+      if (res) {
+        setMessages(previousMessages =>
+          GiftedChat.append(previousMessages, message),
+        );
+      }
+    })
+
+  }
   const renderSend = (props) => {
     return (
-    
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity onPress={()=>{recordingActive ? onStopRecord() :onStartRecord()}}>
-          {recordingActive ? ( <FontAwesome
-           name="microphone"
-           size={25}
-           color='red'
-           style={{ marginTop: 10,marginRight: 10,}}
-            />) :(
-              <FontAwesome
-           name="microphone"
-           size={25}
-           color="#00B0FF"
-           style={{ marginTop: 10,marginRight: 10,}}
-           />
-            )}
-          </TouchableOpacity>
+
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity onPress={() => { recordingActive ? onStopRecord() : onStartRecord() }}>
+          {recordingActive ? (<FontAwesome
+            name="microphone"
+            size={25}
+            color='red'
+            style={{ marginTop: 10, marginRight: 10, }}
+          />) : (
+            <FontAwesome
+              name="microphone"
+              size={25}
+              color="#00B0FF"
+              style={{ marginTop: 10, marginRight: 10, }}
+            />
+          )}
+        </TouchableOpacity>
         <TouchableOpacity onPress={_pickDocument}>
-        <Icon
-          name="paperclip"
-          style={{
-            marginTop: 10,
-            marginRight: 10,
-            transform: [{rotateY: '180deg'}],
-          }}
-          size={30}
-          color="#00B0FF"
-          tvParallaxProperties={undefined}
-        />
+          <Icon
+            name="paperclip"
+            style={{
+              marginTop: 10,
+              marginRight: 10,
+              transform: [{ rotateY: '180deg' }],
+            }}
+            size={30}
+            color="#00B0FF"
+            tvParallaxProperties={undefined}
+          />
         </TouchableOpacity>
         <Send {...props}>
           <View>
-          <MaterialCommunityIcons
-            name="send-circle"
-            style={{marginBottom: 5, marginRight: 5}}
-            size={30}
-            color="#00B0FF"
-          />
-        </View>
-      </Send>
+            <MaterialCommunityIcons
+              name="send-circle"
+              style={{ marginBottom: 5, marginRight: 5 }}
+              size={30}
+              color="#00B0FF"
+            />
+          </View>
+        </Send>
       </View>
     );
   };
 
   const renderBubble = (props) => {
-    const {currentMessage} = props;
+    const { currentMessage } = props;
     if (currentMessage.file && currentMessage.file.url) {
       return (
         <TouchableOpacity
-        style={{
-          ...styles.fileContainer,
-          backgroundColor: props.currentMessage.user._id === 2 ? '#00B0FF' : '#efefef',
-          borderBottomLeftRadius: props.currentMessage.user._id === 2 ? 15 : 5,
-          borderBottomRightRadius: props.currentMessage.user._id === 2 ? 5 : 15,
-        }}
-        onPress={() => setFileVisible(true)}
+          style={{
+            ...styles.fileContainer,
+            backgroundColor: props.currentMessage.user._id === 2 ? '#00B0FF' : '#efefef',
+            borderBottomLeftRadius: props.currentMessage.user._id === 2 ? 15 : 5,
+            borderBottomRightRadius: props.currentMessage.user._id === 2 ? 5 : 15,
+          }}
+          onPress={() => setFileVisible(true)}
         >
           <InChatFileTransfer
-            style={{marginTop: -10}}
+            style={{ marginTop: -10 }}
             filePath={currentMessage.file.url}
           />
           <InChatViewFile
-              props={props}
-              visible={fileVisible}
-              onClose={() => setFileVisible(false)}
-            />
-          <View style={{flexDirection: 'column'}}>
+            props={props}
+            visible={fileVisible}
+            onClose={() => setFileVisible(false)}
+          />
+          <View style={{ flexDirection: 'column' }}>
             <Text style={{
-                  ...styles.fileText,
-                  color: currentMessage.user._id === 2 ? 'white' : 'black',
-                }} >
+              ...styles.fileText,
+              color: currentMessage.user._id === 2 ? 'white' : 'black',
+            }} >
               {currentMessage.text}
             </Text>
-            <Text style={{alignSelf:'flex-end',color:'white',fontSize:10,padding:5}}>{`${time}`}</Text>
+            <Text style={{ alignSelf: 'flex-end', color: 'white', fontSize: 10, padding: 5 }}>{`${time}`}</Text>
           </View>
         </TouchableOpacity>
       );
@@ -314,24 +346,24 @@ const _pickDocument = async () => {
   };
 
   const scrollToBottomComponent = () => {
-    return(
+    return (
       <FontAwesome name='angle-double-down' size={22} color='#333' />
     );
   }
 
- const renderInputToolbar = (props) =>{
+  const renderInputToolbar = (props) => {
     //Add the extra styles via containerStyle
-   return <InputToolbar {...props} containerStyle={{borderRadius:100,marginBottom:5}} />
- }
+    return <InputToolbar {...props} containerStyle={{ borderRadius: 100, marginBottom: 5 }} />
+  }
   const renderChatFooter = useCallback(() => {
-    if(audioPath){
+    if (audioPath) {
 
-      return(
-      <View style={styles.chatFooter}>
-            <InChatFileTransfer
+      return (
+        <View style={styles.chatFooter}>
+          <InChatFileTransfer
             filePath={audioPath}
           />
-        <TouchableOpacity
+          <TouchableOpacity
             onPress={() => setAudioPath('')}
             style={styles.buttonFooterChat}
           >
@@ -342,7 +374,7 @@ const _pickDocument = async () => {
     if (imagePath) {
       return (
         <View style={styles.chatFooter}>
-          <Image source={{uri: imagePath}} style={{height: 75, width: 75}} />
+          <Image source={{ uri: imagePath }} style={{ height: 75, width: 75 }} />
           <TouchableOpacity
             onPress={() => setImagePath('')}
             style={styles.buttonFooterChatImg}
@@ -368,7 +400,7 @@ const _pickDocument = async () => {
       );
     }
     return null;
-  }, [audioPath,filePath, imagePath]);
+  }, [audioPath, filePath, imagePath]);
 
   const onDeleteMessage = (messageId) => {
     // Filter out the message to be deleted
@@ -380,101 +412,131 @@ const _pickDocument = async () => {
     Clipboard.setString(textToCopy);
   };
   return (
-    <SafeAreaView style={{alignSelf:'center',width:'100%',flex:1,}}>
-    <Loader loading={loading}></Loader>
-    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-    <Ionicons
-            onPress={() => {
-               navigation.goBack()
-            }}
-            style={{
-              marginLeft:10,marginTop:10
-            }}
-            name={'arrow-back'}
-            size={30}
-            color={'black'}
-          />
-        <TouchableOpacity style={{backgroundColor:'white', width:Metrics.rfv(60),height:Metrics.rfv(60),borderRadius:Metrics.rfv(10),marginRight:30}}
-        onPress={()=>{
-        //   setProfileImg()
-          }}>
-          <Image
+    user && 
+    <SafeAreaView style={{ alignSelf: 'center', width: '100%', flex: 1, }}>
+      <Loader loading={loading}></Loader>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+        <Ionicons
+          onPress={() => {
+            navigation.goBack()
+          }}
           style={{
-             width:Metrics.rfv(60),height:Metrics.rfv(60),margin:Metrics.rfv(0),borderRadius:Metrics.rfv(10),
-            }}
-           source={require('../assets/images/profileImg.png')}
-         />
-         </TouchableOpacity>
-         <View style={{marginTop:10,marginRight:30}}>
-          <Text style={{fontWeight:'bold',color:'black'}}>{item.name}</Text>
-          <Text>Active now</Text>
-         </View>
-         <Ionicons
-            onPress={() => { navigation.navigate('') }}
-            style={{ marginLeft:10,marginTop:10,marginRight:30}}
-            name={'videocam'}
-            size={30}
-            color={'black'}
-          />
-          <View style={{marginTop:15,}}>
-          <Entypo
-            onPress={() => { navigation.navigate('') }}
-            style={{ alignSelf:'flex-end',}}
-            name={'dots-three-vertical'}
-            size={30}
-            color={'black'}
-          />
+            marginLeft: 15, marginTop: 10, alignSelf: 'center'
+          }}
+          name={'arrow-back'}
+          size={30}
+          color={'black'}
+
+        />
+        <View style={{ marginTop: 10, marginLeft: 10, flex: 1, flexDirection: 'row' }}>
+          <TouchableOpacity style={{ width: Metrics.rfv(60), height: Metrics.rfv(60) }}
+            onPress={() => {
+              //   setProfileImg()
+            }}>
+            <Image
+              style={{
+                width: Metrics.rfv(50), height: Metrics.rfv(50), borderRadius: Metrics.rfv(30),
+                alignSelf: 'center'
+              }}
+              source={{
+                uri: item.participantImage
+              }}
+            />
+          </TouchableOpacity>
+          <View style={{ alignSelf: 'center', marginHorizontal: 10 }}>
+            <Text style={{ fontWeight: 'bold', color: 'black' }}>{item.participantName}</Text>
+            <Text>Active now</Text>
           </View>
-          
-    </View>
-    <View style={{borderWidth:0.5,marginTop:10}}/>
-        
-             <View style={{flex:1}}>
-               {/* <NavBar/> */}
-     <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: 2,
-        avatar:require('../assets/images/profileImg.png')
-      }}
-      renderBubble={renderBubble}
-      alwaysShowSend
-      renderSend={renderSend}
-      scrollToBottom
-      showUserAvatar
-      isAnimated
-      showAvatarForEveryMessage
-      scrollToBottomComponent={scrollToBottomComponent}
-      renderChatFooter={renderChatFooter}
-      renderInputToolbar={renderInputToolbar} 
-      onLongPress={(context, message) => {
-        // Handle long press on a message
-        const options = [ 'copy', 'Delete Message', 'Cancel'];
-        const cancelButtonIndex = options.length - 1;
+        </View>
 
-        context.actionSheet().showActionSheetWithOptions(
-          {
-            options,
-            cancelButtonIndex,
-          },
-          (buttonIndex) => {
-            switch (buttonIndex) {
-              case 0:
-                  handleCopyMessage(message);
-                  break;
-              case 1:
-                onDeleteMessage(message._id);
-                  break;
-          }
-          }
-        );
-      }}
-    />
-          
+        <Ionicons
+          onPress={() => {
+            navigation.navigate('CallScreen', {
+              data: {
+                callerData: user,
+                receiverData: participant,
+                callType: 'audio'
+              }
+            })
+          }}
+          style={{ marginTop: 10, marginHorizontal: 10, alignSelf: 'center', }}
+          name={'call'}
+          size={30}
+          color={'black'}
+        />
+        <Ionicons
+          onPress={() => {
+            navigation.navigate('CallScreen', {
+              data: {
+                callerData: user,
+                receiverData: participant,
+                callType: 'audio'
+              }
+            })
+          }}
+          style={{ marginTop: 10, marginHorizontal: 10, alignSelf: 'center', }}
+          name={'videocam'}
+          size={30}
+          color={'black'}
+        />
+        <Entypo
+          onPress={() => { navigation.navigate('') }}
+          style={{ alignSelf: 'center', marginTop: 10, marginHorizontal: 10, }}
+          name={'dots-three-vertical'}
+          size={30}
+          color={'black'}
+        />
 
-             </View>
-         
+
+      </View>
+      <View style={{ borderWidth: 0.5, marginTop: 10 }} />
+
+      <View style={{ flex: 1 }}>
+        {/* <NavBar/> */}
+        <GiftedChat
+          messages={messages}
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: user._id,
+            avatar: user.profileImage
+          }}
+          renderBubble={renderBubble}
+          alwaysShowSend
+          renderSend={renderSend}
+          scrollToBottom
+          showUserAvatar
+          isAnimated
+          showAvatarForEveryMessage
+          scrollToBottomComponent={scrollToBottomComponent}
+          renderChatFooter={renderChatFooter}
+          renderInputToolbar={renderInputToolbar}
+          onLongPress={(context, message) => {
+            // Handle long press on a message
+            const options = ['copy', 'Delete Message', 'Cancel'];
+            const cancelButtonIndex = options.length - 1;
+
+            context.actionSheet().showActionSheetWithOptions(
+              {
+                options,
+                cancelButtonIndex,
+              },
+              (buttonIndex) => {
+                switch (buttonIndex) {
+                  case 0:
+                    handleCopyMessage(message);
+                    break;
+                  case 1:
+                    onDeleteMessage(message._id);
+                    break;
+                }
+              }
+            );
+          }}
+        />
+
+
+      </View>
+
     </SafeAreaView>
   );
 }
@@ -485,9 +547,9 @@ const styles = StyleSheet.create({
   paperClip: {
     marginTop: 8,
     marginHorizontal: 5,
-    transform: [{rotateY: '180deg'}],
+    transform: [{ rotateY: '180deg' }],
   },
-  sendButton: {marginBottom: 10, marginRight: 10},
+  sendButton: { marginBottom: 10, marginRight: 10 },
   sendContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -496,7 +558,7 @@ const styles = StyleSheet.create({
     shadowColor: '#00B0FF',
     shadowOpacity: 0.37,
     shadowRadius: 8,
-    shadowOffset: {width: 0, height: 8},
+    shadowOffset: { width: 0, height: 8 },
     elevation: 8,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -553,7 +615,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'gray',
   },
-  audioPlayerContainer: {flexDirection: 'row', alignItems: 'center'},
+  audioPlayerContainer: { flexDirection: 'row', alignItems: 'center' },
   progressDetailsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -561,12 +623,12 @@ const styles = StyleSheet.create({
   progressDetailsText: {
     paddingHorizontal: 5,
     color: 'black',
-   
+
   },
   progressIndicatorContainer: {
     flex: 1,
     backgroundColor: '#e2e2e2',
-    marginTop:10
+    marginTop: 10
   },
   progressLine: {
     borderWidth: 1,

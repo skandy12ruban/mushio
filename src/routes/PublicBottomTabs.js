@@ -1,26 +1,19 @@
-import React, { useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet, useColorScheme } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Dimensions, StyleSheet, useColorScheme, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
 import messaging from '@react-native-firebase/messaging';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Metrics from '../Constants/Metrics';
-import { Categories, Home, Profile, Graphs } from '../Screens';
 import { useDispatch, useSelector } from 'react-redux';
-import { HOME, GRAPHS } from './RouteConst';
 import PublicSearchScreen from '../PublicScreens/PublicSearchScreen';
 import PublicCategories from '../PublicScreens/PublicCategories';
 import PublicHome from '../PublicScreens/PublicHome';
-import PublicEntertainment from '../PublicScreens/PublicEntertainment';
 import PublicProfile from '../PublicScreens/PublicProfile';
-import { PUBLIC_HOME, PUBLIC_PROFILE } from './PublicRouteConts';
-import EditProfile from '../PublicScreens/EditProfile';
 import Entertainment from '../PublicScreens/Entertainment';
 import DeviceInfo from 'react-native-device-info';
+import { getAPI, putAPI } from '../api/api-utils';
+import { API_BASE_URL } from '../api/ApiClient';
+import { setProfile } from '../Redux/reducer/User';
+import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
@@ -60,31 +53,67 @@ const tabIcon = (icon, focused) => {
 const PublicBottomTabs = (props) => {
   const theme = useColorScheme()
   const userData = useSelector(state => state.User.userData);
+  const [userProfileData, setUserProfileData] = useState(null);
+
+  const dispatch = useDispatch();
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
+    let deviceId = DeviceInfo.getUniqueId();
+
     if (enabled) {
       // User has authorized
       let fcmToken = await messaging().getToken();
-      let deviceId = DeviceInfo.getUniqueId();
-      let deviceType = Platform.OS;
-     
       return {
-        'deviceId': deviceId,
+        'deviceId': deviceId._j,
         'deviceToken': fcmToken,
-        'deviceType': Platform.OS
+        'deviceType': Platform.OS === 'android' ? 'A' : 'I',
+        'userId': userData._id
+      }
+    } else {
+      return {
+        'deviceId': deviceId._j,
+        'deviceType': Platform.OS === 'android' ? 'A' : 'I',
+        'userId': userData._id
       }
     }
   };
 
-  useEffect(()=>{
-    let info = requestUserPermission();
-    
-    
-  },[])
+
+  useEffect(() => {
+    getAPI(`${API_BASE_URL}/api/user/myProfile`).then((profileData)=>{
+      let profile = profileData.data;
+      console.log(profile)
+      dispatch(setProfile(profile))
+      
+      requestUserPermission().then(deviceInfo => {
+        console.log(deviceInfo)
+        let url = `${API_BASE_URL}/api/userAuth/storeDeviceToken`
+        let promise$ = null;
+        if (profile.deviceId && profile.deviceToken) {
+          if (profile.deviceId !== deviceInfo.deviceId || profile.deviceToken !== deviceInfo.deviceToken) {
+            promise$ = putAPI(url, deviceInfo)
+          }
+        } else {
+          promise$ = putAPI(url, deviceInfo)
+        }
+  
+        if (promise$) {
+          promise$.then((res) => {
+            if (res) {
+              console.log('profile response after device token', res)
+              dispatch(setProfile(Object.assign(profile, deviceInfo)))
+            }
+          }).catch((err)=>{
+            console.error(err)
+          })
+        }
+        // 
+      });
+    })
+  }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>

@@ -5,6 +5,7 @@ export const UserSlice = createSlice({
   initialState: {
     userData: null,
     login_status: false,
+    profileData:null
   },
   reducers: {
     setuser(state, action) {
@@ -14,9 +15,12 @@ export const UserSlice = createSlice({
     logout(state, action) {
       state.userData = {}
       state.login_status = false
+    },
+    setProfile(state, action){
+      state.profileData = action.payload
     }
   }
 })
-export const { setuser, logout } = UserSlice.actions;
+export const { setuser, logout, setProfile } = UserSlice.actions;
 
 export default UserSlice.reducer;

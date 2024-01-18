@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import { memo, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,40 +10,23 @@ import {
   BackHandler,
   useColorScheme,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient'
-import {withGlobalize} from 'react-native-globalize';
-import {TouchableOpacity} from 'react-native';
+import { withGlobalize } from 'react-native-globalize';
+import { TouchableOpacity } from 'react-native';
 import Metrics from '../Constants/Metrics';
-import api from '../api';
 import IntlProvider from '../utils/IntlProvider';
 import Loader from '../Components/Loader';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {
-  BLACK_COLOR,
-  FONT_BOLD,
-  LOGIN_BTN_COLOR,
-  SMALL_FONT_SIZE,
-  STANDARD_SCREEN_HEIGHT,
-  WHITE_COLOR,
-} from '../utils/AppConst';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
-import AppTextFieldPassword from '../Components/AppTextFieldPassword';
-import {useDispatch} from 'react-redux';
-import {getUserType, saveUserProfileInfo} from '../utils/AsyncStorageHelper';
-import {setuser} from '../Redux/reducer/User';
-import {MAIN_ROUTE} from '../routes/RouteConst';
-import {API_BASE_URL} from '../api/ApiClient';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { getUserType, saveUserProfileInfo } from '../utils/AsyncStorageHelper';
+import { setuser } from '../Redux/reducer/User';
+import { MAIN_ROUTE } from '../routes/RouteConst';
+import { API_BASE_URL } from '../api/ApiClient';
 import { PUBLIC_MAIN_ROUTE } from '../routes/PublicRouteConts';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const SignInFormInitialValues = props => ({
   email: '',
@@ -75,121 +58,122 @@ const Login = withGlobalize(
       return () => backHandler.remove();
     }, []);
 
-   const Login = async (values)=>{
-    setLoading(true)
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    
-    var raw = JSON.stringify({
-      "password": `${values.password}`,
-      "email": `${values.email}`
-    });
-    
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-    };
-    
-    fetch(`${API_BASE_URL}/api/userAuth/login`, requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        
-        if(result && result.success == true){
-           const usertype= getUserType()
-           
-              const userInfo = result.data;
-              saveUserProfileInfo(userInfo);
-              dispatch(setuser(userInfo))
-                  if(usertype && usertype == 'Public'){
-                      navigation.reset({
-                        index: 0,
-                        routes: [{name: PUBLIC_MAIN_ROUTE}],
-                      });
-                      setLoading(false)
-                    }else{
-             navigation.reset({
-                        index: 0,
-                        routes: [{name: MAIN_ROUTE}],
-                      });
-                      setLoading(false)
-                    }
-           setLoading(false)
-        }else{
-          alert(result.message)
-          setLoading(false)
-        }
-      })
-      .catch(error => {
-        
-        setLoading(false)
+    const onClickLogin = async (values) => {
+      setLoading(true)
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify({
+        "password": `${values.password}`,
+        "email": `${values.email}`
       });
-   }
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+      };
+
+      fetch(`${API_BASE_URL}/api/userAuth/login`, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+
+          if (result && result.success == true) {
+            const usertype = getUserType()
+            const userInfo = result.data;
+            saveUserProfileInfo(userInfo);
+            dispatch(setuser(userInfo))
+
+            if (usertype && usertype == 'Public') {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: PUBLIC_MAIN_ROUTE }],
+              });
+              setLoading(false)
+            } else {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: MAIN_ROUTE }],
+              });
+              setLoading(false)
+            }
+            setLoading(false)
+          } else {
+            alert(result.message)
+            setLoading(false)
+          }
+        })
+        .catch(error => {
+
+          setLoading(false)
+        });
+    }
 
 
     return (
-    //   <LinearGradient
-    //   colors={['#cdffd8', '#94b9ff' ]}
-    //   style={{flex:1,width:"100%",height:'100%'}}
-    //   start={{ x: 0, y: 0.5 }}
-    //   end={{ x: 1, y: 0.5 }}
-    // >
-    <View style={{backgroundColor:theme === 'dark' ? 'black':'white',flex:1}}>
-      <ScrollView
-        style={{
-          // backgroundColor: 'lightblue',
-        }}>
-        <Loader loading={loading}></Loader>
-        <Image
+      //   <LinearGradient
+      //   colors={['#cdffd8', '#94b9ff' ]}
+      //   style={{flex:1,width:"100%",height:'100%'}}
+      //   start={{ x: 0, y: 0.5 }}
+      //   end={{ x: 1, y: 0.5 }}
+      // >
+      <View style={{ backgroundColor: theme === 'dark' ? 'black' : 'white', flex: 1 }}>
+        <ScrollView
           style={{
-             width:120,height:100,margin:10,alignSelf:'center',marginTop:40,marginLeft:30
-            }}
-           source={theme === 'dark' ?require('../assets/images/login1.png'):require('../assets/images/login.png')}
-         />
-        <View
-          style={{
-            alignSelf: 'center',
-            width: '90%',
+            // backgroundColor: 'lightblue',
           }}>
-          <Text style={{color:'#c6302c',alignSelf:'center',fontWeight:'bold',fontSize:50,fontFamily:'Arial',marginTop:-10}}> Se<Text style={{color:theme === 'dark' ? 'white':'black',}}>halo</Text></Text>
-          <Formik
-            initialValues={SignInFormInitialValues(props)}
-            validationSchema={SignInFormValidator(props)}
-            onSubmit={(values, {resetForm}) => {
-              Login(values)
+          <Loader loading={loading}></Loader>
+          <Image
+            style={{
+              width: 120, height: 100, margin: 10, alignSelf: 'center', marginTop: 40, marginLeft: 30
+            }}
+            source={theme === 'dark' ? require('../assets/images/login1.png') : require('../assets/images/login.png')}
+          />
+          <View
+            style={{
+              alignSelf: 'center',
+              width: '90%',
             }}>
-            {({
-              values,
-              handleChange,
-              setFieldValue,
-              errors,
-              touched,
-              setFieldTouched,
-              isValid,
-              handleSubmit,
-            }) => (
-              <>
-            
-               
-                <TextInput
-                   value={values.email}
-                   placeholder={' Email'}
-                   placeholderTextColor={'grey'}
-                   style={{padding:6,backgroundColor:'white',width:'70%',alignSelf:'center',margin:20,fontSize:20,fontWeight:'bold',
-                   borderRadius:10,borderColor:'blue',borderWidth:1,color:theme === 'dark' ?'black':'black'}}
-                   onChangeText={text => {
-                   setFieldValue('email' ,text);
-                   }}
-                 />
-               
-                {errors.email && touched.email && (
-                  <Text style={{fontSize: 10, color: 'red', marginLeft: 20}}>
-                    {' '}
-                    * {errors.email}
-                  </Text>
-                )}
-                
-                  
+            <Text style={{ color: '#c6302c', alignSelf: 'center', fontWeight: 'bold', fontSize: 50, fontFamily: 'Arial', marginTop: -10 }}> Se<Text style={{ color: theme === 'dark' ? 'white' : 'black', }}>halo</Text></Text>
+            <Formik
+              initialValues={SignInFormInitialValues(props)}
+              validationSchema={SignInFormValidator(props)}
+              onSubmit={(values, { resetForm }) => {
+                onClickLogin(values)
+              }}>
+              {({
+                values,
+                handleChange,
+                setFieldValue,
+                errors,
+                touched,
+                setFieldTouched,
+                isValid,
+                handleSubmit,
+              }) => (
+                <>
+
+
+                  <TextInput
+                    value={values.email}
+                    placeholder={' Email'}
+                    placeholderTextColor={'grey'}
+                    style={{
+                      padding: 6, backgroundColor: 'white', width: '70%', alignSelf: 'center', margin: 20, fontSize: 20, fontWeight: 'bold',
+                      borderRadius: 10, borderColor: 'blue', borderWidth: 1, color: theme === 'dark' ? 'black' : 'black'
+                    }}
+                    onChangeText={text => {
+                      setFieldValue('email', text);
+                    }}
+                  />
+
+                  {errors.email && touched.email && (
+                    <Text style={{ fontSize: 10, color: 'red', marginLeft: 20 }}>
+                      {' '}
+                      * {errors.email}
+                    </Text>
+                  )}
+
+
                   {/* <View>
                   <AppTextFieldPassword
                     placeHolder={'password'}
@@ -200,101 +184,105 @@ const Login = withGlobalize(
                     secureTextEntry={true}
                   />
                   </View> */}
-                 
 
-                  <View style={{backgroundColor:'white',width:'70%',alignSelf:'center',margin:10,flexDirection:'row',
-                  justifyContent:'space-between',borderRadius:10,borderColor:'blue',borderWidth:1,height:45,}}>
+
+                  <View style={{
+                    backgroundColor: 'white', width: '70%', alignSelf: 'center', margin: 10, flexDirection: 'row',
+                    justifyContent: 'space-between', borderRadius: 10, borderColor: 'blue', borderWidth: 1, height: 45,
+                  }}>
                     <TextInput
-                   value={values.password}
-                   placeholder={' Password'}
-                   placeholderTextColor={'grey'}
-                   style={{fontSize:20,fontWeight:'bold',marginLeft:5,color:theme === 'dark' ?'black':'black'}}
-                   onChangeText={text => {
-                   setFieldValue('password' ,text);
-                   }}
-                   secureTextEntry={viewPassword}
-                 />
+                      value={values.password}
+                      placeholder={' Password'}
+                      placeholderTextColor={'grey'}
+                      style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5, color: theme === 'dark' ? 'black' : 'black' }}
+                      onChangeText={text => {
+                        setFieldValue('password', text);
+                      }}
+                      secureTextEntry={viewPassword}
+                    />
                     <Icon
                       name={viewPassword ? 'eye-slash' : 'eye'}
                       color={'black'}
                       size={Metrics.rfv(18)}
                       style={{
                         textAlignVertical: 'center',
-                        marginBottom: Metrics.rfv(3),marginRight:10
+                        marginBottom: Metrics.rfv(3), marginRight: 10
                       }}
                       onPress={() => {
                         setViewPassword(!viewPassword);
                       }}
                     />
-                </View>
-                {errors.password && touched.password && (
-                  <Text style={{fontSize: 10, color: 'red', marginLeft: 20,}}>
-                    {' '}
-                    * {errors.password}
-                  </Text>
-                )}
-                <TouchableOpacity onPress={()=>{navigation.navigate('Forget')}}>
-              <Text style={{color: theme === 'dark' ? 'white':'black',fontSize:20,fontWeight:'bold',alignSelf:'center',margin:20}}>Forget Password ?</Text>
-              </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: theme === 'dark' ?'white':'black',
-                    padding:5,
-                    width: width * 0.4,
-                    alignSelf: 'center',
-                    borderRadius: 10,
-                    marginTop: 20,
-                    // marginBottom: 20,
-                  }}
-                  activeOpacity={0.5}
-                  onPress={async() => {
-                    // const usertype=await getUserType()
-                    // 
-                    // const userInfo = {userId: 101};
-                    // saveUserProfileInfo(userInfo);
-                    // dispatch(setuser(userInfo))
-                    // if(usertype && usertype == 'Public'){
+                  </View>
+                  {errors.password && touched.password && (
+                    <Text style={{ fontSize: 10, color: 'red', marginLeft: 20, }}>
+                      {' '}
+                      * {errors.password}
+                    </Text>
+                  )}
+                  <TouchableOpacity onPress={() => { navigation.navigate('Forget') }}>
+                    <Text style={{ color: theme === 'dark' ? 'white' : 'black', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', margin: 20 }}>Forget Password ?</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: theme === 'dark' ? 'white' : 'black',
+                      padding: 5,
+                      width: width * 0.4,
+                      alignSelf: 'center',
+                      borderRadius: 10,
+                      marginTop: 20,
+                      // marginBottom: 20,
+                    }}
+                    activeOpacity={0.5}
+                    onPress={async () => {
+                      // const usertype=await getUserType()
+                      // 
+                      // const userInfo = {userId: 101};
+                      // saveUserProfileInfo(userInfo);
+                      // dispatch(setuser(userInfo))
+                      // if(usertype && usertype == 'Public'){
                       // navigation.reset({
                       //   index: 0,
                       //   routes: [{name: PUBLIC_MAIN_ROUTE}],
                       // });
-                    // }else{
-                    //   navigation.reset({
-                    //     index: 0,
-                    //     routes: [{name: MAIN_ROUTE}],
-                    //   });
-                    // }
-                    handleSubmit();
-                  }}>
-                  <Text style={{ color: theme === 'dark' ? 'black':'white',
-    paddingVertical: 5,
-    fontSize: 15,
-    fontWeight: 'bold',
-    alignSelf: 'center',}}>Login </Text>
-                  {/* <MaterialCommunityIcons
+                      // }else{
+                      //   navigation.reset({
+                      //     index: 0,
+                      //     routes: [{name: MAIN_ROUTE}],
+                      //   });
+                      // }
+                      handleSubmit();
+                    }}>
+                    <Text style={{
+                      color: theme === 'dark' ? 'black' : 'white',
+                      paddingVertical: 5,
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      alignSelf: 'center',
+                    }}>Login </Text>
+                    {/* <MaterialCommunityIcons
                      name="check-decagram"
                      color={'white'}
                     size={70}
                   /> */}
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
-        </View>
-       
-        <View style={{marginTop:80}}>
-              <Text
-                style={{marginTop: 5, alignSelf: 'center',fontWeight:'bold',color:'#c6302c'}}>
-                Don't have an account ? {' '} 
-                {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
-                <Text style={{color: theme === 'dark' ? 'white':'black',fontSize:20,fontWeight:'bold'}} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
-                {/* </TouchableOpacity> */}
-               
-              </Text>
-         
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
           </View>
-      </ScrollView>
-       {/* </LinearGradient> */}
+
+          <View style={{ marginTop: 80 }}>
+            <Text
+              style={{ marginTop: 5, alignSelf: 'center', fontWeight: 'bold', color: '#c6302c' }}>
+              Don't have an account ? {' '}
+              {/* <TouchableOpacity  onPress={() => navigation.navigate('SignUp')} > */}
+              <Text style={{ color: theme === 'dark' ? 'white' : 'black', fontSize: 20, fontWeight: 'bold' }} onPress={() => navigation.navigate('SignUp')}>Sign Up </Text>
+              {/* </TouchableOpacity> */}
+
+            </Text>
+
+          </View>
+        </ScrollView>
+        {/* </LinearGradient> */}
       </View>
     );
   }),
@@ -308,7 +296,7 @@ const styles = StyleSheet.create({
     marginRight: 40,
     margin: 8,
     alignItems: 'center',
-    marginTop:30
+    marginTop: 30
   },
   textFiledStyle: {
     height: '100%',

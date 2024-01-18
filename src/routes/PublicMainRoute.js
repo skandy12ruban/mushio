@@ -10,7 +10,7 @@ import { setuser } from '../Redux/reducer/User';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-import { ADD_CARDS, APP_DRAWER, ARTIST_MESSAGE, CARDS, CHAT_SCREEN, ENTERTAINMENT, FRIENDS, FRIENS_MESSAGE, MY_POSTS, MY_PROFILE, NEW_POST, PEOPLE, POSTS, PUBLIC_BOTTOM_TABS, PUBLIC_PROFILE1, PUBLIC_SERACH_SCREEN1, TOP_TABS, USER_ARTIST, USER_AUDIENCE, USER_TOP_TABS } from './PublicRouteConts';
+import { ADD_CARDS, APP_DRAWER, ARTIST_MESSAGE, CARDS, CHAT_SCREEN, ENTERTAINMENT, FRIENDS, FRIENS_MESSAGE, CALL_SCREEN, MY_POSTS, MY_PROFILE, NEW_POST, PEOPLE, POSTS, PUBLIC_BOTTOM_TABS, PUBLIC_PROFILE1, PUBLIC_SERACH_SCREEN1, TOP_TABS, USER_ARTIST, USER_AUDIENCE, USER_TOP_TABS } from './PublicRouteConts';
 import PublicBottomTabs from './PublicBottomTabs';
 import People from '../PublicScreens/People';
 import TopTabs from './TopTabs';
@@ -20,6 +20,7 @@ import Cards from '../PublicScreens/Cards';
 import PublicSearchScreen1 from '../PublicScreens/PublicSearchScreen1';
 import ChatScreen from '../PublicScreens/ChatScreen';
 import FriendsMessage from '../PublicScreens/FriendsMessage';
+import CallScreen from '../PublicScreens/CallScreen';
 import ArtistMessage from '../PublicScreens/ArtistMessage';
 import Entertainment from '../PublicScreens/Entertainment';
 import AddCards from '../PublicScreens/AddCards';
@@ -71,6 +72,7 @@ const PublicMainRoute = () => {
                      <MainStack.Screen name={PUBLIC_PROFILE1} component={PublicProfile1} />
                      <MainStack.Screen name={CHAT_SCREEN} component={ChatScreen} />
                      <MainStack.Screen name={FRIENS_MESSAGE} component={FriendsMessage} />
+                     <MainStack.Screen name={CALL_SCREEN} component={CallScreen} />
                      <MainStack.Screen name={ARTIST_MESSAGE} component={ArtistMessage} />
                      <MainStack.Screen name={ENTERTAINMENT} component={Entertainment} />
                      <MainStack.Screen name={ADD_CARDS} component={AddCards} />

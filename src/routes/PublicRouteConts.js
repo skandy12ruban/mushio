@@ -18,6 +18,7 @@ export const PUBLIC_SERACH_SCREEN1 = 'PublicSearchScreen1'
 export const PUBLIC_PROFILE1 = "PublicProfile1"
 export const CHAT_SCREEN = 'ChatScreen'
 export const FRIENS_MESSAGE = 'FriendsMessage'
+export const CALL_SCREEN = 'CallScreen'
 export const ARTIST_MESSAGE = 'ArtistMessage'
 export const ENTERTAINMENT = 'Entertainment'
 export const  ADD_CARDS = "AddCards"

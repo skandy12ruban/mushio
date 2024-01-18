@@ -1,16 +1,13 @@
 import React from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-import Octicons from 'react-native-vector-icons/Octicons';
+
 import Metrics from '../Constants/Metrics';
 import { Categories, Home, Profile, Graphs } from '../Screens';
 import { HOME, GRAPHS } from './RouteConst';
 import { useColorScheme } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -18,8 +15,7 @@ const Tab = createBottomTabNavigator();
 const BottomTabs = (props) => {
   const theme = useColorScheme()
 
-  const tabIcon = (icon, focused) => {
-
+  const tabIcon = (icon, iconType, focused) => {
     return (
       <View style={{
         backgroundColor: '#FFFFFF',
@@ -44,13 +40,16 @@ const BottomTabs = (props) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Ionicons
-            name={{ icon }}
-            style={[
+
+          <Icon
+            name={icon}
+            iconStyle={[
               { fontSize: Metrics.rfv(25), color: 'white', backgroundColor: 'black', borderRadius: 44, padding: 5 },
-              focused && { fontSize: Metrics.rfv(30), color: 'white', },
-            ]}
-          />
+              focused && { fontSize: Metrics.rfv(30), color: 'white', }]}
+            type={iconType}
+          >
+
+          </Icon>
         </View>
       </View>
     )
@@ -80,56 +79,21 @@ const BottomTabs = (props) => {
           name="Home"
           component={Home}
           options={{
-            tabBarIcon: ({ focused }) => tabIcon('home', focused),
+            tabBarIcon: ({ focused }) => tabIcon('home', 'ionicons', focused),
           }}
         />
         <Tab.Screen
           name="Categories"
           component={Categories}
           options={{
-            tabBarIcon: ({ focused }) => tabIcon('pluscircleo', focused)
+            tabBarIcon: ({ focused }) => tabIcon('grid-view', 'ionicons', focused)
           }}
         />
         <Tab.Screen
           name="Graphs"
           component={Graphs}
           options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={{
-                  backgroundColor: '#FFFFFF',
-                  height: 50,
-                  width: 50,
-                  borderRadius: 50,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  bottom: focused ? 10 : 0,
-                  shadowColor: '#00B0FF',
-                  elevation: focused ? 6 : 0,
-                  shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
-                }}>
-                  <View
-                    style={{
-                      bottom: focused ? 0 : 0,
-                      height: 44,
-                      width: 44,
-                      borderRadius: 44,
-                      backgroundColor: focused ? '#00B0FF' : 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Octicons
-                      name="graph"
-                      style={[
-                        { fontSize: Metrics.rfv(25), color: 'white', backgroundColor: 'black', borderRadius: 44, padding: 5 },
-                        focused && { fontSize: Metrics.rfv(25), color: 'white' },
-                      ]}
-                    />
-                  </View>
-                </View>
-              );
-            },
+            tabBarIcon: ({ focused }) => tabIcon('graph', 'octicon', focused)
           }}
         />
 
@@ -137,43 +101,7 @@ const BottomTabs = (props) => {
           name="Profile"
           component={Profile}
           options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={{
-                  backgroundColor: '#FFFFFF',
-                  height: 50,
-                  width: 50,
-                  borderRadius: 50,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  bottom: focused ? 10 : 0,
-                  shadowColor: '#00B0FF',
-                  elevation: focused ? 6 : 0,
-                  shadowOffset: focused ? { width: 0, height: 5 } : { width: 0, height: 0 },
-                }}>
-                  <View
-                    style={{
-                      bottom: focused ? 0 : 0,
-                      height: 44,
-                      width: 44,
-                      borderRadius: 44,
-                      backgroundColor: focused ? '#00B0FF' : 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <FontAwesome
-                      user-circle
-                      name="user-circle"
-                      style={[
-                        { fontSize: Metrics.rfv(25), color: 'white', backgroundColor: 'black', borderRadius: 44, padding: 5 },
-                        focused && { fontSize: Metrics.rfv(30), color: 'white' },
-                      ]}
-                    />
-                  </View>
-                </View>
-              );
-            },
+            tabBarIcon: ({ focused }) => tabIcon('person', 'ionicons', focused)
           }}
         />
       </Tab.Navigator>

@@ -1,12 +1,13 @@
 import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
+import { getAPI } from '../api/api-utils';
 import Loader from '../Components/Loader'
 import { Card } from 'react-native-paper'
 import Metrics from '../Constants/Metrics'
 import { useNavigation } from '@react-navigation/native'
 import { API_BASE_URL } from '../api/ApiClient'
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 const Friends1 = () => {
   const navigation = useNavigation()
   const [loading, setLoading] = useState(true)
@@ -22,25 +23,27 @@ const Friends1 = () => {
 
   const fetchChatList = async () => {
     const userDetails = await getUserProfileInfo();
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Authorization", `Bearer ${userDetails.accessToken}`);
     let url = `${API_BASE_URL}/api/chat/fetchChats?userType=audience`;
-    var requestOptions = {
-      method: 'GET',
-      headers: headers,
-      redirect: 'follow'
-    };
-    fetch(url, requestOptions).then((response) => {
-      console.log(response)
-      return response.json()
-    }
-    ).then((res) => {
+    getAPI(url).then((res) => {
       setLoading(false);
-      console.log('chatlist', res['data']['list']);
-      setChatList(res['data']['list'])
+      let chatList = fetchParticipant(res.data.list, userDetails);
+      setChatList(chatList)
     })
+  }
 
+  const fetchParticipant = (chatList, userData) => {
+
+    chatList.forEach(item => {
+      let participants = item['participants'];
+      let sender = participants.find(u => u._id !== userData._id);
+      if (sender) {
+        console.log(participants)
+        item['participantId'] = sender._id
+        item['participantName'] = sender.name
+        item['participantImage'] = sender.profileImage
+      }
+    })
+    return chatList
   }
 
   useEffect(() => {
@@ -53,14 +56,16 @@ const Friends1 = () => {
       <View style={{ paddingVertical: 10, paddingHorizontal: 10, borderBottomColor: '#00000033', borderBottomWidth: 1 }}>
         <TouchableOpacity onPress={() => { navigation.navigate('FriendsMessage', { item: item }) }} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-            {/* <Image
-              style={{
-                width: Metrics.rfv(45), height: Metrics.rfv(45), margin: Metrics.rfv(3), borderRadius: Metrics.rfv(30),
-              }}
-              source={item.image}
-            /> */}
+            {item.participantImage !== null &&
+              <Image
+                style={{
+                  width: Metrics.rfv(45), height: Metrics.rfv(45), margin: Metrics.rfv(3), borderRadius: Metrics.rfv(30),
+                }}  
+                source={{ uri: item.participantImage}}
+              />
+            }
             <View>
-              <Text style={{ paddingLeft: 10, color: 'black', fontWeight: 'bold', marginTop: 5, }}>{'Sender'}</Text>
+              <Text style={{ paddingLeft: 10, color: 'black', fontWeight: 'bold', marginTop: 5, }}>{item.participantName}</Text>
               <Text style={{ paddingLeft: 10, color: 'black', marginTop: 5, }}>{item.lastMessage.message}</Text>
             </View>
 
@@ -80,8 +85,8 @@ const Friends1 = () => {
     <SafeAreaView style={{ alignSelf: 'center', width: '100%' }}>
       <Loader loading={loading}></Loader>
       <FlatList
-        data={data}
-        renderItem={chatList}
+        data={chatList}
+        renderItem={({ item }) => <Item item={item} />}
         keyExtractor={item => item._id}
       />
     </SafeAreaView>
