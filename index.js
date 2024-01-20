@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import Store from './src/Redux/store';
 import messaging from '@react-native-firebase/messaging';
 
-import { register } from '@videosdk.live/react-native-sdk';
+// import { register } from '@videosdk.live/react-native-sdk';
 
 const Main = () => {
 
@@ -24,5 +24,5 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
     console.log('Message handled in the background!', remoteMessage);
 });
 
-register()
+// register()
 AppRegistry.registerComponent(appName, () => Main);
