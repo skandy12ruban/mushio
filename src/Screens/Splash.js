@@ -23,7 +23,6 @@ const SplashPage = () => {
 
 
         setTimeout(() => {
-            console.log(userObject)
             if (isObject(userObject) && userObject && userObject._id) {
                 if (isObject(usertype) && (usertype.userType == 'Public')) {
                     navigation.navigate(PUBLIC_MAIN_ROUTE)

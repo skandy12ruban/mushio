@@ -1,13 +1,9 @@
 import { View, Text,SafeAreaView, TouchableOpacity,Image,ScrollView,useColorScheme } from 'react-native'
-import React,{useState} from 'react'
+import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { PermissionsAndroid } from 'react-native';
-import DocumentPicker, { types } from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
-import { AppOkAlert } from '../utils/AlertHelper';
 import Metrics from '../Constants/Metrics';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { API_BASE_URL } from '../api/ApiClient';
 import Loader from '../Components/Loader';
 import { getUserProfileInfo } from '../utils/AsyncStorageHelper';

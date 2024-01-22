@@ -1,46 +1,48 @@
-import React, { useState, useEffect, useCallback, } from 'react';
-import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, StyleSheet, PermissionsAndroid, Platform, ActivityIndicator, Clipboard } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+  Clipboard,
+} from 'react-native';
 import Loader from '../Components/Loader';
 import Metrics from '../Constants/Metrics';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { API_BASE_URL } from '../api/ApiClient'
-import { getUserProfileInfo } from '../utils/AsyncStorageHelper';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Bubble, GiftedChat, Send, IMessage, InputToolbar } from 'react-native-gifted-chat';
+import { Bubble, GiftedChat, Send, InputToolbar } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as DocumentPicker from 'react-native-document-picker';
-import NavBar from '../Components/chat/navbar';
 import InChatFileTransfer from '../Components/chat/InChatFileTransfer';
 import InChatViewFile from '../Components/chat/InChatViewFile';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import RNFetchBlob from 'rn-fetch-blob';
-import { getAPI, postAPI } from '../api/api-utils';
+import RNFetchBlob from 'react-native-blob-util';
+import { getAPI } from '../api/api-utils';
+import { initializeSocket } from '../utils/Socket';
+
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
-
-
 const FriendsMessage = () => {
   const navigation = useNavigation()
-
   const [loading, setLoading] = useState(false)
-  const [user, setUser] = useState(null)
-  const [participant, setParticipant] = useState(null)
   const route = useRoute()
-  const { item } = route.params;
-  // 
-  const time = `${new Date().toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true, // This will display AM/PM
-  })}`
-
-
+  const { chatData } = route.params;
+  // let chatMessages = [];
+  let userInfo = chatData.participants.find(user => user._id == chatData.currentUser._id)
+  let otherUserInfo = chatData.participants.find(user => user._id != chatData.currentUser._id)
+  console.log(otherUserInfo)
+  const [user, setUser] = useState(userInfo)
+  const [participant, setParticipant] = useState(otherUserInfo)
   const [recordingActive, setRecordingActive] = useState(false);
   const [audioPath, setAudioPath] = useState('');
-
   const [isAttachAudio, setIsAttachAudio] = useState(false);
   const [isAttachImage, setIsAttachImage] = useState(false);
   const [isAttachFile, setIsAttachFile] = useState(false);
@@ -48,6 +50,23 @@ const FriendsMessage = () => {
   const [filePath, setFilePath] = useState('');
   const [fileVisible, setFileVisible] = useState(false);
   const [messages, setMessages] = useState([]);
+
+  const socket = initializeSocket(chatData.currentUser);
+
+  const time = `${new Date().toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // This will display AM/PM
+  })}`
+
+  socket.on("newTextMessageRecieved", (data) => {
+    if (data.messageData._id && data.messageData.sender._id) {
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, serializeChat(data.messageData)),
+      )
+    }
+  })
+  // const url = "https://sehelo.onrender.com";
 
   const checkPermissions = async () => {
     if (Platform.OS === 'android') {
@@ -57,9 +76,6 @@ const FriendsMessage = () => {
           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
         ]);
-
-
-
         if (
           grants['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
           grants['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
@@ -78,6 +94,7 @@ const FriendsMessage = () => {
   }
 
   const serializeChat = (item) => {
+
     return {
       _id: item._id,
       text: item.message,
@@ -91,44 +108,42 @@ const FriendsMessage = () => {
   }
 
   const fetchChats = async () => {
-    let url = `${API_BASE_URL}/api/message/${item._id}`;
+    let url = `${API_BASE_URL}/api/message/${chatData._id}`;
     getAPI(url).then(res => {
       let messages = res.data.list.map(item => serializeChat(item))
       messages = messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       setMessages(messages)
     })
   }
-  useEffect(() => {
 
-    getUserProfileInfo().then(userDetails => {
-      let id = userDetails._id;
-      let userInfo = item.participants.find(user => user._id == id)
-      let otherUserInfo = item.participants.find(user => user._id != id)
-      if (userInfo) {
-        setUser(userInfo);
-      }
-      if (otherUserInfo) {
-        setParticipant(otherUserInfo);
-      }
+  useEffect(() => {
+    socket.on('connect', async () => {
+      console.log("[Info] Connected to server");
+    })
+    socket.emit("ping");
+    socket.on("pong", () => {
+      console.log("[+] Received pong");
     });
-    checkPermissions();
+    socket.emit('joinChatRoom', chatData._id);
+  }, [])
+
+  useEffect(() => {
     fetchChats();
+    checkPermissions();
   }, [])
 
   const dirs = RNFetchBlob.fs.dirs;
   const path = Platform.select({
-    ios: 'hello.m4a',
-    android: `${dirs.CacheDir}/hello.mp3`,
+    ios: 'audio.m4a',
+    android: `${dirs.CacheDir}/audio.mp3`,
   });
 
   const onStartRecord = async () => {
     setRecordingActive(true);
-
     await audioRecorderPlayer.startRecorder(path);
   }
   const onStopRecord = async () => {
     setRecordingActive(false);
-
     const result = await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
     setAudioPath(result)
@@ -169,6 +184,7 @@ const FriendsMessage = () => {
   const onSend = useCallback((messages = []) => {
     const [messageToSend] = messages;
     if (isAttachImage) {
+      console.log(messageToSend)
       const newMessage = {
         _id: messages[0]._id + 1,
         text: messageToSend.text,
@@ -235,23 +251,30 @@ const FriendsMessage = () => {
   const addMessage = (message) => {
     let payload = {
       message: message.text,
-      chatId: item._id,
+      chatId: chatData._id,
+      to: participant._id,
     }
-    let url = `${API_BASE_URL}/api/message`;
-    postAPI(url, payload).then(res => {
-      if (res) {
-        setMessages(previousMessages =>
-          GiftedChat.append(previousMessages, message),
-        );
-      }
-    })
+    socket.emit('newTextMessage', payload)
+    // if (!socket) {
+    //   console.log("message posting via api")
+    //   let url = `${API_BASE_URL}/api/message`;
+    //   postAPI(url, payload).then(res => {
+    //     if (res) {
+    //       setMessages(previousMessages =>
+    //         GiftedChat.append(previousMessages, message),
+    //       );
+    //     }
+    //   })
+    // } else {
+    //   socket.emit('newTextMessage', payload)
+    // }
 
   }
   const renderSend = (props) => {
     return (
-
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={() => { recordingActive ? onStopRecord() : onStartRecord() }}>
+        {/* Maybe used in future */}
+        {/* <TouchableOpacity onPress={() => { recordingActive ? onStopRecord() : onStartRecord() }}>
           {recordingActive ? (<FontAwesome
             name="microphone"
             size={25}
@@ -278,13 +301,13 @@ const FriendsMessage = () => {
             color="#00B0FF"
             tvParallaxProperties={undefined}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Send {...props}>
           <View>
             <MaterialCommunityIcons
               name="send-circle"
-              style={{ marginBottom: 5, marginRight: 5 }}
-              size={30}
+              style={{ margin: 5}}
+              size={35}
               color="#00B0FF"
             />
           </View>
@@ -411,133 +434,143 @@ const FriendsMessage = () => {
     const textToCopy = message.text;
     Clipboard.setString(textToCopy);
   };
-  return (
-    user && 
-    <SafeAreaView style={{ alignSelf: 'center', width: '100%', flex: 1, }}>
-      <Loader loading={loading}></Loader>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-        <Ionicons
-          onPress={() => {
-            navigation.goBack()
-          }}
-          style={{
-            marginLeft: 15, marginTop: 10, alignSelf: 'center'
-          }}
-          name={'arrow-back'}
-          size={30}
-          color={'black'}
 
-        />
-        <View style={{ marginTop: 10, marginLeft: 10, flex: 1, flexDirection: 'row' }}>
-          <TouchableOpacity style={{ width: Metrics.rfv(60), height: Metrics.rfv(60) }}
+  const goBack = () => {
+    socket.emit('leaveChatRoom', chatData._id);
+    navigation.goBack();
+  }
+  return (
+    user && participant && socket &&
+    <>
+      <SafeAreaView style={{ alignSelf: 'center', width: '100%', flex: 1, }}>
+        <Loader loading={loading}></Loader>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Ionicons
             onPress={() => {
-              //   setProfileImg()
-            }}>
-            <Image
-              style={{
-                width: Metrics.rfv(50), height: Metrics.rfv(50), borderRadius: Metrics.rfv(30),
-                alignSelf: 'center'
-              }}
-              source={{
-                uri: item.participantImage
-              }}
-            />
-          </TouchableOpacity>
-          <View style={{ alignSelf: 'center', marginHorizontal: 10 }}>
-            <Text style={{ fontWeight: 'bold', color: 'black' }}>{item.participantName}</Text>
-            <Text>Active now</Text>
+              goBack()
+            }}
+            style={{
+              marginLeft: 15, marginTop: 10, alignSelf: 'center'
+            }}
+            name={'arrow-back'}
+            size={30}
+            color={'black'}
+
+          />
+          <View style={{ marginTop: 10, marginLeft: 10, flex: 1, flexDirection: 'row' }}>
+            <TouchableOpacity style={{ width: Metrics.rfv(60), height: Metrics.rfv(60) }}
+              onPress={() => {
+                //   setProfileImg()
+              }}>
+              <Image
+                style={{
+                  width: Metrics.rfv(50), height: Metrics.rfv(50), borderRadius: Metrics.rfv(30),
+                  alignSelf: 'center'
+                }}
+                source={{
+                  uri: chatData.participantImage
+                }}
+              />
+            </TouchableOpacity>
+            <View style={{ alignSelf: 'center', marginHorizontal: 10 }}>
+              <Text style={{ fontWeight: 'bold', color: 'black', textTransform: 'capitalize' }}>{chatData.participantName}</Text>
+              <Text>
+                { participant['status'] === 'offline' ? 'Offline' : 'Active now'}
+                </Text>
+            </View>
           </View>
+
+          {/* <Ionicons
+            onPress={() => {
+              navigation.navigate('CallScreen', {
+                data: {
+                  callerData: user,
+                  receiverData: participant,
+                  callType: 'audio'
+                }
+              })
+            }}
+            style={{ marginTop: 10, marginHorizontal: 10, alignSelf: 'center', }}
+            name={'call'}
+            size={30}
+            color={'black'}
+          />
+          <Ionicons
+            onPress={() => {
+              navigation.navigate('CallScreen', {
+                data: {
+                  callerData: user,
+                  receiverData: participant,
+                  callType: 'audio'
+                }
+              })
+            }}
+            style={{ marginTop: 10, marginHorizontal: 10, alignSelf: 'center', }}
+            name={'videocam'}
+            size={30}
+            color={'black'}
+          /> */}
+          {/* <Entypo
+            onPress={() => { navigation.navigate('') }}
+            style={{ alignSelf: 'center', marginTop: 10, marginHorizontal: 10, }}
+            name={'dots-three-vertical'}
+            size={30}
+            color={'black'}
+          /> */}
+
+
+        </View>
+        <View style={{ borderWidth: 0.5, marginTop: 10 }} />
+
+        <View style={{ flex: 1 }}>
+          {/* <NavBar/> */}
+          <GiftedChat
+            messages={messages}
+            onSend={(messages) => onSend(messages)}
+            user={{
+              _id: user._id,
+              avatar: user.profileImage
+            }}
+            renderBubble={renderBubble}
+            alwaysShowSend
+            renderSend={renderSend}
+            scrollToBottom
+            showUserAvatar
+            isAnimated
+            showAvatarForEveryMessage
+            disableComposer={true} 
+            scrollToBottomComponent={scrollToBottomComponent}
+            renderChatFooter={renderChatFooter}
+            renderInputToolbar={renderInputToolbar}
+            onLongPress={(context, message) => {
+              // Handle long press on a message
+              const options = ['copy', 'Delete Message', 'Cancel'];
+              const cancelButtonIndex = options.length - 1;
+
+              context.actionSheet().showActionSheetWithOptions(
+                {
+                  options,
+                  cancelButtonIndex,
+                },
+                (buttonIndex) => {
+                  switch (buttonIndex) {
+                    case 0:
+                      handleCopyMessage(message);
+                      break;
+                    case 1:
+                      onDeleteMessage(message._id);
+                      break;
+                  }
+                }
+              );
+            }}
+          />
+
+
         </View>
 
-        <Ionicons
-          onPress={() => {
-            navigation.navigate('CallScreen', {
-              data: {
-                callerData: user,
-                receiverData: participant,
-                callType: 'audio'
-              }
-            })
-          }}
-          style={{ marginTop: 10, marginHorizontal: 10, alignSelf: 'center', }}
-          name={'call'}
-          size={30}
-          color={'black'}
-        />
-        <Ionicons
-          onPress={() => {
-            navigation.navigate('CallScreen', {
-              data: {
-                callerData: user,
-                receiverData: participant,
-                callType: 'audio'
-              }
-            })
-          }}
-          style={{ marginTop: 10, marginHorizontal: 10, alignSelf: 'center', }}
-          name={'videocam'}
-          size={30}
-          color={'black'}
-        />
-        <Entypo
-          onPress={() => { navigation.navigate('') }}
-          style={{ alignSelf: 'center', marginTop: 10, marginHorizontal: 10, }}
-          name={'dots-three-vertical'}
-          size={30}
-          color={'black'}
-        />
-
-
-      </View>
-      <View style={{ borderWidth: 0.5, marginTop: 10 }} />
-
-      <View style={{ flex: 1 }}>
-        {/* <NavBar/> */}
-        <GiftedChat
-          messages={messages}
-          onSend={(messages) => onSend(messages)}
-          user={{
-            _id: user._id,
-            avatar: user.profileImage
-          }}
-          renderBubble={renderBubble}
-          alwaysShowSend
-          renderSend={renderSend}
-          scrollToBottom
-          showUserAvatar
-          isAnimated
-          showAvatarForEveryMessage
-          scrollToBottomComponent={scrollToBottomComponent}
-          renderChatFooter={renderChatFooter}
-          renderInputToolbar={renderInputToolbar}
-          onLongPress={(context, message) => {
-            // Handle long press on a message
-            const options = ['copy', 'Delete Message', 'Cancel'];
-            const cancelButtonIndex = options.length - 1;
-
-            context.actionSheet().showActionSheetWithOptions(
-              {
-                options,
-                cancelButtonIndex,
-              },
-              (buttonIndex) => {
-                switch (buttonIndex) {
-                  case 0:
-                    handleCopyMessage(message);
-                    break;
-                  case 1:
-                    onDeleteMessage(message._id);
-                    break;
-                }
-              }
-            );
-          }}
-        />
-
-
-      </View>
-
-    </SafeAreaView>
+      </SafeAreaView>
+    </>
   );
 }
 const styles = StyleSheet.create({

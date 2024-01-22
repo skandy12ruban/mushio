@@ -85,11 +85,8 @@ const PublicBottomTabs = (props) => {
   useEffect(() => {
     getAPI(`${API_BASE_URL}/api/user/myProfile`).then((profileData)=>{
       let profile = profileData.data;
-      console.log(profile)
-      dispatch(setProfile(profile))
-      
+      dispatch(setProfile(profile))    
       requestUserPermission().then(deviceInfo => {
-        console.log(deviceInfo)
         let url = `${API_BASE_URL}/api/userAuth/storeDeviceToken`
         let promise$ = null;
         if (profile.deviceId && profile.deviceToken) {
@@ -103,8 +100,8 @@ const PublicBottomTabs = (props) => {
         if (promise$) {
           promise$.then((res) => {
             if (res) {
-              console.log('profile response after device token', res)
-              dispatch(setProfile(Object.assign(profile, deviceInfo)))
+              let cloned_profile = _.cloneDeep(profile);
+              dispatch(setProfile(Object.assign(cloned_profile, deviceInfo)))
             }
           }).catch((err)=>{
             console.error(err)

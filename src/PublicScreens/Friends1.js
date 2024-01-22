@@ -37,10 +37,10 @@ const Friends1 = () => {
       let participants = item['participants'];
       let sender = participants.find(u => u._id !== userData._id);
       if (sender) {
-        console.log(participants)
         item['participantId'] = sender._id
         item['participantName'] = sender.name
         item['participantImage'] = sender.profileImage
+        item['currentUser'] = userData
       }
     })
     return chatList
@@ -54,7 +54,7 @@ const Friends1 = () => {
   const Item = ({ item }) => {
     return (
       <View style={{ paddingVertical: 10, paddingHorizontal: 10, borderBottomColor: '#00000033', borderBottomWidth: 1 }}>
-        <TouchableOpacity onPress={() => { navigation.navigate('FriendsMessage', { item: item }) }} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity onPress={() => { navigation.navigate('FriendsMessage', { chatData: item }) }} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
             {item.participantImage !== null &&
               <Image
